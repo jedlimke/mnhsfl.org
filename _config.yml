@@ -18,3 +18,7 @@ minima:
   social_links:
     - { platform: facebook, user_url: "https://www.facebook.com/mnhsfl" }
     - { platform: email, user_url: "info@mnhsfl.org" }
+
+# Only show these pages in the top navigation
+header_pages:
+  - policies/index.md
