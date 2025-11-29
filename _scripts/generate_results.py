@@ -16,10 +16,7 @@ The script will:
 """
 
 import csv
-import os
 from pathlib import Path
-from datetime import datetime
-
 
 class ResultsGenerator:
     """Handles conversion of CSV tournament results to Jekyll pages."""
@@ -74,18 +71,37 @@ class ResultsGenerator:
         Returns:
             String containing the Markdown table
         """
-        with open(csv_path, 'r', encoding='utf-8') as f:
-            reader = csv.reader(f)
-            rows = list(reader)
-        
+        try:
+            with open(csv_path, 'r', encoding='utf-8') as f:
+                reader = csv.reader(f)
+                rows = list(reader)
+        except csv.Error as e:
+            print(f"⚠ CSV format error in {csv_path.name}: {e}")
+            return "*CSV format error*\n"
+        except UnicodeDecodeError as e:
+            print(f"⚠ Encoding error in {csv_path.name}: {e}")
+            return "*Encoding error*\n"
+        except Exception as e:
+            print(f"⚠ Error reading {csv_path.name}: {e}")
+            return "*Error reading data*\n"
+
         if not rows:
             return "*No data available*\n"
         
+        # Handle BOM (Byte Order Mark) in header row if present (should be handled by utf8-sig, but double check)
+        headers = rows[0]
+        if headers and headers[0].startswith('\ufeff'):
+            headers[0] = headers[0].lstrip('\ufeff')
+
+        # Ensure all rows have the same number of columns as the header
+        inconsistent_rows = [i+1 for i, row in enumerate(rows[1:]) if len(row) != len(headers)]
+        if inconsistent_rows:
+            print(f"⚠ Warning: Inconsistent row lengths in {csv_path.name} at rows: {inconsistent_rows}")
+
         # Build markdown table
         table_lines = []
         
         # Header row
-        headers = rows[0]
         table_lines.append("| " + " | ".join(headers) + " |")
         
         # Separator row
@@ -93,13 +109,17 @@ class ResultsGenerator:
         
         # Data rows
         for row in rows[1:]:
+            if len(row) > len(headers):
+                print(f"  ⚠ Warning: Row has more columns than header in {csv_path.name}: {row}. Extra data will be truncated.")
+
             # Pad row if needed to match header length
             padded_row = row + [""] * (len(headers) - len(row))
             table_lines.append("| " + " | ".join(padded_row[:len(headers)]) + " |")
         
         print(f"  ✓ Generated table with {len(rows)-1} data row(s)")
         return "\n".join(table_lines) + "\n"
-    
+
+    # TODO: Find a different way to generate titles for more control
     def generate_title(self, filename):
         """Convert filename to a human-readable title.
         
