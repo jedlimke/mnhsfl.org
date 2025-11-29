@@ -1,0 +1,23 @@
+// Custom Variables for Minima Theme
+// This file is loaded BEFORE minima, so you can override variables here
+
+// Typography
+$base-font-family: "Neuton", serif !default;
+$base-font-size: 20px !default;
+
+// Colors
+$background-color: #F4F2F0 !default;
+$brand-color: darkgoldenrod !default;
+$text-color: #111 !default;
+
+// Layout - keep content width reasonable for reading
+$content-width: 800px !default;
+$on-palm: 600px !default;
+$on-laptop: 800px !default;
+
+// Spacing
+$spacing-unit: 30px !default;
+
+// Table breakout width
+// This is how wide tables should be (viewport width minus padding on each side)
+$table-breakout-padding: 30px;

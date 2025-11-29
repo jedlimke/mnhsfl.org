@@ -1,0 +1,84 @@
+// Custom Styles for Minima Theme
+// This file is loaded AFTER minima, so you can add/override styles here
+
+// Import Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Neuton:ital,wght@0,200;0,300;0,400;0,700;0,800;1,400&display=swap');
+
+// Site header and table backgrounds
+.site-header,
+table {
+  background: #FFF;
+}
+
+// Heading styles
+h2 {
+  border-bottom: solid thin #ccc;
+  padding-bottom: 0.5em;
+  color: $brand-color;
+}
+
+*:not(h1) + h2 {
+  margin-top: 1em;
+}
+
+h3 {
+  color: $brand-color;
+}
+
+// Full-width table breakout
+// This makes tables break out of the content width while keeping text readable
+table {
+  // Calculate the negative margin needed to break out
+  // Content is centered with auto margins, so we need to:
+  // 1. Make it full viewport width
+  // 2. Pull it left to align with viewport edge (accounting for wrapper padding)
+  width: 100vw;
+  max-width: 100vw;
+  
+  // Calculate offset from content area to viewport edge
+  // This uses CSS calc to handle the math dynamically
+  margin-left: calc(-1 * (100vw - 100%) / 2);
+  margin-right: calc(-1 * (100vw - 100%) / 2);
+  
+  // Add padding on sides so content doesn't touch edges
+  padding-left: $table-breakout-padding;
+  padding-right: $table-breakout-padding;
+  
+  // Reset any box-sizing issues
+  box-sizing: border-box;
+  
+  // Ensure table cells have some breathing room
+  td, th {
+    padding: 8px 12px;
+  }
+  
+  // Make table responsive on small screens
+  @media screen and (max-width: $on-palm) {
+    padding-left: 15px;
+    padding-right: 15px;
+    font-size: 0.9em;
+    
+    td, th {
+      padding: 6px 8px;
+    }
+  }
+}
+
+// Alternative approach: wrap tables in a special container
+// Use this if the calc approach doesn't work as expected
+.table-full-width {
+  width: 100vw;
+  margin-left: calc(-1 * (100vw - 100%) / 2);
+  margin-right: calc(-1 * (100vw - 100%) / 2);
+  padding-left: $table-breakout-padding;
+  padding-right: $table-breakout-padding;
+  box-sizing: border-box;
+  
+  table {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
