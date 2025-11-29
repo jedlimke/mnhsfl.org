@@ -11,6 +11,8 @@ sass:
 # Exclude internal files from site
 exclude:
   - README.md
+  - _fencing-results/
+  - _scripts/
 
 # Minima config (see https://github.com/jekyll/minima/blob/v2.5.0/README.md)
 minima:
@@ -22,3 +24,4 @@ minima:
 # Only show these pages in the top navigation
 header_pages:
   - policies/index.md
+  - results/index.md

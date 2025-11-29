@@ -10,3 +10,6 @@ node_modules/
 *.log
 .byebug_history
 coverage/
+
+# Generated results pages (built by _scripts/generate_results.py)
+results/
