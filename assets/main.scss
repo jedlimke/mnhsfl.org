@@ -1,5 +1,12 @@
 ---
 ---
-/* The linter will complain about the front matter, but it's needed for Jekyll to process this file */
+/* Minima automatically imports:
+ * 1. _sass/minima/custom-variables.scss (before theme variables)
+ * 2. The minima theme itself
+ * 3. _sass/minima/custom-styles.scss (after theme styles)
+ * 
+ * See: https://github.com/jekyll/minima#customization
+ */
+
 @import "minima";
-@import "custom";
+

@@ -11,5 +11,11 @@ node_modules/
 .byebug_history
 coverage/
 
+# Old custom.scss - kept for reference
+_sass/custom.scss
+
 # Generated results pages (built by _scripts/generate_results.py)
 results/
+
+# Docker
+.docker/

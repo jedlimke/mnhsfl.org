@@ -1,14 +1,9 @@
 title: The Minnesota State High School Fencing League
-subtitle: Minnesota's premier high school fencing competition
 description: Information regarding the MNHSFL.
 author: MNHSFL
 
-# Oscailte theme
-# See https://github.com/coogie/oscailte
-remote_theme: coogie/oscailte
-
-# Date format
-date_format: "ordinal"
+# Minima theme (included with github-pages gem)
+theme: minima
 
 # Sass configuration
 sass:
@@ -21,26 +16,29 @@ exclude:
   - README.md
   - _fencing-results/
   - _scripts/
+  - Dockerfile
+  - docker-compose.yml
+  - DOCKER.md
+  - Gemfile
+  - Gemfile.lock
 
-# Oscailte theme configuration
-oscailte:
-  social:
-    facebook: mnhsfl
-    email: info@mnhsfl.org
-  strings:
-    hero_title: "The Minnesota State High School Fencing League"
-    recent_posts: "Recent Updates"
-    view_all: "View All"
+# Minima theme configuration
+# See https://github.com/jekyll/minima
+minima:
+  skin: solarized  # Options: auto, classic, dark, solarized, solarized-dark
+  
+  # Social links in footer
+  social_links:
+    - { platform: facebook, user_url: "https://www.facebook.com/mnhsfl" }
+    - { platform: email, user_url: "mailto:info@mnhsfl.org" }
 
 # Show excerpts on home page
 show_excerpts: true
 
-# Permalink structure
-permalink: /blog/:year/:month/:day/:title/
-
-# Pagination
-paginate: 10
-paginate_path: "blog/posts/:num"
+# Only show these pages in the top navigation
+header_pages:
+  - policies/index.md
+  - results/index.md
 
 # Collections (for future use)
 collections:
