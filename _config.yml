@@ -1,8 +1,11 @@
 title: The Minnesota State High School Fencing League
 description: Information regarding the MNHSFL.
+author: MNHSFL
 
-# Minima theme v2.5.0
+# Minima theme (included with github-pages gem)
 theme: minima
+
+# Sass configuration
 sass:
   style: compressed
   load_paths:
@@ -13,15 +16,31 @@ exclude:
   - README.md
   - _fencing-results/
   - _scripts/
+  - Dockerfile
+  - docker-compose.yml
+  - DOCKER.md
+  - Gemfile
+  - Gemfile.lock
 
-# Minima config (see https://github.com/jekyll/minima/blob/v2.5.0/README.md)
+# Minima theme configuration
+# See https://github.com/jekyll/minima
 minima:
-  skin: solarized
+  skin: solarized  # Options: auto, classic, dark, solarized, solarized-dark
+  
+  # Social links in footer
   social_links:
     - { platform: facebook, user_url: "https://www.facebook.com/mnhsfl" }
-    - { platform: email, user_url: "info@mnhsfl.org" }
+    - { platform: email, user_url: "mailto:info@mnhsfl.org" }
+
+# Show excerpts on home page
+show_excerpts: true
 
 # Only show these pages in the top navigation
 header_pages:
   - policies/index.md
   - results/index.md
+
+# Collections (for future use)
+collections:
+  fencing-results:
+    output: true

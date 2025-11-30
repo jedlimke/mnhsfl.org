@@ -140,6 +140,12 @@ class ResultsGenerator:
         """
         filename_stem = csv_path.stem  # e.g., 'turkey-tussle-2025'
         print(f"\nProcessing: {csv_path.name}")
+
+        # Bounce if we exceed file size limit
+        max_size_mb = 10
+        file_size_mb = csv_path.stat().st_size / (1024 * 1024)
+        if file_size_mb > max_size_mb:
+            raise ValueError(f"CSV file too large: {file_size_mb:.1f}MB (max: {max_size_mb}MB)")
         
         # Read optional intro content
         intro_content = self.read_intro_content(csv_path)

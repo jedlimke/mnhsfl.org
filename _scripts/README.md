@@ -18,21 +18,21 @@ A three-stage build pipeline:
 
 ## File Structure
 
-```
-_fencing-results/          # Source data (underscore = not published by Jekyll)
-  tournament-name.csv      # Raw results data
-  tournament-name.md       # (Optional) Editorial intro content
-  
+```  
 _scripts/                  # Build automation
   generate_results.py      # Python script that does the transformation
-  script-notes.md          # This file
+  README.md                # This file
+
+_fencing-results/          # Source data
+  tournament-name.csv      # Raw results data
+  tournament-name.md       # (Optional) Editorial intro content in markdown format
   
-results/                   # Generated output (appears in built site only)
+results/                   # Generated output (appears after script has been run)
   tournament-name.md       # Generated Jekyll pages
   index.md                 # Generated tournament listing
 ```
 
-## How It Works
+## How It Works (once code is merged to `master` on GitHub)
 
 ### Step 1: Python Script (`generate_results.py`)
 **When:** Runs as a GitHub Actions step BEFORE Jekyll builds  
@@ -46,12 +46,6 @@ results/                   # Generated output (appears in built site only)
      - Optional intro content from the `.md` file
      - HTML/Markdown table generated from CSV data
 3. Generates `results/index.md` listing all tournaments
-
-**Why Python:** 
-- Pre-installed in GitHub Actions runners
-- Built-in `csv` module for parsing
-- Easy to read/maintain
-- No compilation needed
 
 ### Step 2: Jekyll Build
 **When:** Runs immediately after Python script  
@@ -72,9 +66,9 @@ Standard Jekyll deployment - serves the static HTML.
 ## Usage (For MNHSFL Admins)
 
 ### Adding Tournament Results
-1. Create CSV file: `_fencing-results/tournament-name-YYYY.csv`
-2. (Optional) Create intro: `_fencing-results/tournament-name-YYYY.md`
-3. Commit and push to GitHub
+1. Create CSV file: `e.g. _fencing-results/tournament-name-YYYY.csv`
+2. (Optional) Create intro: `e.g. _fencing-results/tournament-name-YYYY.md`
+3. Commit and push to GitHub `master` branch
 4. GitHub Actions automatically builds and deploys
 
 ### File Naming Convention
@@ -107,9 +101,8 @@ This "fail fast" approach prevents publishing broken pages.
 
 ### Modifying the Script
 - Script is in `_scripts/generate_results.py`
-- Uses only Python stdlib where possible
 - Comments explain each section
-- Test locally: `python _scripts/generate_results.py`
+- Test locally from the command line: `python _scripts/generate_results.py`
 
 ### Modifying Page Layout
 - Edit Jekyll layouts/includes (not the script)
@@ -145,4 +138,4 @@ This "fail fast" approach prevents publishing broken pages.
 ---
 
 **Last Updated:** November 28, 2025  
-**Created By:** Workshop build system setup
+**Created By:** @jedlimke
