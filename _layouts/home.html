@@ -1,0 +1,53 @@
+---
+layout: default
+---
+
+{%- comment -%}
+  HOMEPAGE LAYOUT
+  
+  This layout provides the fancy homepage structure.
+  Site admins only need to set front matter variables in index.md:
+  
+  ---
+  layout: home
+  announcement_title: "Latest News"
+  announcement_text: "Your announcement text here"
+  announcement_link_text: "View Results →"
+  announcement_link_url: "/results/turkey-tussle-2025.html"
+  ---
+{%- endcomment -%}
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-text">
+      <h1>Minnesota High School<br>Fencing League</h1>
+      <p class="hero-tagline">Building champions through the art of fencing. Competitive high school fencing across the region.</p>
+      <a href="/results/" class="hero-cta">View Tournament Results</a>
+    </div>
+    <div class="hero-image">
+      <img src="https://placehold.co/600x450?text=Fencing+Action" alt="Fencing action shot">
+    </div>
+  </div>
+</section>
+
+{% if page.announcement_title or page.announcement_text %}
+<section class="announcement wrapper">
+  <div class="announcement-content">
+    {% if page.announcement_title %}
+      <h2>{{ page.announcement_title }}</h2>
+    {% endif %}
+    {% if page.announcement_text %}
+      <p>{{ page.announcement_text }}</p>
+    {% endif %}
+    {% if page.announcement_link_url %}
+      <a href="{{ page.announcement_link_url }}" class="announcement-link">
+        {{ page.announcement_link_text | default: "Learn More →" }}
+      </a>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+<div class="home-content">
+{{ content }}
+</div>
