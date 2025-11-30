@@ -1,52 +1,56 @@
 # Minima Theme Customization Guide
 
-## Structure Overview
+## ⚠️ Important: Minima Version Differences
 
-This site uses the official Minima theme customization approach. Here's how it works:
+**GitHub Pages uses Minima 2.5.1**, not Minima 3.0!
+
+The Minima `master` branch README documents v3.0 features like `custom-variables.scss` 
+and `custom-styles.scss` hooks that **do not exist** in v2.5.x.
+
+- **Minima 3.0** (unreleased, on `master`): Has `_sass/minima/custom-variables.scss` and `custom-styles.scss` hooks
+- **Minima 2.5.1** (GitHub Pages): No such hooks - must override via `assets/main.scss`
+
+Always check the [v2.5.1 README](https://github.com/jekyll/minima/blob/v2.5.1/README.md) for accurate documentation.
+
+## Structure for Minima 2.5.x (Our Setup)
 
 ```
 _sass/
-├── minima/
-│   ├── custom-variables.scss  ← Override theme variables BEFORE Minima loads
-│   └── custom-styles.scss     ← Add custom styles AFTER Minima loads
-└── custom.scss                ← Old file (ignored, kept for reference)
+└── custom.scss          ← All our custom styles go here
 
 assets/
-└── main.scss                  ← Just imports "minima" (which auto-loads our custom files)
+└── main.scss            ← Imports minima, then imports custom.scss
 ```
 
 ## How It Works
 
-When you `@import "minima"` in `assets/main.scss`, Minima automatically:
+In `assets/main.scss`:
+```scss
+---
+---
+@import "minima";   // Load the theme first
+@import "custom";   // Then override with our styles
+```
 
-1. **Loads** `_sass/minima/custom-variables.scss` 
-2. **Then** loads the theme's default variables
-3. **Then** loads the theme's base styles
-4. **Finally** loads `_sass/minima/custom-styles.scss`
+This is the **prescribed way** per the [v2.5.1 docs](https://github.com/jekyll/minima/blob/v2.5.1/README.md#customization).
 
-This means:
-- **Variables** go in `custom-variables.scss`
-- **Styles** go in `custom-styles.scss`
+## Current Customizations (`_sass/custom.scss`)
 
-## Current Customizations
-
-### Variables (`_sass/minima/custom-variables.scss`)
-
+### Typography
 - **Font**: Neuton (Google Fonts)
 - **Font size**: 20px
-- **Background**: #F4F2F0
-- **Brand color**: darkgoldenrod
-- **Content width**: 800px (readable text width)
-- **Table breakout padding**: 30px (space on viewport edges)
+- **Background**: #F4F2F0 (light beige)
 
-### Styles (`_sass/minima/custom-styles.scss`)
+### Colors
+- **Brand color**: darkgoldenrod (used for headings)
+- **Backgrounds**: White for header and tables
 
-- **Headings**: Gold color with bottom borders
-- **Tables**: Full-width breakout from content area
-  - Width: 100vw - 60px (30px padding each side)
-  - Centered in viewport
-  - White background
-  - Responsive padding on mobile
+### Tables
+- Full-width breakout from content area
+- Width: 100vw - 60px (30px padding each side)
+- Centered in viewport
+- White background
+- Responsive padding on mobile
 
 ## The Table Breakout Technique
 
@@ -70,92 +74,79 @@ This works because:
 
 ## Making Changes
 
+All changes go in `_sass/custom.scss`. Since this loads AFTER minima, 
+your styles will override the theme defaults.
+
 ### Change Colors
 
-Edit `_sass/minima/custom-variables.scss`:
+```css
+// Desktop/Large (>800px) - DEFAULT VALUES
+:root {
+  // Breakpoint values (for reference in JS or debugging)
+  --breakpoint-palm: 600px;
+  --breakpoint-laptop: 800px;
+  
+  // Spacing unit - the core spacing value everything derives from
+  --spacing-unit: 30px;
+  --spacing-unit-half: 15px;          // $spacing-unit / 2
+  --spacing-unit-third: 10px;         // $spacing-unit / 3
+  
+  // Content/wrapper dimensions
+  --content-width: 800px;
+  --wrapper-max-width: 740px;         // $content-width - ($spacing-unit * 2) = 800 - 60
+  --wrapper-padding: 30px;            // $spacing-unit
+  
+  // Vertical rhythm (margin-bottom on headings, paragraphs, etc.)
+  --vertical-rhythm: 15px;            // $spacing-unit / 2
+  
+  // Table cell padding
+  --table-cell-padding-v: 10px;       // $spacing-unit / 3
+  --table-cell-padding-h: 15px;       // $spacing-unit / 2
+  
+  // Header height
+  --header-min-height: 55.95px;       // $spacing-unit * 1.865
+  
+  // Footer/page content vertical padding
+  --section-padding: 30px;            // $spacing-unit
+  
+  // List indent
+  --list-indent: 30px;                // $spacing-unit
+  
+  // Blockquote padding
+  --blockquote-padding: 15px;         // $spacing-unit / 2
+  
+  // Navigation spacing (on mobile, hamburger menu offset)
+  --nav-offset: 15px;                 // $spacing-unit / 2
+  
+  // PROOF-OF-CONCEPT background color
+  background-color: lightblue;
+}
 
-```scss
-$background-color: #F4F2F0 !default;  // Page background
-$brand-color: darkgoldenrod !default; // Headings, links
-$text-color: #111 !default;           // Body text
+// Tablet/Medium (601px - 800px)
+@media screen and (max-width: 800px) {
+  :root {
+    // Wrapper gets tighter padding
+    --wrapper-max-width: 770px;       // $content-width - $spacing-unit = 800 - 30
+    --wrapper-padding: 15px;          // $spacing-unit / 2
+    
+    // PROOF-OF-CONCEPT background color
+    background-color: lightgreen;
+  }
+}
+
+// Mobile/Small (≤600px)
+@media screen and (max-width: 600px) {
+  :root {
+    // Same as tablet for most values, but this is where
+    // Minima switches to mobile navigation (hamburger menu)
+    // and footer columns stack vertically
+    
+    // You might want tighter spacing on mobile:
+    // --spacing-unit: 20px;          // Optional: reduce base spacing
+    // --wrapper-padding: 10px;       // Optional: even tighter
+    
+    // PROOF-OF-CONCEPT background color
+    background-color: lightcoral;
+  }
+}
 ```
-
-### Change Fonts
-
-Edit `_sass/minima/custom-variables.scss`:
-
-```scss
-$base-font-family: "Neuton", serif !default;
-$base-font-size: 20px !default;
-```
-
-Don't forget to import the font in `_sass/minima/custom-styles.scss`:
-
-```scss
-@import url('https://fonts.googleapis.com/css2?family=YourFont&display=swap');
-```
-
-### Adjust Table Width
-
-Edit the padding in `_sass/minima/custom-variables.scss`:
-
-```scss
-$table-breakout-padding: 30px;  // Change to 15px, 50px, etc.
-```
-
-### Change Content Width
-
-Edit `_sass/minima/custom-variables.scss`:
-
-```scss
-$content-width: 800px !default;  // Change to 900px, 1000px, etc.
-```
-
-Note: Tables will still break out to full width!
-
-## Responsive Behavior
-
-Tables automatically adjust on small screens:
-- Padding reduces to 15px
-- Font size reduces to 0.9em
-- Cell padding tightens
-
-Breakpoint is at `$on-palm: 600px`.
-
-## Alternative: Wrapper Class
-
-If the calc trick doesn't work in some browsers, use this HTML wrapper:
-
-```html
-<div class="table-full-width">
-  <table>
-    ...
-  </table>
-</div>
-```
-
-The `.table-full-width` class is already defined in `custom-styles.scss`.
-
-## Testing Changes
-
-1. Edit the SCSS files
-2. Jekyll will auto-rebuild (watch for "Regenerating..." in terminal)
-3. Browser will auto-reload (LiveReload is enabled)
-4. Check http://localhost:4000
-
-## Available Minima Skins
-
-Change the skin in `_config.yml`:
-
-```yaml
-minima:
-  skin: solarized  # Options: auto, classic, dark, solarized, solarized-dark
-```
-
-Each skin has different color schemes. Custom variables override the skin colors.
-
-## Resources
-
-- [Minima GitHub](https://github.com/jekyll/minima)
-- [Minima Customization](https://github.com/jekyll/minima#customization)
-- [Jekyll SCSS Documentation](https://jekyllrb.com/docs/assets/)

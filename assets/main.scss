@@ -1,12 +1,17 @@
 ---
 ---
-/* Minima automatically imports:
- * 1. _sass/minima/custom-variables.scss (before theme variables)
- * 2. The minima theme itself
- * 3. _sass/minima/custom-styles.scss (after theme styles)
+/*
+ * Minima 2.5.x Customization (GitHub Pages version)
  * 
- * See: https://github.com/jekyll/minima#customization
+ * NOTE: Minima 3.0 has custom-variables.scss and custom-styles.scss hooks,
+ * but GitHub Pages uses Minima 2.5.1 which does NOT have those.
+ * 
+ * For 2.5.x, the prescribed approach is:
+ * 1. Import minima (which loads its defaults)
+ * 2. Import custom overrides AFTER
+ * 
+ * See: https://github.com/jekyll/minima/blob/v2.5.1/README.md#customization
  */
 
 @import "minima";
-
+@import "custom";
