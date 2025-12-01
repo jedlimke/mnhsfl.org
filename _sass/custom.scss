@@ -27,6 +27,9 @@
   --breakpoint-laptop: 800px;
   --breakpoint-wide: 1200px;
 
+  // Max width for wide content (header, footer, hero at wide breakpoint)
+  --content-max-width: 1440px;
+
   --brand-gold: darkgoldenrod;
   --bg-light: #F4F2F0;
   --bg-white: #FFF;

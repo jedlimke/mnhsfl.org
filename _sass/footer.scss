@@ -75,7 +75,7 @@
 // At wide breakpoint, go multi-column and expand wrapper
 @media screen and (min-width: 1200px) {
   .site-footer .wrapper {
-    max-width: calc(100% - var(--spacing-unit) * 2);
+    max-width: var(--content-max-width);
   }
   
   .footer-content {

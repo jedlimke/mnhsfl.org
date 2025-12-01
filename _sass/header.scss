@@ -7,6 +7,6 @@
 // At wide breakpoint, let the header wrapper expand
 @media screen and (min-width: 1200px) {
   .site-header .wrapper {
-    max-width: calc(100% - var(--spacing-unit) * 2);
+    max-width: var(--content-max-width);
   }
 }
