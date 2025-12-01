@@ -77,6 +77,18 @@
 	align-items: center;
 }
 
+// Right-align the link columns
+.footer-links {
+  text-align: right;
+  
+  .social-media-list {
+    li {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+
 .footer-license {
 	font-size: 0.6rem;
 }

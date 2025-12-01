@@ -12,67 +12,64 @@
   width: 100vw;
   margin-left: calc(-50vw + 50%);
   padding: 0;
-  background: linear-gradient(135deg, var(--hero-bg-start) 0%, var(--hero-bg-end) 100%);
+  background: url('/assets/hero-image.webp') center center / cover no-repeat;
   color: var(--hero-text-color);
-  min-height: 80vh;
+  
+  // Exactly fill remaining viewport below header
+  height: calc(100vh - var(--header-height) - var(--spacing-unit));
+  max-height: calc(100vh - var(--header-height) - var(--spacing-unit));
+  
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 
   // Adjust for funky padding on the minima header
-  margin-top: calc(-1 * var(--spacing-unit))
-}
-
-.hero-content {
-  // Match minima wrapper width below wide breakpoint
-  max-width: 800px;
-  margin: 0 auto;
-  padding: var(--spacing-unit);
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--spacing-unit);
-  align-items: center;
-  width: 100%;
-  text-align: center;
-}
-
-.hero-text h1 {
-  font-family: var(--font-display);
-  margin-bottom: var(--spacing-unit);
-  color: var(--hero-text-color);
-}
-
-.hero-tagline {
-  margin-bottom: var(--spacing-unit);
-}
-
-.hero-cta {
-  display: inline-block;
-  background: var(--brand-gold);
-  color: var(--hero-text-color);
-  padding: calc(var(--spacing-unit) / 2) var(--spacing-unit);
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.hero-image img {
-  max-width: 100%;
-  height: auto;
-}
-
-// Hero wide breakpoint - side by side
-@media screen and (min-width: 1200px) {
-  .hero-content {
-    max-width: var(--content-max-width);
-    grid-template-columns: 1fr 1fr;
-    text-align: left;
+  margin-top: calc(-1 * var(--spacing-unit));
+  
+  // Blue color overlay
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--brand-blue);
+    mix-blend-mode: multiply;
+    pointer-events: none;
   }
 }
 
-// Mobile - reduce min-height
+.hero-content {
+  position: relative; // Keep content above the overlay
+  z-index: 1;
+  margin: 0 auto;
+  padding: var(--spacing-unit);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero-logo {
+  max-width: 80%;
+  width: 600px;
+  height: auto;
+  margin-bottom: var(--spacing-unit);
+}
+
+.hero-tagline {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+// Mobile adjustments
 @media screen and (max-width: 600px) {
-  .hero {
-    min-height: auto;
+  .hero-logo {
+    width: 90%;
+  }
+  
+  .hero-tagline {
+    font-size: 1.2rem;
   }
 }
 

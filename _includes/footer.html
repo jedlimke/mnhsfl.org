@@ -19,7 +19,7 @@
       </div>
 
       {%- comment -%} Navigation links (same as header) {%- endcomment -%}
-      <div class="footer-nav">
+      <div class="footer-nav footer-links">
         <!-- <h3>Pages</h3> -->
         {%- assign default_paths = site.pages | map: "path" -%}
         {%- assign page_paths = site.header_pages | default: default_paths -%}
@@ -34,13 +34,8 @@
       </div>
 
       {%- comment -%} Social / contact {%- endcomment -%}
-      <div class="footer-social">
+      <div class="footer-social footer-links">
         <!-- <h3>Connect</h3> -->
-        <ul class="social-media-list">
-          {%- if site.email -%}
-            <li><a href="mailto:{{ site.email }}"><svg class="svg-icon"><use xlink:href="{{ '/assets/minima-social-icons.svg#email' | relative_url }}"></use></svg><span class="username">{{ site.email | escape }}</span></a></li>
-          {%- endif -%}
-        </ul>
         {%- include social.html -%}
       </div>
 
