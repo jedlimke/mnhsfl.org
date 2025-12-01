@@ -2,6 +2,9 @@ title: The Minnesota State High School Fencing League
 description: Information regarding the MNHSFL.
 author: MNHSFL
 
+# Site logo (used in header)
+# logo: /assets/images/logo.svg
+
 # Minima theme (included with github-pages gem)
 theme: minima
 

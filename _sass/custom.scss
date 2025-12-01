@@ -57,10 +57,10 @@ html, body {
 }
 
 // TEMPORARY DEBUGGING BORDERS
-.wrapper {
-	border-left: solid thick magenta;
-	border-right: solid thick magenta;
-}
+// .wrapper {
+// 	border-left: solid thick magenta;
+// 	border-right: solid thick magenta;
+// }
 
 // ============================================================================
 // HEADER
@@ -69,20 +69,11 @@ html, body {
   background: var(--bg-white);
 }
 
-// Logo in header - replace text with image
-.site-title {
-  background-image: url('https://www.ndsu.edu/themes/custom/ndsu/assets/images/ndsu-twolines.svg');
-  background-repeat: no-repeat;
-  background-position: left center;
-  background-size: contain;
-  text-indent: -9999px;
-  width: 200px;
+// Logo styling when using site.logo
+.site-title img {
   height: 40px;
-  display: inline-block;
-  
-  &:hover {
-    text-decoration: none;
-  }
+  width: auto;
+  vertical-align: middle;
 }
 
 // ============================================================================
@@ -136,7 +127,7 @@ table {
 
 // Desktop/Large (>800px) - DEFAULT VALUES
 body {
-  background-color: lightblue;
+//   background-color: lightblue;
 }
 
 // Tablet/Medium (601px - 800px)

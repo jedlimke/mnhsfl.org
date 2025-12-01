@@ -1,6 +1,7 @@
 ---
 layout: home
 title: The Minnesota High School Fencing League (MNHSFL)
+body_class: home
 
 # =============================================================================
 # ANNOUNCEMENT SECTION
