@@ -4,6 +4,29 @@
  * Extends the header to full width at wide breakpoints.
  */
 
+// Use flexbox for proper vertical alignment
+.site-header .wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// Override Minima's float/position on nav (desktop only)
+@media screen and (min-width: 600px) {
+  .site-nav {
+    position: static;
+    float: none;
+    margin-left: auto;
+  }
+}
+
+// Logo sizing
+.site-title img {
+  display: block;
+  height: 40px;
+  width: auto;
+}
+
 // At wide breakpoint, let the header wrapper expand
 @media screen and (min-width: 1200px) {
   .site-header .wrapper {
