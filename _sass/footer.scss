@@ -22,13 +22,14 @@
     font-weight: bold;
     
     img {
-      height: 40px;
+      height: 120px;
       width: auto;
     }
   }
   
   .footer-description {
     margin-top: calc(var(--spacing-unit) / 2);
+	font-size: 0.75rem;
   }
 }
 

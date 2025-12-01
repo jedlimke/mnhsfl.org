@@ -3,8 +3,9 @@ description: The Minnesota High School Fencing League (MNHSFL) is run by the Min
 
 author: MNHSFL
 
-# Site logo (used in header)
-# logo: /assets/images/logo.svg
+# Site logos
+logo: /assets/mnhsfl.svg
+footer_logo: /assets/mnhsfl_block.svg
 
 # Minima theme (included with github-pages gem)
 theme: minima

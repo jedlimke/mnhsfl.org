@@ -7,7 +7,9 @@
       {%- comment -%} Logo and blurb {%- endcomment -%}
       <div class="footer-brand">
         <a href="{{ "/" | relative_url }}" class="footer-logo">
-          {%- if site.logo -%}
+          {%- if site.footer_logo -%}
+            <img src="{{ site.footer_logo | relative_url }}" alt="{{ site.title | escape }}">
+          {%- elsif site.logo -%}
             <img src="{{ site.logo | relative_url }}" alt="{{ site.title | escape }}">
           {%- else -%}
             {{ site.title | escape }}
