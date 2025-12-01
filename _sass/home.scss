@@ -24,7 +24,8 @@
 }
 
 .hero-content {
-  max-width: 1200px;
+  // Match minima wrapper width below wide breakpoint
+  max-width: 800px;
   margin: 0 auto;
   padding: var(--spacing-unit);
   display: grid;
@@ -62,6 +63,7 @@
 // Hero wide breakpoint - side by side
 @media screen and (min-width: 1200px) {
   .hero-content {
+    max-width: 1200px;
     grid-template-columns: 1fr 1fr;
     text-align: left;
   }
