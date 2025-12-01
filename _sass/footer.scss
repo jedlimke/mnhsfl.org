@@ -1,0 +1,12 @@
+/*
+ * Footer layout overrides
+ * 
+ * Extends the footer to full width at wide breakpoints.
+ */
+
+// At wide breakpoint, let the footer wrapper expand
+@media screen and (min-width: 1200px) {
+  .site-footer .wrapper {
+    max-width: calc(100% - var(--spacing-unit) * 2);
+  }
+}
