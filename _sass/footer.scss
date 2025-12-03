@@ -1,111 +1,136 @@
 /*
  * Footer layout overrides
+ * 
+ * Breakpoints: Mobile (below 600px), Tablet (600-1199px), Desktop (1200px+)
+ * Note: CSS variables can't be used in media queries - keep hardcoded values
+ * in sync with custom.scss
  */
 
 .site-footer {
-  background: var(--bg-white);
-  padding: var(--spacing-unit) 0;
-  border-top: none;
+    background: var(--bg-white);
+    padding: var(--spacing-unit) 0;
+    border-top: none;
 }
 
 .footer-content {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--spacing-unit);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-unit);
 
-	a:link, a:visited {
-		color: var(--brand-blue);
-	}
+    a:link,
+    a:visited {
+        color: var(--brand-blue);
+    }
 }
 
 // Footer brand / logo area
 .footer-brand {
-  .footer-logo {
-    display: inline-block;
-    text-decoration: none;
-    font-weight: bold;
-    
-    img {
-      height: 120px;
-      width: auto;
-    }
-  }
-  
-  .footer-description {
-    margin-top: calc(var(--spacing-unit) / 2);
-    margin-bottom: calc(var(--spacing-unit) / 2);
-    font-size: 0.75rem;
-  }
-}
+    .footer-logo {
+        display: inline-block;
+        text-decoration: none;
+        font-weight: bold;
 
-// Inline social icons below description
-.footer-social-inline {
-  margin-top: calc(var(--spacing-unit) / 2);
-  
-  .social-media-list {
-    display: flex;
-    gap: calc(var(--spacing-unit) / 2);
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    
-    li {
-      margin: 0;
+        img {
+            height: 120px;
+            width: auto;
+        }
     }
-    
-    a {
-      display: flex;
-      align-items: center;
-      
-      .username {
-        // Hide the text, keep only icons
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border-width: 0;
-      }
+
+    .footer-description {
+        margin-top: calc(var(--spacing-unit) / 2);
+        margin-bottom: calc(var(--spacing-unit) / 2);
+        font-size: 0.75rem;
     }
-  }
 }
 
 // Footer nav
 .footer-nav {
-  h3 {
-    margin: 0 0 calc(var(--spacing-unit) / 2) 0;
-  }
-  
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  li {
-    margin-bottom: calc(var(--spacing-unit) / 4);
-  }
+    h3 {
+        margin: 0 0 calc(var(--spacing-unit) / 2) 0;
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        margin-bottom: calc(var(--spacing-unit) / 4);
+    }
 }
 
-// Right-align the nav link column
-.footer-links {
-  text-align: right;
+// Footer bottom row with copyright and social icons
+.footer-bottom {
+    margin-top: var(--spacing-unit);
+    display: flex;
+    flex-direction: column-reverse; // Mobile: social above copyright
+    gap: calc(var(--spacing-unit) / 2);
 }
 
 .footer-license {
-	font-size: 0.6rem;
+    font-size: 0.6rem;
+    margin: 0;
 }
 
-// At wide breakpoint, go two-column and expand wrapper
-@media screen and (min-width: 1200px) {
-  .site-footer .wrapper {
-    max-width: var(--content-max-width);
-  }
-  
-  .footer-content {
-    grid-template-columns: 2fr 1fr;
-  }
+// Social icons - hide text, show only icons
+.footer-social-inline {
+    .social-media-list {
+        display: flex;
+        gap: calc(var(--spacing-unit) / 2);
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+            margin: 0;
+        }
+
+        li+li {
+            padding: 0;
+        }
+
+        a {
+            display: flex;
+            align-items: center;
+
+            .username {
+                // Hide the text, keep only icons (accessible)
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border-width: 0;
+            }
+        }
+    }
+}
+
+// Tablet and up: right-align nav links (600px+)
+@media screen and (min-width: 600px) {
+    .footer-links {
+        text-align: right;
+    }
+
+    // Copyright and social on same row, justified apart
+    .footer-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+// Desktop: two-column layout and expand wrapper (800px+)
+@media screen and (min-width: 800px) {
+    .site-footer .wrapper {
+        max-width: var(--content-max-width);
+    }
+
+    .footer-content {
+        grid-template-columns: 2fr 1fr;
+    }
 }

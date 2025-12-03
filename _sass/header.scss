@@ -1,10 +1,11 @@
 /*
  * Header layout overrides
  * 
- * Extends the header to full width at wide breakpoints.
+ * Extends the header to full width at desktop breakpoint.
  * 
  * Note: Media query breakpoints must be hardcoded (CSS variables don't work
  * in media queries). Keep in sync with --breakpoint-* values in custom.scss.
+ * Mobile: 600px, Tablet: 800px, Desktop: 1200px
  */
 
 .site-header {
@@ -19,14 +20,14 @@
   justify-content: space-between;
 }
 
-// Mobile: keep nav positioned for hamburger menu
+// Mobile: keep nav positioned for hamburger menu (below 600px)
 @media screen and (max-width: 599px) {
   .site-header .wrapper {
     min-height: var(--header-height);
   }
 }
 
-// Override Minima's float/position on nav (desktop only)
+// Tablet and up: Override Minima's float/position on nav (600px+)
 @media screen and (min-width: 600px) {
   .site-nav {
     position: static;
@@ -42,7 +43,7 @@
   width: auto;
 }
 
-// At wide breakpoint, let the header wrapper expand
+// Desktop: Let the header wrapper expand to max width (1200px+)
 @media screen and (min-width: 1200px) {
   .site-header .wrapper {
     max-width: var(--content-max-width);

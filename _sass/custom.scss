@@ -21,11 +21,13 @@
 :root {
   --spacing-unit: 30px;
 
-  --breakpoint-palm: 600px;
-  --breakpoint-laptop: 800px;
-  --breakpoint-wide: 1200px;
+  // Breakpoints (CSS variables - cannot be used in media queries)
+  // Use these values in media queries: 600px (mobile), 800px (tablet), 1200px (desktop/wide)
+  --breakpoint-mobile: 600px;
+  --breakpoint-tablet: 800px;
+  --breakpoint-desktop: 1200px;
 
-  // Max width for wide content (header, footer, hero at wide breakpoint)
+  // Max width for wide content (header, footer, hero at desktop breakpoint)
   --content-max-width: 1440px;
 
   // Header

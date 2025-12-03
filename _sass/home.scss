@@ -2,6 +2,7 @@
  * Homepage-specific styles (home layout)
  * 
  * Imported AFTER custom.scss so CSS custom properties are available.
+ * Breakpoints: Mobile (below 600px), Tablet (600-1199px), Desktop (1200px+)
  */
 
 // ============================================================================
@@ -62,8 +63,8 @@
   margin: 0;
 }
 
-// Mobile adjustments
-@media screen and (max-width: 600px) {
+// Mobile: smaller logo and text (below 600px from --breakpoint-mobile)
+@media screen and (max-width: 599px) {
   .hero-logo {
     width: 90%;
   }
@@ -72,8 +73,9 @@
     font-size: 1.2rem;
   }
 }
-// Tablet adjustments
-@media screen and (min-width: 800px) {
+
+// Tablet: constrain tagline width (600px+ from --breakpoint-mobile)
+@media screen and (min-width: 600px) {
   .hero-tagline {
     max-width: 50vw;
   }

@@ -30,9 +30,23 @@ ALSO, maybe instead of filenames, we require the uploader to put files into fold
 
 # TODOS:
 
-1. Update theme to be snazzier
+1. ~~Update theme to be snazzier~~ (In progress - custom hero, footer, header done)
 2. Rewrite script to be easier to read/break it down following five-lines-of-code principles (I'm thinking folders now in case we have photos and such that need to be incorporated, too)
 3. Test script on actual fencer data
 4. Add blog post capabilities
 5. Figure out images on posts
-6. Figure out site logo
+6. ~~Figure out site logo~~ (Done - using mnhsfl.svg and mnhsfl_block.svg)
+
+## Future Homepage Enhancements
+
+**Goal:** Make the homepage more dynamic and data-driven rather than static content.
+
+**Planned Features:**
+- **Schedule Integration:** Pull upcoming events from a CSV or iCal feed to display next tournaments/meets automatically
+- **News/Articles Feed:** Use Jekyll's built-in blog functionality to show recent posts on homepage
+- **Results Widget:** Dynamically show latest tournament results
+- **Possibly more:** Consider what features would be useful
+
+**Reference Site:** Check out [MSHSL.org](https://www.mshsl.org/) for inspiration on sports league website features and UX patterns.
+
+**Note:** Don't implement yet - continue gathering requirements and understanding needs first.

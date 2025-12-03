@@ -69,6 +69,9 @@ header_pages:
   - results/index.md
   - policies/index.md
 
+# TODO: Consider adding footer_pages configuration for mobile
+# to show a different/reduced set of links in footer vs header
+
 # Collections (for future use)
 collections:
   fencing-results:
