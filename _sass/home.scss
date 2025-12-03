@@ -72,6 +72,12 @@
     font-size: 1.2rem;
   }
 }
+// Tablet adjustments
+@media screen and (min-width: 800px) {
+  .hero-tagline {
+    max-width: 50vw;
+  }
+}
 
 // ============================================================================
 // ANNOUNCEMENT / SUB-HERO
