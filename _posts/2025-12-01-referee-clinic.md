@@ -1,7 +1,6 @@
 ---
 title: "Referee Certification Clinic Announced"
 date: 2025-12-01
-categories: announcements
 image: https://placehold.co/800x600/2b2c57/ffffff?text=Referee+Clinic
 excerpt: "Join us for a referee certification clinic on December 15th."
 ---

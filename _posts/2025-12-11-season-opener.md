@@ -1,7 +1,6 @@
 ---
 title: "Season Opener: January 8th"
 date: 2025-12-11
-categories: announcements
 image: https://placehold.co/800x600/2b2c57/ffffff?text=Season+Opener
 excerpt: "The first tournament of the 2026 high school season is on January 8th."
 ---

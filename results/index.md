@@ -1,12 +1,12 @@
 ---
 layout: page
-title: News
-permalink: /news/
+title: Tournament Results
+permalink: /results/
 ---
 
-# News
+# Tournament Results
 
-{% assign result_posts = site.categories.news %}
+{% assign result_posts = site.categories.results %}
 
 {% for post in result_posts %}
   <article class="post-summary">
@@ -15,10 +15,10 @@ permalink: /news/
     {% if post.excerpt %}
       <p>{{ post.excerpt }}</p>
     {% endif %}
-    <a href="{{ post.url | relative_url }}">View news →</a>
+    <a href="{{ post.url | relative_url }}">View results →</a>
   </article>
 {% endfor %}
 
 {% if result_posts.size == 0 %}
-  <p>No news yet. Check back soon!</p>
+  <p>No tournament results yet. Check back soon!</p>
 {% endif %}

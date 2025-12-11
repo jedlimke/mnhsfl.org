@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page
 title: Board of Directors
 permalink: /about/board/
 ---

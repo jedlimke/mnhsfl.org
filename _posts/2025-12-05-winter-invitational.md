@@ -1,7 +1,6 @@
 ---
 title: "Winter Invitational Registration Open"
 date: 2025-12-05
-categories: announcements
 excerpt: "Registration is now open for the annual Winter Invitational tournament."
 ---
 

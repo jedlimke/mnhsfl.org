@@ -1,7 +1,6 @@
 ---
 title: "Welcome to the 2025-26 Season"
 date: 2025-11-15
-categories: announcements
 image: https://placehold.co/800x600/2b2c57/ffd700?text=2025-2026+Season
 excerpt: "We're excited to kick off another year of competitive high school fencing!"
 ---

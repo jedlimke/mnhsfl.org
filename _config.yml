@@ -44,6 +44,7 @@ header_pages:
   - about/index.md
   - competitors/index.md
   - news/index.md
+  - results/index.md
   - policies/index.md
 
 # =============================================================================
@@ -51,10 +52,15 @@ header_pages:
 # =============================================================================
 defaults:
   - scope:
+      path: "_posts/results"
+      type: "posts"
+    values:
+      categories: "results"
+  - scope:
       path: "_posts"
       type: "posts"
     values:
-      layout: "post"
+      categories: "news"
 
 # Collections (for future use)
 collections:
