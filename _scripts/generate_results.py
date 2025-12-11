@@ -159,7 +159,7 @@ class ResultsGenerator:
         # Build Jekyll front matter
         front_matter = [
             "---",
-            "layout: default",
+            "layout: post",
             f"title: \"{title}\"",
             "---",
             ""
@@ -205,7 +205,7 @@ class ResultsGenerator:
         # Build index content
         front_matter = [
             "---",
-            "layout: default",
+            "layout: page",
             "title: \"Tournament Results\"",
             "---",
             "",

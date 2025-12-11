@@ -7,35 +7,31 @@
 
 		{%- include header.html -%}
 
-		<section class="hero">
-			<div class="hero-content">
-				<img src="{{ '/assets/mnhsfl-block-inverted.svg' | relative_url }}" alt="{{ site.title | escape }}" class="hero-logo">
-				<p class="hero-tagline">Supporting, fostering, and promoting competitive high school fencing in Minnesota through regulated competition, instruction, and outreach.</p>
-			</div>
-		</section>
-
 		<main class="page-content" aria-label="Content">
 
-			{%- comment -%} POSTS GRID: Full width with internal constraint {%- endcomment -%}
+			<section class="hero">
+				<div class="hero-content">
+					<img src="{{ '/assets/mnhsfl-block-inverted.svg' | relative_url }}" alt="{{ site.title | escape }}" class="hero-logo">
+					<p class="hero-tagline">Supporting, fostering, and promoting competitive high school fencing in Minnesota through regulated competition, instruction, and outreach.</p>
+				</div>
+			</section>
+
+			{%- comment -%} POSTS GRID {%- endcomment -%}
 			{% assign latest_posts = site.posts | limit: 5 %}
 			{% if latest_posts.size > 0 %}
-			<section class="posts-grid-section">
-				<div class="posts-grid-container">
-					<div class="recent-posts-grid">
-						{% for post in latest_posts %}
-						<a href="{{ post.url | relative_url }}" class="post-card{% if post.image %} has-image{% endif %}"{% if post.image %} style="background-image: url('{{ post.image }}')"{% endif %}>
-							<div class="post-card-content">
-								<h2>{{ post.title }}</h2>
-							</div>
-						</a>
-						{% endfor %}
+			<section class="posts-grid">
+				{% for post in latest_posts %}
+				<a href="{{ post.url | relative_url }}" class="post-card{% if post.image %} has-image{% endif %}"{% if post.image %} style="background-image: url('{{ post.image }}')"{% endif %}>
+					<div class="post-card-content">
+						<h2>{{ post.title }}</h2>
 					</div>
-				</div>
+				</a>
+				{% endfor %}
 			</section>
 			{% endif %}
 
-			{%- comment -%} HOME CONTENT: Normal wrapper width {%- endcomment -%}
-			<div class="wrapper">
+			{%- comment -%} HOME CONTENT {%- endcomment -%}
+			<div class="content-wrapper">
 				{{ content }}
 			</div>
 
@@ -44,7 +40,5 @@
 		{%- include footer.html -%}
 
 	</body>
-
-</html>
 
 </html>

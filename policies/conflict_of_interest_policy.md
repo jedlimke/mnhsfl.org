@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page
 title: Conflict of Interest Policy
 nav_exclude: true
 ---

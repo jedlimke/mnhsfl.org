@@ -1,43 +1,39 @@
 <footer class="site-footer">
-	<div class="wrapper">
-		<div class="footer-content">
-			{%- comment -%} Logo and blurb {%- endcomment -%}
-			<div class="footer-brand">
-				<a href="{{ " /" | relative_url }}" class="footer-logo">
-					{%- if site.footer_logo -%}
-					<img src="{{ site.footer_logo | relative_url }}" alt="{{ site.title | escape }}">
-					{%- elsif site.logo -%}
-					<img src="{{ site.logo | relative_url }}" alt="{{ site.title | escape }}">
-					{%- else -%}
-					{{ site.title | escape }}
-					{%- endif -%}
-				</a>
-				<p class="footer-description">{{ site.description | escape }}</p>
-			</div>
 
-			{%- comment -%} Navigation links {%- endcomment -%}
-			<div class="footer-nav footer-links">
-				{%- assign default_paths = site.pages | map: "path" -%}
-				{%- assign page_paths = site.header_pages | default: default_paths -%}
-				<ul>
-					{%- for path in page_paths -%}
-					{%- assign my_page = site.pages | where: "path", path | first -%}
-					{%- if my_page.title -%}
-					<li><a href="{{ my_page.url | relative_url }}">{{ my_page.title | escape }}</a></li>
-					{%- endif -%}
-					{%- endfor -%}
-				</ul>
-			</div>
-		</div>
-
-		{%- comment -%} Copyright and social icons row {%- endcomment -%}
-		<div class="footer-bottom">
-			<p class="footer-license">&copy; {{ site.time | date: "%Y" }} {{ site.author | escape }} under the terms of
-				the <a href="{{ '/LICENSE' | relative_url }}">MIT License</a>.</p>
-
-			<div class="footer-social-inline">
-				{%- include social.html -%}
-			</div>
-		</div>
+	{%- comment -%} Logo and description {%- endcomment -%}
+	<div class="footer-brand">
+		<a href="{{ "/" | relative_url }}" class="footer-logo">
+			{%- if site.footer_logo -%}
+			<img src="{{ site.footer_logo | relative_url }}" alt="{{ site.title | escape }}">
+			{%- elsif site.logo -%}
+			<img src="{{ site.logo | relative_url }}" alt="{{ site.title | escape }}">
+			{%- else -%}
+			{{ site.title | escape }}
+			{%- endif -%}
+		</a>
+		<p class="footer-description">{{ site.description | escape }}</p>
 	</div>
+
+	{%- comment -%} Navigation links {%- endcomment -%}
+	<div class="footer-nav">
+		{%- assign default_paths = site.pages | map: "path" -%}
+		{%- assign page_paths = site.header_pages | default: default_paths -%}
+		<ul>
+			{%- for path in page_paths -%}
+			{%- assign my_page = site.pages | where: "path", path | first -%}
+			{%- if my_page.title -%}
+			<li><a href="{{ my_page.url | relative_url }}">{{ my_page.title | escape }}</a></li>
+			{%- endif -%}
+			{%- endfor -%}
+		</ul>
+	</div>
+
+	{%- comment -%} Copyright {%- endcomment -%}
+	<p class="footer-license">&copy; {{ site.time | date: "%Y" }} {{ site.author | escape }} under the terms of the <a href="{{ '/LICENSE' | relative_url }}">MIT License</a>.</p>
+
+	{%- comment -%} Social icons {%- endcomment -%}
+	<div class="footer-social-inline">
+		{%- include social.html -%}
+	</div>
+
 </footer>

@@ -1,257 +1,171 @@
 /*
  * Homepage-specific styles (home layout)
- * 
- * Note: Breakpoints must be hardcoded in @media queries (CSS variables don't work there).
- * Values are synced with base.scss: mobile 600px, tablet 800px, desktop 1200px
+ * Ultra-simplified - CSS Grid, no transitions, no fancy stuff
  */
 
 // ============================================================================
-// HOMEPAGE HERO
-// Lives outside <main>
+// HERO
 // ============================================================================
 .hero {
-  width: 100%;
-  background: url('/assets/hero-image.webp') center center / cover no-repeat;
-  color: var(--hero-text-color);
-  
-  // Fill most of viewport below header
-  min-height: 400px;
-  height: calc(100vh - var(--header-height));
-  max-height: 800px;
-  
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  
-  // Blue color overlay
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--brand-blue);
-    mix-blend-mode: multiply;
-    pointer-events: none;
-  }
-  
-  @media screen and (min-width: 800px) {
-    min-height: 500px;
-  }
-  
-  @media screen and (min-width: 1200px) {
-    min-height: 600px;
-  }
+	width: 100%;
+	background: url('/assets/hero-image.webp') center center / cover no-repeat;
+	color: #fff;
+	min-height: 400px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+
+	// Blue overlay
+	&::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: var(--brand-blue);
+		mix-blend-mode: multiply;
+		pointer-events: none;
+	}
+
+	@media screen and (min-width: 800px) {
+		min-height: 500px;
+	}
+
+	@media screen and (min-width: 1200px) {
+		min-height: 600px;
+	}
 }
 
 .hero-content {
-  position: relative; // Keep content above the overlay
-  max-width: var(--content-max-width);
-  margin: 0 auto;
-  padding: var(--spacing-unit);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+	position: relative;
+	padding: var(--spacing-unit);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
 }
 
 .hero-logo {
-  max-width: 80%;
-  width: 600px;
-  height: auto;
-  margin-bottom: var(--spacing-unit);
+	max-width: 80%;
+	width: 600px;
 }
 
 .hero-tagline {
-  font-size: 1.5rem;
-  margin: 0;
+	font-size: 1.5rem;
 }
 
-// Mobile: smaller logo and text (below 600px from --breakpoint-mobile)
 @media screen and (max-width: 599px) {
-  .hero-logo {
-    width: 90%;
-  }
-  
-  .hero-tagline {
-    font-size: 1.2rem;
-  }
+	.hero-logo {
+		width: 90%;
+	}
+
+	.hero-tagline {
+		font-size: 1.2rem;
+	}
 }
 
-// Tablet: constrain tagline width (600px+ from --breakpoint-mobile)
 @media screen and (min-width: 600px) {
-  .hero-tagline {
-    max-width: 50vw;
-  }
+	.hero-tagline {
+		max-width: 50vw;
+	}
 }
 
 // ============================================================================
-// HOME CONTENT (normal wrapper area below hero)
+// POSTS GRID
 // ============================================================================
-.home-content {
-  padding-top: calc(var(--spacing-unit) * 2);
+.posts-grid {
+	display: grid;
+	gap: var(--spacing-unit);
+	padding: var(--spacing-unit);
+	background: var(--bg-light);
 
-  *:last-child {
-	margin-bottom: 0;
-  }
+	// Mobile: 1 column
+	grid-template-columns: 1fr;
+
+	// Tablet: 2 columns
+	@media screen and (min-width: 800px) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	// Desktop: brick pattern
+	@media screen and (min-width: 1200px) {
+		grid-template-columns: repeat(6, 1fr);
+
+		.post-card:nth-child(1) {
+			grid-column: span 4;
+			grid-row: span 2;
+		}
+
+		.post-card:nth-child(2) {
+			grid-column: span 2;
+		}
+
+		.post-card:nth-child(3) {
+			grid-column: span 2;
+		}
+
+		.post-card:nth-child(4) {
+			grid-column: span 3;
+		}
+
+		.post-card:nth-child(5) {
+			grid-column: span 3;
+		}
+	}
 }
 
-// ============================================================================
-// POSTS GRID SECTION
-// Full-width section with internal constraint for content
-// ============================================================================
-.posts-grid-section {
-  width: 100%;
-  background: var(--bg-light);
-  padding: calc(var(--spacing-unit) * 3) 0;
-  margin: 0;
-}
-
-.posts-grid-container {
-  max-width: var(--content-max-width);
-  margin: 0 auto;
-  padding: 0 var(--spacing-unit);
-}
-
-// ============================================================================
-// RECENT POSTS GRID
-// Progressive enhancement: 1 col mobile → 2 col tablet → brick pattern desktop
-// ============================================================================
-.recent-posts-grid {
-  display: grid;
-  gap: calc(var(--spacing-unit) * 1.5);
-  
-  // Mobile: 1 column (below 800px)
-  grid-template-columns: 1fr;
-  
-  // Tablet: 2 columns (800px+ from --breakpoint-tablet)
-  @media screen and (min-width: 800px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  // Desktop: brick pattern (1200px+ from --breakpoint-desktop)
-  @media screen and (min-width: 1200px) {
-    grid-template-columns: repeat(6, 1fr);
-    
-    // First post is hero: 2/3 width, double height
-    .post-card:nth-child(1) {
-      grid-column: span 4;
-      grid-row: span 2;
-    }
-    
-    // Posts 2-3: stack in right column
-    .post-card:nth-child(2) {
-      grid-column: span 2;
-    }
-    
-    .post-card:nth-child(3) {
-      grid-column: span 2;
-    }
-    
-    // Posts 4-5: split bottom row
-    .post-card:nth-child(4) {
-      grid-column: span 3;
-    }
-    
-    .post-card:nth-child(5) {
-      grid-column: span 3;
-    }
-  }
-}
-
-// ============================================================================
-// POST CARD
-// Fully clickable card with featured image as background cover
-// or solid brand-blue fallback
-// ============================================================================
 .post-card {
-  display: block;
-  position: relative;
-  min-height: 200px;
-  padding: calc(var(--spacing-unit) * 2);
-  background-color: var(--brand-blue);
-  background-size: cover;
-  background-position: center;
-  color: var(--hero-text-color);
-  text-decoration: none;
-  border-radius: 4px;
-  overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  
-  @media screen and (min-width: 800px) {
-    min-height: 250px;
-  }
-  
-  @media screen and (min-width: 1200px) {
-    min-height: 300px;
-    
-    // Hero card is taller
-    &:nth-child(1) {
-      min-height: 400px;
-    }
-  }
-  
-  // Dark overlay for text readability
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(43, 44, 87, 0.7);
-    z-index: 1;
-    transition: background 0.2s ease;
-  }
-  
-  // Image cards get darker overlay for better contrast
-  &.has-image::before {
-    background: rgba(0, 0, 0, 0.5);
-  }
-  
-  // Hover effect
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    
-    &::before {
-      background: rgba(43, 44, 87, 0.85);
-    }
-    
-    &.has-image::before {
-      background: rgba(0, 0, 0, 0.65);
-    }
-  }
-  
-  &:active {
-    transform: translateY(-2px);
-  }
+	display: block;
+	position: relative;
+	min-height: 200px;
+	padding: var(--spacing-unit);
+	background-color: var(--brand-blue);
+	background-size: cover;
+	background-position: center;
+	color: #fff;
+	text-decoration: none;
+
+	@media screen and (min-width: 800px) {
+		min-height: 250px;
+	}
+
+	@media screen and (min-width: 1200px) {
+		min-height: 300px;
+
+		&:nth-child(1) {
+			min-height: 400px;
+		}
+	}
+
+	// Dark overlay
+	&::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: rgba(43, 44, 87, 0.7);
+		z-index: 1;
+	}
+
+	&.has-image::before {
+		background: rgba(0, 0, 0, 0.5);
+	}
 }
 
 .post-card-content {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  text-align: center;
-  
-  h2 {
-    margin: 0;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--hero-text-color);
-    line-height: 1.3;
-    
-    @media screen and (min-width: 800px) {
-      font-size: 1.75rem;
-    }
-    
-    @media screen and (min-width: 1200px) {
-      font-size: 2rem;
-      
-      // Hero card gets bigger text
-      .post-card:nth-child(1) & {
-        font-size: 2.5rem;
-      }
-    }
-  }
+	position: relative;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	text-align: center;
+
+	h2 {
+		color: #fff;
+
+		@media screen and (min-width: 1200px) {
+			.post-card:nth-child(1) & {
+				font-size: 2.5rem;
+			}
+		}
+	}
 }

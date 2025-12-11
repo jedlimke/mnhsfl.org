@@ -1,52 +1,22 @@
 /*
  * Post page styles
- * 
- * Styles specific to individual blog post pages.
  */
 
-// ============================================================================
-// POST HERO (Featured Image)
-// ============================================================================
 .post-hero {
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-top: calc(-1 * var(--spacing-unit));
-  margin-bottom: calc(var(--spacing-unit) * 2);
-  min-height: 400px;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  
-  @media screen and (min-width: 800px) {
-    min-height: 500px;
-  }
+	width: 100vw;
+	margin-left: calc(-50vw + 50%);
+	min-height: 400px;
+	background-size: cover;
+	background-position: center;
+	position: relative;
+
+	@media screen and (min-width: 800px) {
+		min-height: 500px;
+	}
 }
 
 .post-hero-overlay {
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
-  width: 100%;
-  padding: calc(var(--spacing-unit) * 2) var(--spacing-unit);
-  
-  .post-header {
-    max-width: var(--content-max-width);
-    margin: 0 auto;
-  }
-  
-  .post-title {
-    color: white;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    margin-bottom: calc(var(--spacing-unit) / 2);
-  }
-  
-  .post-meta {
-    color: rgba(255, 255, 255, 0.9);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  }
-}
-
-// Standard post header (when no featured image)
-.post-header {
-  margin-bottom: calc(var(--spacing-unit) * 2);
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
 }

@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page
 title: Information for Competitors
 permalink: /competitors/
 ---

@@ -1,132 +1,89 @@
 /*
- * Site footer layout
- * 
- * Note: Breakpoints must be hardcoded in @media queries (CSS variables don't work there).
- * Values are synced with base.scss: mobile 600px, tablet 800px, desktop 1200px
+ * Site footer - CSS Grid layout
+ * Mobile: stacked (logo, desc, links, social, copyright)
+ * Tablet/Desktop (800px+): ABOUT/LINKS grid, then COPYSOCIAL row
  */
 
 .site-footer {
-    background: var(--bg-white);
-    padding: var(--spacing-unit) 0;
-    border-top: none;
+	background: var(--bg-white);
+	padding: var(--spacing-unit);
+	display: grid;
+	grid-template-areas:
+		"brand"
+		"links"
+		"social"
+		"copyright";
+	gap: var(--spacing-unit);
+
+	@media screen and (min-width: 800px) {
+		grid-template-columns: 2fr 1fr;
+		grid-template-areas:
+			"brand links"
+			"copyright social";
+	}
+
+	a:link,
+	a:visited {
+		color: var(--brand-blue);
+	}
 }
 
-.footer-content {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--spacing-unit);
-
-    a:link,
-    a:visited {
-        color: var(--brand-blue);
-    }
-}
-
-// Footer brand / logo area
+// Footer brand area
 .footer-brand {
-    .footer-logo {
-        display: inline-block;
-        text-decoration: none;
-        font-weight: bold;
+	grid-area: brand;
 
-        img {
-            height: 120px;
-            width: auto;
-        }
-    }
-
-    .footer-description {
-        margin-top: calc(var(--spacing-unit) / 2);
-        margin-bottom: calc(var(--spacing-unit) / 2);
-        font-size: 0.75rem;
-    }
+	.footer-logo img {
+		height: 120px;
+		width: auto;
+	}
 }
 
-// Footer nav
+// Footer navigation
 .footer-nav {
-    h3 {
-        margin: 0 0 calc(var(--spacing-unit) / 2) 0;
-    }
+	grid-area: links;
 
-    ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
+	@media screen and (min-width: 800px) {
+		justify-self: end;
+	}
 
-    li {
-        margin-bottom: calc(var(--spacing-unit) / 4);
-    }
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
 }
 
-// Footer bottom row with copyright and social icons
-.footer-bottom {
-    margin-top: var(--spacing-unit);
-    display: flex;
-    flex-direction: column-reverse; // Mobile: social above copyright
-    gap: calc(var(--spacing-unit) / 2);
-}
-
+// Copyright
 .footer-license {
-    font-size: 0.6rem;
-    margin: 0;
+	grid-area: copyright;
+	font-size: 0.6rem;
 }
 
-// Social icons - hide text, show only icons
+// Social icons
 .footer-social-inline {
-    .social-media-list {
-        display: flex;
-        gap: calc(var(--spacing-unit) / 2);
-        list-style: none;
-        margin: 0;
-        padding: 0;
+	grid-area: social;
 
-        li {
-            margin: 0;
-        }
+	@media screen and (min-width: 800px) {
+		justify-self: end;
+	}
 
-        li+li {
-            padding: 0;
-        }
+	.social-media-list {
+		display: flex;
+		gap: var(--spacing-unit);
+		list-style: none;
+		margin: 0;
+		padding: 0;
 
-        a {
-            display: flex;
-            align-items: center;
-
-            .username {
-                // Hide the text, keep only icons (accessible)
-                position: absolute;
-                width: 1px;
-                height: 1px;
-                padding: 0;
-                margin: -1px;
-                overflow: hidden;
-                clip: rect(0, 0, 0, 0);
-                white-space: nowrap;
-                border-width: 0;
-            }
-        }
-    }
-}
-
-// Desktop: two-column layout and expand wrapper (800px+)
-@media screen and (min-width: 800px) {
-    .site-footer .wrapper {
-        max-width: var(--content-max-width);
-    }
-
-    .footer-content {
-        grid-template-columns: 2fr 1fr;
-    }
-
-    .footer-links {
-        text-align: right;
-    }
-
-    // Copyright and social on same row, justified apart
-    .footer-bottom {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
+		.username {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			padding: 0;
+			margin: -1px;
+			overflow: hidden;
+			clip: rect(0, 0, 0, 0);
+			white-space: nowrap;
+			border-width: 0;
+		}
+	}
 }

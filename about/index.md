@@ -1,6 +1,6 @@
 ---
-layout: default
-title: About
+layout: page
+title: About the Minnesota High School Fencing League
 permalink: /about/
 ---
 

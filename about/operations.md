@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page
 title: Operations Guidelines
 permalink: /about/operations/
 ---

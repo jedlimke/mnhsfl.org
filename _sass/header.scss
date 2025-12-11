@@ -1,129 +1,99 @@
 /*
- * Site header layout
- * 
- * Mobile: Expands vertically with stacked links
- * Desktop: Horizontal layout with links in a row
- * 
- * Note: Breakpoints must be hardcoded in @media queries (CSS variables don't work there).
- * Values are synced with base.scss: mobile 600px, tablet 800px, desktop 1200px
+ * Site header - CSS Grid layout
+ * Mobile: logo left, hamburger right, collapsible menu below
+ * Tablet/Desktop (600px+): logo left, nav items right-aligned
  */
 
 .site-header {
-  background: var(--bg-white);
-  border-top: 5px solid var(--brand-blue);
-  border-bottom: 1px solid var(--border-color);
-  min-height: var(--header-height);
-}
+	background: var(--bg-white);
+	border-top: 5px solid var(--brand-blue);
+	border-bottom: 1px solid var(--border-color);
+	padding: var(--spacing-unit);
+	display: grid;
+	grid-template-columns: 1fr auto;
+	grid-template-areas:
+		"logo hamburger"
+		"nav nav";
 
-.site-header .wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap; // Allow wrapping on mobile
+	@media screen and (min-width: 600px) {
+		grid-template-columns: auto 1fr;
+		grid-template-areas: "logo nav";
+	}
 }
 
 // Logo
 .site-title {
-  display: block;
-  text-decoration: none;
-  
-  img {
-    display: block;
-    height: var(--header-logo-height);
-    width: auto;
-  }
+	grid-area: logo;
+	display: block;
+
+	img {
+		display: block;
+		height: 40px;
+		width: auto;
+	}
 }
 
-// Navigation
-.site-nav {
-  // Mobile-first: full width below logo
-  order: 3;
-  width: 100%;
-  margin-top: var(--spacing-unit);
-  
-  @media screen and (min-width: 600px) {
-    // Desktop: inline with logo
-    order: 2;
-    width: auto;
-    margin-top: 0;
-    margin-left: auto;
-  }
-}
-
-// Hamburger menu (mobile only)
+// Hamburger menu trigger (mobile only)
 .nav-trigger {
-  display: none; // Hide checkbox
+	display: none;
 }
 
 .menu-icon {
-  display: block;
-  cursor: pointer;
-  
-  @media screen and (min-width: 600px) {
-    display: none; // Hide hamburger on desktop
-  }
-  
-  svg {
-    width: 18px;
-    height: 15px;
-    fill: var(--brand-blue);
-  }
+	grid-area: hamburger;
+	display: block;
+	cursor: pointer;
+
+	@media screen and (min-width: 600px) {
+		display: none;
+	}
+
+	svg {
+		width: 18px;
+		height: 15px;
+		fill: var(--brand-blue);
+	}
 }
 
 label[for="nav-trigger"] {
-  display: block;
-  float: right;
-  width: 36px;
-  height: 36px;
-  z-index: 2;
-  cursor: pointer;
-  
-  @media screen and (min-width: 600px) {
-    display: none; // Hide label on desktop
-  }
+	grid-area: hamburger;
+	display: block;
+	cursor: pointer;
+
+	@media screen and (min-width: 600px) {
+		display: none;
+	}
 }
 
-// Navigation links container
+// Navigation container
+.site-nav {
+	grid-area: nav;
+
+	@media screen and (min-width: 600px) {
+		justify-self: end;
+	}
+}
+
+// Navigation links
 .trigger {
-  // Mobile: hidden by default, expand when checkbox checked
-  display: none;
-  width: 100%;
-  
-  @media screen and (min-width: 600px) {
-    // Desktop: always visible, horizontal
-    display: flex;
-    gap: calc(var(--spacing-unit) / 2);
-    width: auto;
-  }
-  
-  // Mobile: show when checkbox is checked
-  .nav-trigger:checked ~ & {
-    display: flex;
-    flex-direction: column;
-    padding-bottom: var(--spacing-unit);
-    gap: calc(var(--spacing-unit) / 2);
-  }
+	display: none;
+
+	@media screen and (min-width: 600px) {
+		display: flex;
+		gap: var(--spacing-unit);
+	}
+
+	.nav-trigger:checked ~ & {
+		display: grid;
+		gap: var(--spacing-unit);
+	}
 }
 
 .page-link {
-  display: block;
-  padding: calc(var(--spacing-unit) / 4) 0;
-  color: var(--brand-blue);
-  text-decoration: none;
-  font-weight: 500;
-  
-  &:hover {
-    text-decoration: underline;
-  }
-  
-  @media screen and (min-width: 600px) {
-    padding: 0;
-  }
-}
+	display: block;
+	color: var(--brand-blue);
+	text-decoration: none;
 
-// Desktop: Let the header wrapper expand to max width (1200px+)
-@media screen and (min-width: 1200px) {
-  .site-header .wrapper {
-    max-width: var(--content-max-width);
-  }
+	&:hover {
+		text-decoration: underline;
+	}
 }
