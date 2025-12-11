@@ -1,21 +1,14 @@
 ---
 ---
 /*
- * Minima 2.5.x Customization (GitHub Pages version)
+ * MNHSFL Website Styles
  * 
- * NOTE: Minima 3.0 has custom-variables.scss and custom-styles.scss hooks,
- * but GitHub Pages uses Minima 2.5.1 which does NOT have those.
- * 
- * For 2.5.x, the prescribed approach is:
- * 1. Import minima (which loads its defaults)
- * 2. Import custom overrides AFTER
- * 
- * See: https://github.com/jekyll/minima/blob/v2.5.1/README.md#customization
+ * Custom site - all styles defined in _sass/ directory.
  */
 
-@import "minima";
-@import "custom";
-@import "header";
-@import "footer";
-@import "home";
-@import "post";
+@import "base";      // CSS variables, reset, typography, global elements
+@import "header";    // Site header
+@import "footer";    // Site footer
+@import "home";      // Homepage
+@import "post";      // Blog posts
+

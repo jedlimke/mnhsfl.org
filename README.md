@@ -16,9 +16,9 @@ To preview the GitHub Pages site locally using Docker:
    ```
 3. Visit [http://localhost:4000](http://localhost:4000) in your browser.
 
-This uses Jekyll with the Minima v2.5.0 theme as a base.
+This is a static site built with Jekyll and deployed to GitHub Pages.
 
-For style changes, edit `_sass/custom.scss`. `assets/main.scss` is necessary for Jekyll & Minima to find our `custom.scss` file but nothing else.
+For style changes, edit `_sass/base.scss` (variables and global styles) or the specific component SCSS files. The `assets/main.scss` file imports all stylesheets.
 
 # *NOTES FOR JED:*
 
