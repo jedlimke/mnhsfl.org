@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "Referee Certification Clinic Announced"
 date: 2025-12-01
 categories: announcements

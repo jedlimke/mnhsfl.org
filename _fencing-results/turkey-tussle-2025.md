@@ -1,4 +1,9 @@
-# Turkey Tussle 2025
+---
+title: Turkey Tussle 2025 Results
+date: 2025-11-28
+author: Tournament Director
+excerpt: Results from the inaugural Turkey Tussle tournament
+---
 
 Welcome to the inaugural Turkey Tussle tournament! This test event showcases our automated results processing system.
 

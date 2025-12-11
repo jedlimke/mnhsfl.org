@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "Season Opener: January 8th"
 date: 2025-12-11
 categories: announcements

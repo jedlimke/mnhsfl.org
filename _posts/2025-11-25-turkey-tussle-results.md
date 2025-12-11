@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "Turkey Tussle Results Posted"
 date: 2025-11-25
 categories: results

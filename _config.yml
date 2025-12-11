@@ -46,6 +46,16 @@ header_pages:
   - news/index.md
   - policies/index.md
 
+# =============================================================================
+# Default frontmatter values
+# =============================================================================
+defaults:
+  - scope:
+      path: "_posts"
+      type: "posts"
+    values:
+      layout: "post"
+
 # Collections (for future use)
 collections:
   fencing-results:

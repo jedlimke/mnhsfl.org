@@ -49,18 +49,41 @@ class ResultsGenerator:
             csv_path: Path to the CSV file
             
         Returns:
-            String content of the .md file, or empty string if not found
+            Tuple of (frontmatter_dict, content_string)
+            - frontmatter_dict: parsed YAML frontmatter (empty dict if none)
+            - content_string: the markdown content after frontmatter
         """
         md_path = csv_path.with_suffix('.md')
         
-        if md_path.exists():
-            with open(md_path, 'r', encoding='utf-8') as f:
-                content = f.read().strip()
-                print(f"  ✓ Found intro content: {md_path.name}")
-                return content
-        else:
+        if not md_path.exists():
             print(f"  ℹ No intro content found (looked for {md_path.name})")
-            return ""
+            return {}, ""
+        
+        with open(md_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        # Check for YAML frontmatter
+        if content.startswith('---\n'):
+            # Split on frontmatter delimiter
+            parts = content.split('---\n', 2)
+            if len(parts) >= 3:
+                # Parse frontmatter (simple key: value parsing)
+                frontmatter = {}
+                frontmatter_lines = parts[1].strip().split('\n')
+                for line in frontmatter_lines:
+                    if ':' in line:
+                        key, value = line.split(':', 1)
+                        key = key.strip()
+                        value = value.strip().strip('"').strip("'")
+                        frontmatter[key] = value
+                
+                markdown_content = parts[2].strip()
+                print(f"  ✓ Found intro content with frontmatter: {md_path.name}")
+                return frontmatter, markdown_content
+        
+        # No frontmatter found, return raw content
+        print(f"  ✓ Found intro content: {md_path.name}")
+        return {}, content.strip()
     
     def csv_to_markdown_table(self, csv_path):
         """Convert CSV data to a Markdown table.
@@ -147,26 +170,40 @@ class ResultsGenerator:
         if file_size_mb > max_size_mb:
             raise ValueError(f"CSV file too large: {file_size_mb:.1f}MB (max: {max_size_mb}MB)")
         
-        # Read optional intro content
-        intro_content = self.read_intro_content(csv_path)
+        # Read optional intro content and its frontmatter
+        intro_frontmatter, intro_content = self.read_intro_content(csv_path)
         
         # Convert CSV to table
         table_content = self.csv_to_markdown_table(csv_path)
         
-        # Generate title
-        title = self.generate_title(filename_stem)
+        # Generate default title from filename
+        default_title = self.generate_title(filename_stem)
         
-        # Build Jekyll front matter
-        front_matter = [
-            "---",
-            "layout: post",
-            f"title: \"{title}\"",
-            "---",
-            ""
-        ]
+        # Build Jekyll front matter (merge user frontmatter with defaults)
+        # User-provided frontmatter takes precedence, except layout is always 'post'
+        frontmatter = {
+            'layout': 'post',  # ALWAYS post, never overridable
+            'title': intro_frontmatter.get('title', default_title),
+        }
+        
+        # Add any other frontmatter from intro file (date, image, excerpt, etc.)
+        for key, value in intro_frontmatter.items():
+            if key not in ['layout', 'title']:  # Don't override layout or title we already set
+                frontmatter[key] = value
+        
+        # Build frontmatter lines
+        front_matter_lines = ["---"]
+        for key, value in frontmatter.items():
+            # Quote strings that might have special chars
+            if ' ' in str(value) or ':' in str(value):
+                front_matter_lines.append(f"{key}: \"{value}\"")
+            else:
+                front_matter_lines.append(f"{key}: {value}")
+        front_matter_lines.append("---")
+        front_matter_lines.append("")
         
         # Combine all parts
-        full_content = "\n".join(front_matter)
+        full_content = "\n".join(front_matter_lines)
         
         if intro_content:
             full_content += intro_content + "\n\n"
@@ -180,10 +217,10 @@ class ResultsGenerator:
         
         print(f"  ✓ Generated: {output_path.name}")
         
-        # Track for index generation
+        # Track for index generation (use the final title)
         self.tournaments.append({
             'filename': filename_stem,
-            'title': title,
+            'title': frontmatter['title'],
             'output_path': output_path
         })
     

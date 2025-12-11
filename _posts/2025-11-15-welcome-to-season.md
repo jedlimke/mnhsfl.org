@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "Welcome to the 2025-26 Season"
 date: 2025-11-15
 categories: announcements
