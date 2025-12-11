@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="103.17634mm"
+   height="35.229229mm"
+   viewBox="0 0 103.17634 35.229229"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="mnhsfl-block.svg"
+   inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#999999"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.877186"
+     inkscape:cx="214.9494"
+     inkscape:cy="78.042346"
+     inkscape:window-width="1920"
+     inkscape:window-height="1147"
+     inkscape:window-x="1728"
+     inkscape:window-y="25"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-228.34655,-173.50839)">
+    <g
+       id="g14868">
+      <path
+         fill="#002d5d"
+         d="m 228.34655,178.35107 h 21.97614 l -7.65803,12.77194 7.65803,12.77193 h -21.97614 z"
+         id="path9682-0-1-1-9"
+         style="fill:#de9f43;fill-opacity:1;stroke-width:0.264584"
+         sodipodi:nodetypes="cccccc" />
+      <path
+         id="rect25585-5-4-9"
+         style="fill:#2b2c57;fill-opacity:1;stroke-width:17.6389;stroke-linecap:round;stroke-linejoin:round"
+         d="m 233.95145,174.72087 c -0.17067,0 -0.3082,0.13732 -0.30821,0.30799 v 5.22731 h 0.79595 v -5.22731 c 0,-0.17067 -0.13733,-0.30799 -0.30799,-0.30799 z m -0.30821,9.80803 v 19.92121 a 2.8041995,1.4074108 0 0 0 -2.40613,1.39165 2.8041995,1.4074108 0 0 0 0.0121,0.12402 h 2.39403 v 2.77184 h 0.79595 v -2.77184 h 2.39401 a 2.8041995,1.4074108 0 0 0 0.0121,-0.12402 2.8041995,1.4074108 0 0 0 -2.40612,-1.39297 V 184.5289 Z" />
+    </g>
+    <g
+       id="g14945"
+       style="fill:#2b2c57;fill-opacity:1">
+      <path
+         d="m 255.24602,190.59384 h 2.3368 l 1.47319,-9.78744 -0.18626,9.78744 h 2.15053 l -0.0169,-12.24277 h -3.50519 l -1.0668,8.75451 -1.08373,-8.75451 h -3.43746 v 12.24277 h 2.09973 l -0.16933,-9.71971 z"
+         id="path11827"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:Futura;-inkscape-font-specification:'Futura Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583" />
+      <path
+         d="m 265.77279,190.59384 h 2.50613 v -12.24277 h -2.09973 l 0.3048,8.02638 -2.30293,-8.02638 h -2.50613 l 0.0169,12.24277 h 2.0828 l -0.3048,-7.84011 z"
+         id="path11829"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:Futura;-inkscape-font-specification:'Futura Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583" />
+      <path
+         d="m 276.77096,190.59384 h 2.23519 v -12.24277 h -2.23519 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11833" />
+      <path
+         d="m 282.86245,190.74624 c 1.62559,0 2.59079,-0.81279 2.98026,-1.74413 v -4.47039 h -2.8956 v 2.1844 h 0.79587 v 1.30386 c -0.0677,0.254 -0.254,0.6096 -0.79587,0.6096 -0.66039,0 -1.03293,-0.37253 -1.03293,-4.11479 0,-3.77613 0.3048,-4.19946 0.94827,-4.19946 0.54186,0 0.8128,0.33867 0.8128,2.6924 h 2.15052 c 0,-3.6068 -0.71119,-4.82599 -2.99719,-4.82599 -2.01506,0 -3.23426,0.98213 -3.23426,6.29918 0,5.35093 1.23613,6.26532 3.26813,6.26532 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11835" />
+      <path
+         d="m 296.88269,190.76318 c 2.31986,0 3.06493,-1.3208 3.06493,-3.302 0,-4.36879 -3.75919,-3.82692 -3.75919,-6.21452 0,-0.57573 0.18626,-0.88053 0.66039,-0.88053 0.6096,0 0.8128,0.4064 0.8128,2.11666 h 2.1844 c 0.13546,-3.28506 -0.94827,-4.30105 -2.9464,-4.30105 -2.11666,0 -3.09879,1.10066 -3.11572,3.28506 -0.0508,3.99625 3.77612,3.47132 3.77612,6.29918 0,0.508 -0.23706,0.82974 -0.7112,0.82974 -0.52493,0 -0.82973,-0.4064 -0.82973,-2.286 h -2.21826 c -0.13547,3.26813 0.77893,4.45346 3.08186,4.45346 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11839" />
+      <path
+         d="m 303.45688,190.76318 c 2.11666,0 3.03106,-0.79587 3.03106,-4.60586 h -2.1844 c -0.0508,2.15053 -0.32173,2.48919 -0.8636,2.48919 -0.6096,0 -0.88053,-0.40639 -0.88053,-4.14865 0,-3.77613 0.28787,-4.18253 0.9144,-4.18253 0.52493,0 0.74506,0.3048 0.8128,2.76013 h 2.20133 c 0,-4.08093 -0.8636,-4.89372 -2.98026,-4.89372 -2.286,0 -3.26813,0.98213 -3.26813,6.31612 0,5.31705 0.9144,6.26532 3.21733,6.26532 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11841" />
+      <path
+         d="m 316.09096,190.76318 c 2.25213,0 3.26813,-0.94827 3.26813,-6.26532 0,-5.33399 -1.016,-6.31612 -3.26813,-6.31612 -2.26906,0 -3.28506,0.98213 -3.28506,6.31612 0,5.31705 1.016,6.26532 3.28506,6.26532 z m -0.96519,-6.26532 c 0,-3.7592 0.27093,-4.18253 0.96519,-4.18253 0.67734,0 0.9652,0.42333 0.9652,4.18253 0,3.74226 -0.28786,4.14865 -0.9652,4.14865 -0.69426,0 -0.96519,-0.40639 -0.96519,-4.14865 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11845" />
+      <path
+         d="m 323.06933,190.76318 c 2.25213,0 3.26813,-0.94827 3.26813,-6.26532 0,-5.33399 -1.016,-6.31612 -3.26813,-6.31612 -2.26906,0 -3.28506,0.98213 -3.28506,6.31612 0,5.31705 1.016,6.26532 3.28506,6.26532 z m -0.9652,-6.26532 c 0,-3.7592 0.27094,-4.18253 0.9652,-4.18253 0.67733,0 0.9652,0.42333 0.9652,4.18253 0,3.74226 -0.28787,4.14865 -0.9652,4.14865 -0.69426,0 -0.9652,-0.40639 -0.9652,-4.14865 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11847" />
+      <path
+         d="m 326.84924,190.59384 h 4.60586 v -2.18439 h -2.37066 v -10.05838 h -2.2352 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11849" />
+      <path
+         d="m 251.91016,203.92775 h 2.2352 v -4.82599 h 2.09973 v -2.21826 h -2.09973 v -3.03106 h 2.59079 v -2.16746 h -4.82599 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11851" />
+      <path
+         d="m 257.27795,203.92775 h 4.9276 v -2.16746 h -2.6924 v -2.91253 h 2.1336 v -2.18439 h -2.1336 v -2.81093 h 2.62466 v -2.16746 h -4.85986 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11853" />
+      <path
+         d="m 266.75965,203.92775 h 2.50613 v -12.24277 h -2.09973 l 0.3048,8.02638 -2.30293,-8.02638 h -2.50613 l 0.0169,12.24277 h 2.0828 l -0.3048,-7.84012 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11855" />
+      <path
+         d="m 273.09244,204.09709 c 2.11667,0 3.03106,-0.79587 3.03106,-4.60586 h -2.18439 c -0.0508,2.15053 -0.32173,2.48919 -0.8636,2.48919 -0.6096,0 -0.88053,-0.4064 -0.88053,-4.14866 0,-3.77612 0.28787,-4.18252 0.9144,-4.18252 0.52493,0 0.74506,0.3048 0.8128,2.76013 h 2.20132 c 0,-4.08093 -0.86359,-4.89373 -2.98026,-4.89373 -2.28599,0 -3.26812,0.98214 -3.26812,6.31612 0,5.31706 0.9144,6.26533 3.21732,6.26533 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11857" />
+      <path
+         d="m 276.71768,203.92775 h 2.23519 v -12.24277 h -2.23519 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11859" />
+      <path
+         d="m 283.8421,203.92775 h 2.50613 v -12.24277 h -2.09973 l 0.3048,8.02638 -2.30293,-8.02638 h -2.50613 l 0.0169,12.24277 h 2.0828 l -0.3048,-7.84012 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11861" />
+      <path
+         d="m 290.18441,204.08015 c 1.6256,0 2.5908,-0.8128 2.98026,-1.74413 v -4.47039 h -2.89559 v 2.1844 h 0.79586 v 1.30386 c -0.0677,0.254 -0.254,0.6096 -0.79586,0.6096 -0.6604,0 -1.03293,-0.37253 -1.03293,-4.11479 0,-3.77613 0.3048,-4.19946 0.94826,-4.19946 0.54187,0 0.8128,0.33867 0.8128,2.69239 h 2.15053 c 0,-3.60679 -0.7112,-4.82599 -2.99719,-4.82599 -2.01507,0 -3.23426,0.98214 -3.23426,6.29919 0,5.35092 1.23613,6.26532 3.26812,6.26532 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11863" />
+      <path
+         d="m 295.43691,203.92775 h 4.60585 v -2.18439 h -2.37066 v -10.05838 h -2.23519 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11865" />
+      <path
+         d="m 300.46576,203.92775 h 4.92759 v -2.16746 h -2.69239 v -2.91253 h 2.1336 v -2.18439 h -2.1336 v -2.81093 h 2.62466 v -2.16746 h -4.85986 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11867" />
+      <path
+         d="m 305.53706,203.92775 h 2.38759 l 0.3048,-2.13359 h 2.16746 l 0.3048,2.13359 h 2.37066 l -2.42146,-12.24277 h -2.65853 z m 2.99719,-4.31799 0.762,-5.33399 0.77893,5.33399 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11869" />
+      <path
+         d="m 316.06736,204.08015 c 1.6256,0 2.5908,-0.8128 2.98026,-1.74413 v -4.47039 h -2.89559 v 2.1844 h 0.79586 v 1.30386 c -0.0677,0.254 -0.254,0.6096 -0.79586,0.6096 -0.6604,0 -1.03293,-0.37253 -1.03293,-4.11479 0,-3.77613 0.3048,-4.19946 0.94826,-4.19946 0.54187,0 0.8128,0.33867 0.8128,2.69239 h 2.15053 c 0,-3.60679 -0.7112,-4.82599 -2.99719,-4.82599 -2.01507,0 -3.23426,0.98214 -3.23426,6.29919 0,5.35092 1.23613,6.26532 3.26812,6.26532 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11871" />
+      <path
+         d="m 322.78822,204.09709 c 2.65853,0 3.08186,-1.2192 3.08186,-4.60586 v -7.80625 h -2.25213 v 7.63691 c 0,2.26907 -0.16933,2.6416 -0.82973,2.6416 -0.6604,0 -0.82973,-0.37253 -0.82973,-2.6416 v -7.63691 h -2.25213 v 7.80625 c 0,3.38666 0.4572,4.60586 3.08186,4.60586 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11873" />
+      <path
+         d="m 326.5953,203.92775 h 4.92759 v -2.16746 h -2.69239 v -2.91253 h 2.1336 v -2.18439 h -2.1336 v -2.81093 h 2.62466 v -2.16746 h -4.85986 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11875" />
+      <path
+         d="m 273.77033,190.59384 h 2.25213 v -12.24277 h -2.25213 v 5.09692 h -0.81518 v -5.09692 h -2.2352 v 12.24277 h 2.2352 v -5.02919 h 0.81518 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11831-7-8"
+         sodipodi:nodetypes="ccccccccccccc" />
+      <path
+         d="m 289.4786,190.59384 h 2.25213 v -12.24277 h -2.25213 v 5.09692 h -0.81518 v -5.09692 h -2.2352 v 12.24277 h 2.2352 v -5.02919 h 0.81518 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11831-7-8-52"
+         sodipodi:nodetypes="ccccccccccccc" />
+      <path
+         d="m 309.99154,190.59384 h 2.25213 v -12.24277 h -2.25213 v 5.09692 h -0.81518 v -5.09692 h -2.2352 v 12.24277 h 2.2352 v -5.02919 h 0.81518 z"
+         style="font-weight:bold;font-size:16.9333px;line-height:0.73;font-family:'Tofino Cond';-inkscape-font-specification:'Tofino Cond Bold';letter-spacing:-0.79375px;fill:#2b2c57;fill-opacity:1;stroke-width:0.264583"
+         id="path11831-7-8-9"
+         sodipodi:nodetypes="ccccccccccccc" />
+    </g>
+  </g>
+</svg>

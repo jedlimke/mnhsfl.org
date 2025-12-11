@@ -1,0 +1,22 @@
+/*
+ * Post page styles
+ */
+
+.post-hero {
+	width: 100vw;
+	margin-left: calc(-50vw + 50%);
+	min-height: 400px;
+	background-size: cover;
+	background-position: center;
+	position: relative;
+
+	@media screen and (min-width: 800px) {
+		min-height: 500px;
+	}
+}
+
+.post-hero-overlay {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+}

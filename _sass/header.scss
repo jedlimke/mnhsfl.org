@@ -1,0 +1,99 @@
+/*
+ * Site header - CSS Grid layout
+ * Mobile: logo left, hamburger right, collapsible menu below
+ * Tablet/Desktop (600px+): logo left, nav items right-aligned
+ */
+
+.site-header {
+	background: var(--bg-white);
+	border-top: 5px solid var(--brand-blue);
+	border-bottom: 1px solid var(--border-color);
+	padding: var(--spacing-unit);
+	display: grid;
+	grid-template-columns: 1fr auto;
+	grid-template-areas:
+		"logo hamburger"
+		"nav nav";
+
+	@media screen and (min-width: 600px) {
+		grid-template-columns: auto 1fr;
+		grid-template-areas: "logo nav";
+	}
+}
+
+// Logo
+.site-title {
+	grid-area: logo;
+	display: block;
+
+	img {
+		display: block;
+		height: 40px;
+		width: auto;
+	}
+}
+
+// Hamburger menu trigger (mobile only)
+.nav-trigger {
+	display: none;
+}
+
+.menu-icon {
+	grid-area: hamburger;
+	display: block;
+	cursor: pointer;
+
+	@media screen and (min-width: 600px) {
+		display: none;
+	}
+
+	svg {
+		width: 18px;
+		height: 15px;
+		fill: var(--brand-blue);
+	}
+}
+
+label[for="nav-trigger"] {
+	grid-area: hamburger;
+	display: block;
+	cursor: pointer;
+
+	@media screen and (min-width: 600px) {
+		display: none;
+	}
+}
+
+// Navigation container
+.site-nav {
+	grid-area: nav;
+
+	@media screen and (min-width: 600px) {
+		justify-self: end;
+	}
+}
+
+// Navigation links
+.trigger {
+	display: none;
+
+	@media screen and (min-width: 600px) {
+		display: flex;
+		gap: var(--spacing-unit);
+	}
+
+	.nav-trigger:checked ~ & {
+		display: grid;
+		gap: var(--spacing-unit);
+	}
+}
+
+.page-link {
+	display: block;
+	color: var(--brand-blue);
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}

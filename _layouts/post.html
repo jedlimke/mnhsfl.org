@@ -1,0 +1,33 @@
+---
+layout: default
+---
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+	{%- comment -%} Hero image if present {%- endcomment -%}
+	{%- if page.image -%}
+	<div class="post-hero" style="background-image: url('{{ page.image }}')">
+		<div class="post-hero-overlay"></div>
+	</div>
+	{%- endif -%}
+
+	{%- comment -%} Post header {%- endcomment -%}
+	<header class="post-header content-wrapper">
+		<h1 class="post-title" itemprop="headline">{{ page.title | escape }}</h1>
+		<p class="post-meta">
+			<time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+				{{ page.date | date: "%b %-d, %Y" }}
+			</time>
+			{%- if page.author -%}
+			<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+				• <span itemprop="name">{{ page.author }}</span>
+			</span>
+			{%- endif -%}
+		</p>
+	</header>
+
+	{%- comment -%} Post content {%- endcomment -%}
+	<div class="post-content content-wrapper" itemprop="articleBody">
+		{{ content }}
+	</div>
+
+</article>

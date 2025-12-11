@@ -1,9 +1,14 @@
 title: The Minnesota State High School Fencing League
-description: Information regarding the MNHSFL.
+description: The Minnesota High School Fencing League (MNHSFL) is run by the Minnesota High School Fencing Coaches Association with the purpose of creating opportunities for fencers in grades 7-12 to compete throughout the state of Minnesota.
+
 author: MNHSFL
 
-# Minima theme (included with github-pages gem)
-theme: minima
+# Site logos
+logo: /assets/mnhsfl.svg
+footer_logo: /assets/mnhsfl-block.svg
+
+# No theme - custom layouts and styles
+# theme: minima
 
 # Sass configuration
 sass:
@@ -22,23 +27,40 @@ exclude:
   - Gemfile
   - Gemfile.lock
 
-# Minima theme configuration
-# See https://github.com/jekyll/minima
-minima:
-  skin: solarized  # Options: auto, classic, dark, solarized, solarized-dark
-  
-  # Social links in footer
-  social_links:
-    - { platform: facebook, user_url: "https://www.facebook.com/mnhsfl" }
-    - { platform: email, user_url: "mailto:info@mnhsfl.org" }
+# =============================================================================
+# Social Links
+# Used by custom social.html include
+# =============================================================================
+facebook_username: mnhsfl
+
+# Contact email (shows in footer)
+email: info@mnhsfl.org
 
 # Show excerpts on home page
 show_excerpts: true
 
 # Only show these pages in the top navigation
 header_pages:
-  - policies/index.md
+  - about/index.md
+  - competitors/index.md
+  - news/index.md
   - results/index.md
+  - policies/index.md
+
+# =============================================================================
+# Default frontmatter values
+# =============================================================================
+defaults:
+  - scope:
+      path: "_posts/results"
+      type: "posts"
+    values:
+      categories: "results"
+  - scope:
+      path: "_posts"
+      type: "posts"
+    values:
+      categories: "news"
 
 # Collections (for future use)
 collections:

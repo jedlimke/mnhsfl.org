@@ -3,34 +3,39 @@
 MNHSFL Fencing Results Generator
 
 This script processes tournament results from CSV files and generates
-Jekyll-compatible Markdown pages for the MNHSFL website.
+Jekyll blog posts for the MNHSFL website.
 
 Usage:
     python _scripts/generate_results.py
 
 The script will:
 1. Scan _fencing-results/ for CSV files
-2. For each CSV, create a corresponding results page in results/
+2. For each CSV, create a corresponding blog post in _posts/results/
 3. Optionally include intro content from matching .md files
-4. Generate an index page listing all tournaments
+4. Generate a results index page at results/index.md
+
+Note: The _posts/results/ subdirectory is gitignored since these posts
+are generated from source files in _fencing-results/. This keeps generated
+files out of version control while still making them available to Jekyll.
 """
 
 import csv
 from pathlib import Path
+from datetime import datetime
 
 class ResultsGenerator:
-    """Handles conversion of CSV tournament results to Jekyll pages."""
+    """Handles conversion of CSV tournament results to Jekyll blog posts."""
     
     def __init__(self):
         self.project_root = Path(__file__).parent.parent
         self.source_dir = self.project_root / "_fencing-results"
-        self.output_dir = self.project_root / "results"
-        self.tournaments = []
+        self.posts_dir = self.project_root / "_posts" / "results"
         
-    def ensure_output_dir(self):
-        """Create results directory if it doesn't exist."""
-        self.output_dir.mkdir(exist_ok=True)
-        print(f"✓ Output directory ready: {self.output_dir}")
+    def ensure_output_dirs(self):
+        """Create output directories if they don't exist."""
+        self.posts_dir.mkdir(parents=True, exist_ok=True)
+        print(f"✓ Output directory ready:")
+        print(f"  - Posts: {self.posts_dir}")
         
     def find_csv_files(self):
         """Find all CSV files in the source directory."""
@@ -49,18 +54,41 @@ class ResultsGenerator:
             csv_path: Path to the CSV file
             
         Returns:
-            String content of the .md file, or empty string if not found
+            Tuple of (frontmatter_dict, content_string)
+            - frontmatter_dict: parsed YAML frontmatter (empty dict if none)
+            - content_string: the markdown content after frontmatter
         """
         md_path = csv_path.with_suffix('.md')
         
-        if md_path.exists():
-            with open(md_path, 'r', encoding='utf-8') as f:
-                content = f.read().strip()
-                print(f"  ✓ Found intro content: {md_path.name}")
-                return content
-        else:
+        if not md_path.exists():
             print(f"  ℹ No intro content found (looked for {md_path.name})")
-            return ""
+            return {}, ""
+        
+        with open(md_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        # Check for YAML frontmatter
+        if content.startswith('---\n'):
+            # Split on frontmatter delimiter
+            parts = content.split('---\n', 2)
+            if len(parts) >= 3:
+                # Parse frontmatter (simple key: value parsing)
+                frontmatter = {}
+                frontmatter_lines = parts[1].strip().split('\n')
+                for line in frontmatter_lines:
+                    if ':' in line:
+                        key, value = line.split(':', 1)
+                        key = key.strip()
+                        value = value.strip().strip('"').strip("'")
+                        frontmatter[key] = value
+                
+                markdown_content = parts[2].strip()
+                print(f"  ✓ Found intro content with frontmatter: {md_path.name}")
+                return frontmatter, markdown_content
+        
+        # No frontmatter found, return raw content
+        print(f"  ✓ Found intro content: {md_path.name}")
+        return {}, content.strip()
     
     def csv_to_markdown_table(self, csv_path):
         """Convert CSV data to a Markdown table.
@@ -133,7 +161,7 @@ class ResultsGenerator:
         return filename.replace('-', ' ').title()
     
     def process_tournament(self, csv_path):
-        """Process a single tournament CSV and generate its results page.
+        """Process a single tournament CSV and generate its blog post.
         
         Args:
             csv_path: Path to the tournament CSV file
@@ -147,87 +175,83 @@ class ResultsGenerator:
         if file_size_mb > max_size_mb:
             raise ValueError(f"CSV file too large: {file_size_mb:.1f}MB (max: {max_size_mb}MB)")
         
-        # Read optional intro content
-        intro_content = self.read_intro_content(csv_path)
+        # Read optional intro content and its frontmatter
+        intro_frontmatter, intro_content = self.read_intro_content(csv_path)
+        
+        # Get or generate date
+        if 'date' in intro_frontmatter:
+            date_value = intro_frontmatter['date']
+            # Try parsing as datetime first (YYYY-MM-DD HH:MM:SS or ISO format)
+            try:
+                # Try full datetime with time
+                if ' ' in date_value or 'T' in date_value:
+                    # Keep the full datetime string as-is for Jekyll
+                    date_str = date_value
+                    # Extract just the date part for filename
+                    if ' ' in date_value:
+                        file_date_str = date_value.split(' ')[0]
+                    elif 'T' in date_value:
+                        file_date_str = date_value.split('T')[0]
+                    else:
+                        file_date_str = date_value
+                else:
+                    # Just a date, validate format
+                    datetime.strptime(date_value, '%Y-%m-%d')
+                    date_str = date_value
+                    file_date_str = date_value
+            except ValueError as e:
+                raise ValueError(f"Invalid date format in {csv_path.stem}.md. Use YYYY-MM-DD or YYYY-MM-DD HH:MM:SS format. Error: {e}")
+        else:
+            # No .md file or no date - use today
+            date_str = datetime.now().strftime('%Y-%m-%d')
+            file_date_str = date_str
+            print(f"  ℹ No date found, using today: {date_str}")
         
         # Convert CSV to table
         table_content = self.csv_to_markdown_table(csv_path)
         
-        # Generate title
-        title = self.generate_title(filename_stem)
+        # Generate default title from filename
+        default_title = self.generate_title(filename_stem)
         
-        # Build Jekyll front matter
-        front_matter = [
-            "---",
-            "layout: default",
-            f"title: \"{title}\"",
-            "---",
-            ""
-        ]
+        # Build Jekyll front matter (merge user frontmatter with defaults)
+        frontmatter = {
+            'layout': 'post',
+            'title': intro_frontmatter.get('title', default_title),
+            'date': date_str,
+        }
+        
+        # Add any other frontmatter from intro file (image, excerpt, author, etc.)
+        for key, value in intro_frontmatter.items():
+            if key not in ['layout', 'title', 'date']:
+                frontmatter[key] = value
+        
+        # Build frontmatter lines
+        front_matter_lines = ["---"]
+        for key, value in frontmatter.items():
+            # Quote strings that might have special chars
+            if ' ' in str(value) or ':' in str(value):
+                front_matter_lines.append(f"{key}: \"{value}\"")
+            else:
+                front_matter_lines.append(f"{key}: {value}")
+        front_matter_lines.append("---")
+        front_matter_lines.append("")
         
         # Combine all parts
-        full_content = "\n".join(front_matter)
+        full_content = "\n".join(front_matter_lines)
         
         if intro_content:
             full_content += intro_content + "\n\n"
         
-        full_content += "## Results\n\n"
         full_content += table_content
         
-        # Write output file
-        output_path = self.output_dir / f"{filename_stem}.md"
+        # Jekyll _posts naming convention: YYYY-MM-DD-slug.md (always just date, not time)
+        output_filename = f"{file_date_str}-{filename_stem}.md"
+        output_path = self.posts_dir / output_filename
+        
         with open(output_path, 'w', encoding='utf-8') as f:
             f.write(full_content)
         
         print(f"  ✓ Generated: {output_path.name}")
-        
-        # Track for index generation
-        self.tournaments.append({
-            'filename': filename_stem,
-            'title': title,
-            'output_path': output_path
-        })
-    
-    def generate_index(self):
-        """Generate an index page listing all tournaments."""
-        if not self.tournaments:
-            print("\nℹ No tournaments to index")
-            return
-        
-        print(f"\nGenerating index with {len(self.tournaments)} tournament(s)")
-        
-        # Sort tournaments by filename (reverse chronological if using YYYY format)
-        sorted_tournaments = sorted(
-            self.tournaments,
-            key=lambda x: x['filename'],
-            reverse=True
-        )
-        
-        # Build index content
-        front_matter = [
-            "---",
-            "layout: default",
-            "title: \"Tournament Results\"",
-            "---",
-            "",
-            "# Tournament Results",
-            "",
-            "Browse results from MNHSFL tournaments:",
-            ""
-        ]
-        
-        content = "\n".join(front_matter)
-        
-        # Add list of tournaments
-        for tournament in sorted_tournaments:
-            content += f"- [{tournament['title']}]({tournament['filename']})\n"
-        
-        # Write index file
-        index_path = self.output_dir / "index.md"
-        with open(index_path, 'w', encoding='utf-8') as f:
-            f.write(content)
-        
-        print(f"✓ Generated: {index_path.name}")
     
     def run(self):
         """Main execution flow."""
@@ -236,7 +260,14 @@ class ResultsGenerator:
         print("=" * 60)
         
         # Setup
-        self.ensure_output_dir()
+    def run(self):
+        """Main execution flow."""
+        print("=" * 60)
+        print("MNHSFL Fencing Results Generator")
+        print("=" * 60)
+        
+        # Setup
+        self.ensure_output_dirs()
         
         # Find and process all CSV files
         csv_files = self.find_csv_files()
@@ -253,11 +284,10 @@ class ResultsGenerator:
                 print(f"  ✗ Error processing {csv_path.name}: {e}")
                 raise  # Fail the build on error
         
-        # Generate index page
-        self.generate_index()
-        
         print("\n" + "=" * 60)
-        print(f"✓ Successfully generated {len(self.tournaments)} result page(s)")
+        print(f"✓ Successfully generated {len(csv_files)} result post(s)")
+        print("  Posts: _posts/results/ (gitignored)")
+        print("  Results appear on homepage and /news/ feed")
         print("=" * 60)
 
 

@@ -1,0 +1,171 @@
+/*
+ * Homepage-specific styles (home layout)
+ * Ultra-simplified - CSS Grid, no transitions, no fancy stuff
+ */
+
+// ============================================================================
+// HERO
+// ============================================================================
+.hero {
+	width: 100%;
+	background: url('/assets/hero-image.webp') center center / cover no-repeat;
+	color: #fff;
+	min-height: 400px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+
+	// Blue overlay
+	&::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: var(--brand-blue);
+		mix-blend-mode: multiply;
+		pointer-events: none;
+	}
+
+	@media screen and (min-width: 800px) {
+		min-height: 500px;
+	}
+
+	@media screen and (min-width: 1200px) {
+		min-height: 600px;
+	}
+}
+
+.hero-content {
+	position: relative;
+	padding: var(--spacing-unit);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.hero-logo {
+	max-width: 80%;
+	width: 600px;
+}
+
+.hero-tagline {
+	font-size: 1.5rem;
+}
+
+@media screen and (max-width: 599px) {
+	.hero-logo {
+		width: 90%;
+	}
+
+	.hero-tagline {
+		font-size: 1.2rem;
+	}
+}
+
+@media screen and (min-width: 600px) {
+	.hero-tagline {
+		max-width: 50vw;
+	}
+}
+
+// ============================================================================
+// POSTS GRID
+// ============================================================================
+.posts-grid {
+	display: grid;
+	gap: var(--spacing-unit);
+	padding: var(--spacing-unit);
+	background: var(--bg-light);
+
+	// Mobile: 1 column
+	grid-template-columns: 1fr;
+
+	// Tablet: 2 columns
+	@media screen and (min-width: 800px) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	// Desktop: brick pattern
+	@media screen and (min-width: 1200px) {
+		grid-template-columns: repeat(6, 1fr);
+
+		.post-card:nth-child(1) {
+			grid-column: span 4;
+			grid-row: span 2;
+		}
+
+		.post-card:nth-child(2) {
+			grid-column: span 2;
+		}
+
+		.post-card:nth-child(3) {
+			grid-column: span 2;
+		}
+
+		.post-card:nth-child(4) {
+			grid-column: span 3;
+		}
+
+		.post-card:nth-child(5) {
+			grid-column: span 3;
+		}
+	}
+}
+
+.post-card {
+	display: block;
+	position: relative;
+	min-height: 200px;
+	padding: var(--spacing-unit);
+	background-color: var(--brand-blue);
+	background-size: cover;
+	background-position: center;
+	color: #fff;
+	text-decoration: none;
+
+	@media screen and (min-width: 800px) {
+		min-height: 250px;
+	}
+
+	@media screen and (min-width: 1200px) {
+		min-height: 300px;
+
+		&:nth-child(1) {
+			min-height: 400px;
+		}
+	}
+
+	// Dark overlay
+	&::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: rgba(43, 44, 87, 0.7);
+		z-index: 1;
+	}
+
+	&.has-image::before {
+		background: rgba(0, 0, 0, 0.5);
+	}
+}
+
+.post-card-content {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	text-align: center;
+
+	h2 {
+		color: #fff;
+
+		@media screen and (min-width: 1200px) {
+			.post-card:nth-child(1) & {
+				font-size: 2.5rem;
+			}
+		}
+	}
+}

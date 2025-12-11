@@ -1,10 +1,10 @@
 ---
-layout: default
+layout: page
 title: Policies
 permalink: /policies/
 ---
 
 # Organizational Policies
 
-## Core Policies
-- [Conflict of Interest Policy](conflict_of_interest_policy.html)
+- [Code of Conduct for Coaches & Competitors](code-of-conduct.html)
+- [Conflict of Interest (COI) Policy](conflict_of_interest_policy.html)

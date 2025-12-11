@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+	{%- include head.html -%}
+
+	<body class="home">
+
+		{%- include header.html -%}
+
+		<main class="page-content" aria-label="Content">
+
+			<section class="hero">
+				<div class="hero-content">
+					<img src="{{ '/assets/mnhsfl-block-inverted.svg' | relative_url }}" alt="{{ site.title | escape }}" class="hero-logo">
+					<p class="hero-tagline">Supporting, fostering, and promoting competitive high school fencing in Minnesota through regulated competition, instruction, and outreach.</p>
+				</div>
+			</section>
+
+			{%- comment -%} POSTS GRID {%- endcomment -%}
+			{% if site.posts.size > 0 %}
+			<section class="posts-grid">
+				{% for post in site.posts limit:5 %}
+				<a href="{{ post.url | relative_url }}" class="post-card{% if post.image %} has-image{% endif %}"{% if post.image %} style="background-image: url('{{ post.image }}')"{% endif %}>
+					<div class="post-card-content">
+						<h2>{{ post.title }}</h2>
+					</div>
+				</a>
+				{% endfor %}
+			</section>
+			{% endif %}
+
+			{%- comment -%} HOME CONTENT {%- endcomment -%}
+			<div class="content-wrapper">
+				{{ content }}
+			</div>
+
+		</main>
+
+		{%- include footer.html -%}
+
+	</body>
+
+</html>

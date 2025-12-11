@@ -1,0 +1,146 @@
+/*
+ * Base styles for MNHSFL website
+ * Ultra-simplified - CSS Grid structure, variables, reset, basic typography only
+ */
+
+// ============================================================================
+// FONTS
+// ============================================================================
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
+
+// ============================================================================
+// CSS VARIABLES
+// ============================================================================
+:root {
+	// Spacing
+	--spacing-unit: 30px;
+
+	// Breakpoints (cannot be used in media queries - use hardcoded px values)
+	// Mobile: 600px, Tablet: 800px, Desktop: 1200px
+	--breakpoint-mobile: 600px;
+	--breakpoint-tablet: 800px;
+	--breakpoint-desktop: 1200px;
+
+	// Layout
+	--content-max-width: 1440px;
+	--reading-max-width: 800px;
+
+	// Brand colors
+	--brand-gold: #de9f43;
+	--brand-blue: #2b2c57;
+
+	// Background colors
+	--bg-light: #f0eade;
+	--bg-white: #FFF;
+
+	// Text colors
+	--text-color: #333;
+	--text-muted: #666;
+
+	// UI colors
+	--border-color: #00000022;
+
+	// Font stacks
+	--font-display: "Figtree", serif;
+	--font-body: "Figtree", sans-serif;
+}
+
+// ============================================================================
+// RESET
+// ============================================================================
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 16px;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: var(--font-body);
+	font-size: 20px;
+	color: var(--text-color);
+	background-color: var(--bg-light);
+	display: grid;
+	grid-template-areas:
+		"header"
+		"content"
+		"footer";
+	grid-template-rows: auto 1fr auto;
+	min-height: 100vh;
+}
+
+// ============================================================================
+// MAIN LAYOUT AREAS
+// ============================================================================
+.site-header {
+	grid-area: header;
+}
+
+.page-content {
+	grid-area: content;
+}
+
+.site-footer {
+	grid-area: footer;
+}
+
+// ============================================================================
+// CONTENT WRAPPER (reading width constraint)
+// ============================================================================
+.content-wrapper {
+	max-width: var(--reading-max-width);
+	margin: 0 auto;
+	padding: 0 var(--spacing-unit);
+}
+
+// ============================================================================
+// TYPOGRAPHY
+// ============================================================================
+h1, h2, h3, h4, h5, h6 {
+	font-family: var(--font-display);
+	font-weight: 700;
+	color: var(--brand-blue);
+}
+
+a {
+	color: var(--brand-gold);
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+// ============================================================================
+// BASIC ELEMENTS
+// ============================================================================
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	background: var(--bg-white);
+
+	th, td {
+		padding: 0.5rem;
+		text-align: left;
+		border-bottom: 1px solid var(--border-color);
+	}
+
+	th {
+		font-weight: 700;
+	}
+}
+
+.svg-icon {
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	fill: currentColor;
+}
