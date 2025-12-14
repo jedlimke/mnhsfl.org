@@ -70,15 +70,15 @@ body {
 // ============================================================================
 // MAIN LAYOUT AREAS
 // ============================================================================
-.site-header {
+.layout-area--header {
 	grid-area: header;
 }
 
-.page-content {
+.layout-area--content {
 	grid-area: content;
 }
 
-.site-footer {
+.layout-area--footer {
 	grid-area: footer;
 }
 

@@ -1,5 +1,5 @@
-<header class="site-header" role="banner">
-	
+<header class="layout-area--header" role="banner">
+
 	{%- comment -%}
 		site.pages is automatically populated by Jekyll with all standalone HTML and Markdown files in the project that are not posts, drafts, or special files (like those in _posts, _includes, _layouts, sass, etc.).
 
@@ -9,7 +9,7 @@
 	{%- assign default_paths = site.pages | map: "path" -%}
 	{%- assign page_paths = site.header_pages | default: default_paths -%}
 
-	<a class="site-title" rel="author" href="{{ "/" | relative_url }}">
+	<a class="layout-area--title" rel="author" href="{{ "/" | relative_url }}">
 		{%- if site.logo -%}
 		<img src="{{ site.logo | relative_url }}" alt="{{ site.title | escape }}">
 		{%- else -%}
@@ -18,7 +18,7 @@
 	</a>
 
 	{%- if page_paths -%}
-	<nav class="site-nav">
+	<nav class="layout-area--nav">
 		<input type="checkbox" id="nav-trigger" class="nav-trigger" />
 		<label for="nav-trigger">
 			<span class="menu-icon">

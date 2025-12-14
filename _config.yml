@@ -7,9 +7,6 @@ author: MNHSFL
 logo: /assets/mnhsfl.svg
 footer_logo: /assets/mnhsfl-block.svg
 
-# No theme - custom layouts and styles
-# theme: minima
-
 # Sass configuration
 sass:
   style: compressed

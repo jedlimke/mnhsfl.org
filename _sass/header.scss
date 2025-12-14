@@ -4,7 +4,7 @@
  * Tablet/Desktop (600px+): logo left, nav items right-aligned
  */
 
-.site-header {
+.layout-area--header {
 	background: var(--bg-white);
 	border-top: 5px solid var(--brand-blue);
 	border-bottom: 1px solid var(--border-color);
@@ -22,7 +22,7 @@
 }
 
 // Logo
-.site-title {
+.layout-area--title {
 	grid-area: logo;
 	display: block;
 
@@ -65,7 +65,7 @@ label[for="nav-trigger"] {
 }
 
 // Navigation container
-.site-nav {
+.layout-area--nav {
 	grid-area: nav;
 
 	@media screen and (min-width: 600px) {
