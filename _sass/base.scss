@@ -130,9 +130,14 @@ img {
 }
 
 table {
-	width: 100%;
+	width: calc(100vw - 2 * var(--spacing-unit));
 	border-collapse: collapse;
 	background: var(--bg-white);
+	transition: font-size 0.3s ease-in-out;
+
+	// Break out of content wrapper to full viewport width (minus spacing on both sides)
+	margin-left: calc(50% - 50vw + var(--spacing-unit));
+	margin-right: calc(50% - 50vw + var(--spacing-unit));
 
 	th, td {
 		padding: 0.5rem;
@@ -143,6 +148,19 @@ table {
 	th {
 		font-weight: 700;
 	}
+
+	// Add padding to first and last cells to maintain spacing
+	th:first-child, td:first-child {
+		padding-left: var(--spacing-unit);
+	}
+
+	th:last-child, td:last-child {
+		padding-right: var(--spacing-unit);
+	}
+
+    @media screen and (max-width: 1200px) {
+		font-size: 0.5rem;
+    }
 }
 
 .svg-icon {
@@ -156,7 +174,7 @@ table {
 // POST / PAGE
 // ============================================================================
 .post, .page {
-	padding: 0 0 var(--spacing-unit) 0;
+	padding: var(--spacing-unit) 0;
 	display: flex;
 	flex-direction: column;
 	gap: var(--spacing-unit);
@@ -170,6 +188,10 @@ table {
 	.post-meta {
 		font-size: 0.75rem;
 		color: var(--text-muted);
+	}
+
+	&.post--with-hero {
+		padding-top: 0;
 	}
 }
 
