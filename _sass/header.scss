@@ -5,96 +5,102 @@
  */
 
 .layout-area--header {
-	background: var(--bg-white);
-	border-top: 5px solid var(--brand-blue);
-	padding: var(--spacing-unit);
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	grid-template-areas:
-		"header-area--title  header-area--nav";
+    background: var(--bg-white);
+    border-top: 5px solid var(--brand-blue);
+    padding: var(--spacing-unit);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+        "header-area--title  header-area--hamburger"
+        "header-area--nav    header-area--nav";
+	align-items: center;
 
-	// @media screen and (min-width: 600px) {
-	// 	grid-template-columns: auto 1fr;
-	// 	grid-template-areas: "header-area--title  header-area--nav";
-	// }
+    @media screen and (min-width: 600px) {
+        grid-template-columns: auto 1fr;
+        grid-template-areas: "header-area--title  header-area--nav";
+    }
 }
 
 // Title / logo
 .header-area--title {
-	grid-area: header-area--title;
-	display: grid;
+    grid-area: header-area--title;
+    display: grid;
 
-	img {
-		display: block;
-		height: calc(3.5 * var(--spacing-unit));
-		width: auto;
-	}
-	background: pink;
-	border: solid thick magenta;
+    img {
+        display: block;
+        height: calc(1 * var(--spacing-unit));
+        width: auto;
+    }
 }
 
 // Hamburger menu trigger (mobile only)
 .hamburger {
-	grid-area: header-area--hamburger;
-	display: none;
+    grid-area: header-area--hamburger;
+    display: block;
+	opacity: 0;
+	position: absolute;
+	pointer-events: none;
+
+	@media screen and (min-width: 600px) {
+		display: none;
+	}
 }
 
-// .menu-icon {
-// 	grid-area: hamburger;
-// 	display: block;
-// 	cursor: pointer;
+// Hamburger icon label
+label[for="hamburger"] {
+	grid-area: header-area--hamburger;
+	display: block;
+	justify-self: end;
+	cursor: pointer;
 
-// 	@media screen and (min-width: 600px) {
-// 		display: none;
-// 	}
+	.menu-icon {
+		display: block;
+		width: 36px;
+		height: 36px;
+		padding: 10px;
 
-// 	svg {
-// 		width: 18px;
-// 		height: 15px;
-// 		fill: var(--brand-blue);
-// 	}
-// }
+		svg {
+			fill: var(--brand-blue);
+		}
+	}
 
-// label[for="nav-trigger"] {
-// 	grid-area: hamburger;
-// 	display: block;
-// 	cursor: pointer;
+	@media screen and (min-width: 600px) {
+		display: none;
+	}
+}
 
-// 	@media screen and (min-width: 600px) {
-// 		display: none;
-// 	}
-// }
 
-// // Navigation container
-// .header-area--nav {
-// 	grid-area: nav;
+// When hamburger is checked, show the menu
+.hamburger:checked ~ .header-area--nav .trigger {
+	display: flex;
+}
 
-// 	@media screen and (min-width: 600px) {
-// 		justify-self: end;
-// 	}
-// }
+// Navigation area
+.header-area--nav {
+    grid-area: header-area--nav;
 
-// // Navigation links
-// .trigger {
-// 	display: none;
+    // The actual menu
+    .trigger {
+        display: none;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: var(--spacing-unit);
+        padding-top: var(--spacing-unit);
 
-// 	@media screen and (min-width: 600px) {
-// 		display: flex;
-// 		gap: var(--spacing-unit);
-// 	}
+        @media screen and (min-width: 600px) {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            padding-top: 0;
+        }
+    }
 
-// 	.nav-trigger:checked ~ & {
-// 		display: grid;
-// 		gap: var(--spacing-unit);
-// 	}
-// }
+    .page-link {
+        text-decoration: none;
+        color: var(--text-color);
 
-// .page-link {
-// 	display: block;
-// 	color: var(--brand-blue);
-// 	text-decoration: none;
-
-// 	&:hover {
-// 		text-decoration: underline;
-// 	}
-// }
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

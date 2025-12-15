@@ -21,6 +21,17 @@ files out of version control while still making them available to Jekyll.
 import csv
 from pathlib import Path
 from datetime import datetime
+from dataclasses import dataclass
+
+
+@dataclass
+class TournamentData:
+    """All the data needed to process a tournament."""
+    rows: list[list[str]]
+    intro_frontmatter: dict[str, str]
+    intro_content: str
+    date_str: str
+    file_date: str
 
 
 class Logger:
@@ -53,24 +64,21 @@ class FrontmatterParser:
     def parse(self, content: str) -> tuple[dict[str, str], str]:
         if not content.startswith('---\n'):
             return {}, content.strip()
+        
         return self._parse_with_frontmatter(content)
     
     def _parse_with_frontmatter(self, content: str) -> tuple[dict[str, str], str]:
-        parts = content.split('---\n', 2)
-        if len(parts) < 3:
+        if len(parts := content.split('---\n', 2)) < 3:
             return {}, content.strip()
-        frontmatter = self._parse_frontmatter_lines(parts[1])
-        markdown_content = parts[2].strip()
-        return frontmatter, markdown_content
+        
+        return self._parse_frontmatter_lines(parts[1]), parts[2].strip()
     
     def _parse_frontmatter_lines(self, frontmatter_text: str) -> dict[str, str]:
-        frontmatter = {}
-        for line in frontmatter_text.strip().split('\n'):
-            if ':' not in line:
-                continue
-            key, value = line.split(':', 1)
-            frontmatter[key.strip()] = value.strip().strip('"').strip("'")
-        return frontmatter
+        return {
+            (parts := line.split(':', 1))[0].strip(): parts[1].strip().strip('"').strip("'")
+            for line in frontmatter_text.strip().split('\n')
+            if ':' in line
+        }
 
 
 class FrontmatterBuilder:
@@ -78,12 +86,14 @@ class FrontmatterBuilder:
     
     def build(self, user_data: dict[str, str], defaults: dict[str, str]) -> str:
         merged = self._merge_frontmatter(user_data, defaults)
+        
         return self._format_frontmatter(merged)
     
     def _merge_frontmatter(self, user_data: dict[str, str], defaults: dict[str, str]) -> dict[str, str]:
         result = defaults.copy()
         self._merge_custom_fields(user_data, result)
         self._merge_overridable_fields(user_data, result)
+        
         return result
     
     def _merge_custom_fields(self, user_data: dict[str, str], result: dict[str, str]):
@@ -101,11 +111,13 @@ class FrontmatterBuilder:
         for key, value in data.items():
             lines.append(self._format_frontmatter_line(key, value))
         lines.extend(["---", ""])
+        
         return "\n".join(lines)
     
     def _format_frontmatter_line(self, key: str, value: str) -> str:
         if ' ' in str(value) or ':' in str(value):
             return f"{key}: \"{value}\""
+        
         return f"{key}: {value}"
 
 
@@ -115,22 +127,27 @@ class DateExtractor:
     def extract(self, frontmatter: dict[str, str]) -> tuple[str, str]:
         if 'date' not in frontmatter:
             return self._use_today()
+        
         return self._parse_date(frontmatter['date'])
     
     def _use_today(self) -> tuple[str, str]:
         today = datetime.now().strftime('%Y-%m-%d')
+        
         return today, today
     
     def _parse_date(self, date_value: str) -> tuple[str, str]:
         if ' ' in date_value or 'T' in date_value:
             return self._parse_datetime(date_value)
+        
         self._validate_date_format(date_value)
+        
         return date_value, date_value
     
     def _parse_datetime(self, date_value: str) -> tuple[str, str]:
         separator = ' ' if ' ' in date_value else 'T'
         file_date = date_value.split(separator)[0]
         self._validate_date_format(file_date)
+        
         return date_value, file_date
     
     def _validate_date_format(self, date_str: str):
@@ -151,6 +168,7 @@ class CsvReader:
     
     def read(self, csv_path: Path) -> list[list[str]]:
         self._validate_file_size(csv_path)
+        
         return self._read_csv_rows(csv_path)
     
     def _validate_file_size(self, csv_path: Path):
@@ -185,6 +203,7 @@ class TableValidator:
     def validate(self, rows: list[list[str]], headers: list[str]) -> list[int]:
         if not rows:
             return []
+        
         return [i + 1 for i, row in enumerate(rows) if len(row) != len(headers)]
 
 
@@ -194,15 +213,19 @@ class TableFormatter:
     def format(self, rows: list[list[str]]) -> str:
         if not rows:
             return "*No data available*\n"
+        
         headers = self._clean_headers(rows[0])
         data_rows = rows[1:]
+        
         return self._build_table(headers, data_rows)
     
     def _clean_headers(self, headers: list[str]) -> list[str]:
         if not (headers and headers[0].startswith('\ufeff')):
             return headers
+        
         cleaned = headers.copy()
         cleaned[0] = cleaned[0].lstrip('\ufeff')
+        
         return cleaned
     
     def _build_table(self, headers: list[str], data_rows: list[list[str]]) -> str:
@@ -210,6 +233,7 @@ class TableFormatter:
         lines.append(self._format_header_row(headers))
         lines.append(self._format_separator_row(headers))
         lines.extend(self._format_data_rows(headers, data_rows))
+        
         return "\n".join(lines) + "\n"
     
     def _format_header_row(self, headers: list[str]) -> str:
@@ -223,6 +247,7 @@ class TableFormatter:
         for row in data_rows:
             padded = self._pad_row(row, len(headers))
             formatted.append("| " + " | ".join(padded) + " |")
+        
         return formatted
     
     def _pad_row(self, row: list[str], target_length: int) -> list[str]:
@@ -235,12 +260,15 @@ class IntroContentReader:
     def read(self, csv_path: Path) -> tuple[dict[str, str], str]:
         if not (md_path := csv_path.with_suffix('.md')).exists():
             return {}, ""
+        
         return self._read_md_file(md_path)
     
     def _read_md_file(self, md_path: Path) -> tuple[dict[str, str], str]:
         with open(md_path, 'r', encoding='utf-8') as f:
             content = f.read()
+        
         parser = FrontmatterParser()
+        
         return parser.parse(content)
 
 
@@ -265,6 +293,7 @@ class PostContentBuilder:
     def build(self, frontmatter: str, intro: str, table: str) -> str:
         if not intro:
             return frontmatter + table
+        
         return frontmatter + intro + "\n\n" + table
 
 
@@ -314,36 +343,60 @@ class ResultsGenerator:
     def _find_csv_files(self) -> list[Path]:
         if not self.source_dir.exists():
             return []
+        
         csv_files = list(self.source_dir.glob("*.csv"))
         self.logger.success(f"Found {len(csv_files)} CSV file(s)")
+        
         return csv_files
     
     def _process_all_tournaments(self, csv_files: list[Path]):
-        errors = []
-        for csv_path in csv_files:
-            try:
-                self._process_tournament(csv_path)
-            except ValueError as e:
-                self._log_validation_error(csv_path, e)
-                errors.append((csv_path.name, str(e)))
-            except Exception as e:
-                self._log_unexpected_error(csv_path, e)
-                errors.append((csv_path.name, str(e)))
-        
-        if errors:
+        if errors := self._collect_tournament_errors(csv_files):
             self._print_error_summary(errors)
             raise SystemExit(1)
     
+    def _collect_tournament_errors(self, csv_files: list[Path]) -> list[tuple[str, str]]:
+        return [error for csv_path in csv_files 
+                if (error := self._try_process_tournament(csv_path))]
+    
+    def _try_process_tournament(self, csv_path: Path) -> tuple[str, str] | None:
+        try:
+            self._process_tournament(csv_path)
+            return None
+        except (ValueError, Exception) as e:
+            self._log_error(csv_path, e)
+            return (csv_path.name, str(e))
+    
+    def _log_error(self, csv_path: Path, error: Exception):
+        if isinstance(error, ValueError):
+            self._log_validation_error(csv_path, error)
+        else:
+            self._log_unexpected_error(csv_path, error)
+    
     def _process_tournament(self, csv_path: Path):
         self.logger.processing(csv_path.name)
+        
+        data = self._read_tournament_data(csv_path)
+        
+        self._log_intro_status(data.intro_frontmatter, data.intro_content, csv_path)
+        self._log_date_info(data.intro_frontmatter, data.date_str)
+        
+        output_path = self._build_and_write_post(csv_path, data)
+        self.logger.success(f"Generated: {output_path.name}")
+    
+    def _read_tournament_data(self, csv_path: Path) -> TournamentData:
         rows = self.csv_reader.read(csv_path)
         intro_fm, intro_content = self.intro_reader.read(csv_path)
         date_str, file_date = self.date_extractor.extract(intro_fm)
-        self._log_intro_status(intro_fm, intro_content, csv_path)
-        self._log_date_info(intro_fm, date_str)
-        post_content = self._build_post_content(csv_path, rows, intro_fm, intro_content, date_str)
-        output_path = self._write_post(csv_path, post_content, file_date)
-        self.logger.success(f"Generated: {output_path.name}")
+        
+        return TournamentData(rows, intro_fm, intro_content, date_str, file_date)
+    
+    def _build_and_write_post(self, csv_path: Path, data: TournamentData) -> Path:
+        post_content = self._build_post_content(
+            csv_path, data.rows, data.intro_frontmatter, 
+            data.intro_content, data.date_str
+        )
+        
+        return self._write_post(csv_path, post_content, data.file_date)
     
     def _log_intro_status(self, intro_fm: dict, intro_content: str, csv_path: Path):
         if not intro_content and not intro_fm:
@@ -376,6 +429,7 @@ class ResultsGenerator:
                            intro_fm: dict[str, str], intro_content: str, date_str: str) -> str:
         table = self._generate_table(rows, csv_path)
         frontmatter = self._build_frontmatter(csv_path, intro_fm, date_str)
+        
         return self.content_builder.build(frontmatter, intro_content, table)
     
     def _log_date_info(self, intro_fm: dict, date_str: str):
@@ -385,11 +439,13 @@ class ResultsGenerator:
     def _generate_table(self, rows: list[list[str]], csv_path: Path) -> str:
         if not rows:
             return "*No data available*\n"
+        
         headers = rows[0]
         data_rows = rows[1:]
         self._validate_table_structure(data_rows, headers, csv_path)
         table = self.table_formatter.format(rows)
         self.logger.success(f"Generated table with {len(data_rows)} data row(s)")
+        
         return table
     
     def _validate_table_structure(self, data_rows: list[list[str]], 
@@ -409,12 +465,14 @@ class ResultsGenerator:
             'title': intro_fm.get('title', default_title),
             'date': date_str,
         }
+        
         return self.frontmatter_builder.build(intro_fm, defaults)
     
     def _write_post(self, csv_path: Path, content: str, file_date: str) -> Path:
         filename = self.filename_generator.generate(file_date, csv_path.stem)
         output_path = self.posts_dir / filename
         self.post_writer.write(output_path, content)
+        
         return output_path
     
     def _print_summary(self, count: int):
