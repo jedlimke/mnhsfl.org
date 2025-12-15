@@ -337,8 +337,17 @@ class ResultsGenerator:
         self._print_summary(len(csv_files))
     
     def _ensure_output_dirs(self):
+        self._clean_output_dir()
         self.posts_dir.mkdir(parents=True, exist_ok=True)
         self.logger.success(f"Output directory ready: {self.posts_dir}")
+    
+    def _clean_output_dir(self):
+        """Remove all existing generated posts before regenerating."""
+        if self.posts_dir.exists():
+            for file in self.posts_dir.glob("*.md"):
+                file.unlink()
+                self.logger.info(f"Removed old file: {file.name}")
+
     
     def _find_csv_files(self) -> list[Path]:
         if not self.source_dir.exists():

@@ -23,10 +23,12 @@
 	// Brand colors
 	--brand-gold: #de9f43;
 	--brand-blue: #2b2c57;
+	--brand-white: #FFFFFF;
+	--brand-cream: #f0eade;
 
 	// Background colors
-	--bg-light: #f0eade;
-	--bg-white: #FFF;
+	--bg-light: var(--brand-cream);
+	--bg-white: var(--brand-white);
 
 	// Text colors
 	--text-color: #333;
@@ -46,18 +48,15 @@
 // ============================================================================
 *, *::before, *::after {
 	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
 }
 
 html {
-	font-size: 16px;
+	font-size: 20px;
 }
 
 body {
-	margin: 0;
-	padding: 0;
-	font-family: var(--font-body);
-	font-size: 20px;
-	color: var(--text-color);
 	background-color: var(--bg-light);
 	display: grid;
 	grid-template-areas:
@@ -77,6 +76,9 @@ body {
 
 .layout-area--content {
 	grid-area: layout-area--content;
+
+	display: grid;
+	gap: var(--spacing-unit);
 }
 
 .layout-area--footer {
@@ -88,6 +90,7 @@ body {
 // ============================================================================
 .content-wrapper {
 	max-width: var(--reading-max-width);
+	width: 100%;
 	margin: 0 auto;
 	padding: 0 var(--spacing-unit);
 }
@@ -99,6 +102,14 @@ h1, h2, h3, h4, h5, h6 {
 	font-family: var(--font-headers);
 	font-weight: 700;
 	color: var(--brand-gold);
+	line-height: 1;
+}
+
+body {
+	font-family: var(--font-body);
+	font-size: 1rem;
+	color: var(--text-color);
+	line-height: 1.6;
 }
 
 a {
@@ -139,4 +150,35 @@ table {
 	height: 16px;
 	display: inline-block;
 	fill: currentColor;
+}
+
+// ============================================================================
+// POST / PAGE
+// ============================================================================
+.post, .page {
+	padding: 0 0 var(--spacing-unit) 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-unit);
+
+	header, .post-content {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--spacing-unit) / 3);
+	}
+
+	.post-meta {
+		font-size: 0.75rem;
+		color: var(--text-muted);
+	}
+}
+
+.post-summary {
+	display: flex;
+	flex-direction: column;
+	gap: calc(var(--spacing-unit) / 3);
+}
+
+.page {
+	padding: var(--spacing-unit);
 }

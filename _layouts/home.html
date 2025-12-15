@@ -16,6 +16,11 @@
 				</div>
 			</section>
 
+			{%- comment -%} HOME CONTENT {%- endcomment -%}
+			<div class="content-wrapper">
+				{{ content }}
+			</div>
+
 			{%- comment -%} POSTS GRID {%- endcomment -%}
 			{% if site.posts.size > 0 %}
 			<section class="posts-grid">
@@ -28,11 +33,6 @@
 				{% endfor %}
 			</section>
 			{% endif %}
-
-			{%- comment -%} HOME CONTENT {%- endcomment -%}
-			<div class="content-wrapper">
-				{{ content }}
-			</div>
 
 		</main>
 

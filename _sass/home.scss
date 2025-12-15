@@ -1,14 +1,9 @@
-/*
- * Homepage-specific styles (home layout)
- * Ultra-simplified - CSS Grid, no transitions, no fancy stuff
- */
-
 // ============================================================================
 // HERO
 // ============================================================================
 .hero {
 	width: 100%;
-	background: url('/assets/hero-image.webp') center center / cover no-repeat;
+	background: url('../assets/hero-image.webp') center center / cover no-repeat;
 	color: #fff;
 	min-height: 400px;
 	display: flex;
@@ -75,8 +70,13 @@
 .posts-grid {
 	display: grid;
 	gap: var(--spacing-unit);
-	padding: var(--spacing-unit);
 	background: var(--bg-light);
+
+	padding: 0 var(--spacing-unit);
+
+	&:last-child {
+		padding-bottom: var(--spacing-unit);
+	}
 
 	// Mobile: 1 column
 	grid-template-columns: 1fr;
@@ -84,6 +84,10 @@
 	// Tablet: 2 columns
 	@media screen and (min-width: 800px) {
 		grid-template-columns: repeat(2, 1fr);
+
+		.post-card:nth-child(1) {
+			grid-column: span 2;
+		}
 	}
 
 	// Desktop: brick pattern
