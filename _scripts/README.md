@@ -8,7 +8,7 @@ This system automates the conversion of tournament fencing results from CSV file
 **No Python installation needed!** Run from project root:
 
 ```bash
-_tests/run-tests.sh
+docker build -f _tests/Dockerfile.test -t mnhsfl-test . && docker run --rm mnhsfl-test
 ```
 
 This ensures the generator works correctly in a clean environment.
@@ -28,6 +28,8 @@ pip install pytest
 python _scripts/generate_results.py
 
 # Run tests
+pytest _tests/test_generate_results.py -v
+```
 pytest _tests/test_generate_results.py -v
 ```
 
@@ -104,7 +106,7 @@ Workflow triggers:
 - Pushing to `master` branch
 - Manual workflow dispatch
 
-See `.github/workflows/jekyll-gh-pages.yml` (integrated test + build + deploy)
+See `.github/workflows/cicd.yml` (integrated test + build + deploy)
 
 ## Architecture
 

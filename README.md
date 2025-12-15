@@ -1,63 +1,251 @@
 # Minnesota High School Fencing League (MNHSFL) – Website Repository
 
-Minnesota High School Fencing League (MNHSFL) website repo.
+This is the official website for the Minnesota High School Fencing League. It's a static site built with Jekyll and automatically deployed to GitHub Pages.
 
-This is a static site built with Jekyll and deployed to GitHub Pages. During the deployment, the site <insert the magic that happens here at a high level--what they care about is the fact that fencing results get added as posts, that they themselves can create posts by putting them in _posts, etc.>
+## What Happens During Deployment
 
-<list prerequsites and where to get them (they need git, they need docker, they should get vscode IMO)>
+When you push changes to the `master` branch:
 
-<Detail how to create a new post and the naming convention thereof (and frontmatter needs for the date (datetime is allowed, show format simply but accurately)).>
+1. **Tests Run** - All fencing results generator tests execute to ensure code quality
+2. **Results Generated** - CSV files from `_fencing-results/` are converted into blog posts
+3. **Site Built** - Jekyll compiles everything into a static website
+4. **Deployed** - The site goes live at GitHub Pages automatically
 
-<Detail what's needed for a fencing result and how it can be done with examples (with and without a md, where to put them, etc.)>
+You can:
+- Add tournament results by uploading CSV files (with optional markdown frontmatter)
+- Create news posts by adding markdown files to `_posts/`
+- Update pages by editing content in the repository
 
-<Now Detail the basics of version control with git, ettiquette, etc. Throw in tidbits on branches, PRs, etc. and link them where they can learn more. (perhaps this: https://github.blog/developer-skills/github/beginners-guide-to-github-creating-a-pull-request/) Relate this to what they're doing.>
+Everything is automated - just commit and push!
 
-## Viewing the site locally
+## Prerequisites
+
+You'll need these tools installed:
+
+- **Git** - Version control ([Download](https://git-scm.com/downloads))
+- **Docker** - For local testing and preview ([Download](https://www.docker.com/products/docker-desktop/))
+- **VS Code** - Recommended editor ([Download](https://code.visualstudio.com/))
+
+That's it! No Python, Ruby, or Jekyll installation needed.
+
+## Creating News Posts
+
+Posts go in the `_posts/` directory and must follow this naming convention:
+
+```
+YYYY-MM-DD-post-title.md
+```
+
+### Basic Post Template
+
+```markdown
+---
+layout: post
+title: "Your Post Title"
+date: 2025-12-14
+excerpt: "Brief description that appears in listings"
+---
+
+Your post content goes here in Markdown format.
+```
+
+### Date/Time Format
+
+You can use just a date or include time:
+
+```yaml
+date: 2025-12-14                    # Just date
+date: 2025-12-14 14:30:00          # Date and time
+date: "2025-12-14 14:30:00 -0600"  # With timezone (quote it!)
+```
+
+### Example
+
+Create `_posts/2025-12-14-season-opener.md`:
+
+```markdown
+---
+layout: post
+title: "Season Opener This Saturday"
+date: 2025-12-14
+excerpt: "Join us for the first tournament of the season"
+---
+
+The MNHSFL season kicks off this Saturday at 9:00 AM!
+
+Location: Anderson High School
+Registration: 8:30 AM
+```
+
+## Adding Fencing Results
+
+Results live in `_fencing-results/` and consist of:
+- **CSV file** (required) - The tournament data
+- **Markdown file** (optional) - Custom frontmatter and intro text
+
+### Naming Convention
+
+Both files must have the same base name:
+
+```
+_fencing-results/
+  tournament-name-2025.csv
+  tournament-name-2025.md    (optional)
+```
+
+### CSV Only (Simplest)
+
+Just add a CSV file with your results:
+
+**`_fencing-results/winter-classic-2025.csv`:**
+```csv
+Fencer,Wins,Losses,Points
+Smith Jane,5,1,850
+Doe John,4,2,720
+```
+
+The system will auto-generate a post with default frontmatter.
+
+### CSV + Markdown (Custom Frontmatter)
+
+Add a matching `.md` file to customize the post:
+
+**`_fencing-results/winter-classic-2025.md`:**
+```markdown
+---
+title: "Winter Classic 2025"
+date: 2025-12-20
+excerpt: "Championship results from the Winter Classic"
+author: "Tournament Director"
+---
+```
+
+### CSV + Markdown (With Intro Text)
+
+Include content after the frontmatter to add an introduction:
+
+**`_fencing-results/winter-classic-2025.md`:**
+```markdown
+---
+title: "Winter Classic 2025"
+date: "2025-12-20 14:30:00"
+excerpt: "Championship results from the Winter Classic"
+---
+
+The Winter Classic featured 24 fencers competing in épée.
+Congratulations to all participants!
+```
+
+The intro appears before the results table in the generated post.
+
+## Git Workflow & Version Control
+
+### Basic Workflow
+
+1. **Make your changes** (add posts, update results, etc.)
+2. **Stage changes**: `git add .`
+3. **Commit**: `git commit -m "Add winter tournament results"`
+4. **Push**: `git push origin master`
+
+### Working with Branches
+
+For larger changes, use branches:
+
+```bash
+# Create a new branch
+git checkout -b my-feature-branch
+
+# Make your changes, then commit
+git add .
+git commit -m "Description of changes"
+
+# Push your branch
+git push origin my-feature-branch
+```
+
+Then create a **Pull Request** on GitHub to merge your changes.
+
+### Pull Request Etiquette
+
+- Write clear descriptions of what changed
+- Keep commits focused on one thing
+- Test locally before creating the PR
+- Review the changes before requesting merge
+
+**Learn more**: [GitHub's Pull Request Guide](https://github.blog/developer-skills/github/beginners-guide-to-github-creating-a-pull-request/)
+
+### Why Use Branches?
+
+- Test major changes without affecting the live site
+- Get feedback before deploying
+- Keep `master` stable and production-ready
+
+## Viewing the Site Locally
 
 To preview the GitHub Pages site locally using Docker:
 
-1. Build the Docker image:
+1. **Build the Docker image:**
    ```sh
    docker-compose build
    ```
-2. Start the Jekyll server:
+
+2. **Start the Jekyll server:**
    ```sh
    docker-compose up
    ```
-3. Visit [http://localhost:4000](http://localhost:4000) in your browser.
 
-## Development Notes
+3. **Visit in your browser:**
+   ```
+   http://localhost:4000
+   ```
 
-### CI/CD
+Press `Ctrl+C` to stop the server.
 
-Tests run automatically on GitHub Actions as part of the deployment workflow:
-- **Test job** runs first with pytest validation
-- **Build job** only runs if tests pass
-- **Deploy job** only runs if build succeeds
+## Engineering Notes
 
-This ensures broken code never gets deployed to production.
+### CI/CD Pipeline
 
-Workflow triggers:
-- On push to `master`
-- Manual workflow dispatch
+![CI/CD Pipeline Sequence Diagram](assets/cicd-sequence.png)
 
-See `.github/workflows/jekyll-gh-pages.yml` (integrated test + build + deploy)
-- Manual trigger available
+**Pipeline guarantees:**
+- Tests must pass before build runs
+- Build must succeed before deploy runs  
+- Broken code never reaches production
 
-See `.github/workflows/test-results-generator.yml`
+**Triggers:**
+- Automatic on push to `master`
+- Manual via GitHub Actions tab
 
-#### Fencing Results Converter while developing
+**Workflow file:** `.github/workflows/cicd.yml`
 
+### Testing the Results Generator
+
+Run the full test suite in an isolated Docker environment.
+
+**One command (Mac/Linux/Windows):**
 ```sh
-_tests/<we should have a script to do this that also uses that python dockerfile or something very similar just to make it so we again don't need python to convert csvs and md's we're actually using for the real site while updating it locally>
+docker build -f _tests/Dockerfile.test -t mnhsfl-test . && docker run --rm mnhsfl-test
 ```
 
-#### Testing the Fencing Results Converter script
+This runs all 12 integration tests to ensure the generator works correctly.
 
+### Generating Results Locally (While Developing)
+
+Convert CSV files to posts locally without Python installed.
+
+**One command (Mac/Linux):**
 ```sh
-_tests/run-tests.sh
+docker build -f _tests/Dockerfile.generate -t mnhsfl-generate . && docker run --rm -v "${PWD}/_posts:/app/_posts" mnhsfl-generate
 ```
 
-#### <other stuff I'm forgetting>
+**For Windows PowerShell:**
+```powershell
+docker build -f _tests/Dockerfile.generate -t mnhsfl-generate . ; docker run --rm -v "${PWD}/_posts:/app/_posts" mnhsfl-generate
+```
 
-<Probably a nice mermaid syntax flowchart of what happens when the site gets pushed up to `master`>
+**For Windows Command Prompt:**
+```cmd
+docker build -f _tests/Dockerfile.generate -t mnhsfl-generate . && docker run --rm -v "%cd%/_posts:/app/_posts" mnhsfl-generate
+```
+
+The `-v` flag mounts your local `_posts/` directory so generated files appear on your machine!
