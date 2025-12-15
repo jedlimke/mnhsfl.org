@@ -1,0 +1,14 @@
+# Dockerfile for generating fencing results posts
+# Usage: docker build -f _tests/Dockerfile.generate -t mnhsfl-generate . && docker run --rm -v "${PWD}/_posts:/app/_posts" mnhsfl-generate
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Copy only what's needed for generation
+COPY _scripts/ ./_scripts/
+COPY _fencing-results/ ./_fencing-results/
+COPY _posts/ ./_posts/
+
+# Run the generator
+CMD ["python", "_scripts/convert_fencing_results.py"]

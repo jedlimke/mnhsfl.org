@@ -1,99 +1,145 @@
 /*
  * Site header - CSS Grid layout
- * Mobile: logo left, hamburger right, collapsible menu below
- * Tablet/Desktop (600px+): logo left, nav items right-aligned
+ * Mobile/Tablet: logo left, hamburger right, collapsible menu expands and pushes content downward
+ * Desktop (800px+): logo left, nav items right
  */
 
-.site-header {
-	background: var(--bg-white);
-	border-top: 5px solid var(--brand-blue);
-	border-bottom: 1px solid var(--border-color);
-	padding: var(--spacing-unit);
-	display: grid;
-	grid-template-columns: 1fr auto;
-	grid-template-areas:
-		"logo hamburger"
-		"nav nav";
+.layout-area--header {
+	--stroke-width: 6px;
 
-	@media screen and (min-width: 600px) {
-		grid-template-columns: auto 1fr;
-		grid-template-areas: "logo nav";
-	}
+    background: var(--bg-white);
+    border-top: var(--stroke-width) solid var(--brand-blue);
+    padding: var(--spacing-unit) max(var(--spacing-unit), calc((100vw - var(--content-max-width)) / 2));
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+        "header-area--title  header-area--hamburger"
+        "header-area--nav    header-area--nav";
+	align-items: center;
+
+    @media screen and (min-width: 800px) {
+        grid-template-columns: auto 1fr;
+        grid-template-areas: "header-area--title  header-area--nav";
+    }
 }
 
-// Logo
-.site-title {
-	grid-area: logo;
-	display: block;
+// Title / logo
+.header-area--title {
+    grid-area: header-area--title;
+    display: grid;
 
-	img {
-		display: block;
-		height: 40px;
-		width: auto;
-	}
+    img {
+        display: block;
+        height: calc(1.5 * var(--spacing-unit));
+        width: auto;
+    }
 }
 
 // Hamburger menu trigger (mobile only)
-.nav-trigger {
-	display: none;
-}
-
-.menu-icon {
-	grid-area: hamburger;
-	display: block;
-	cursor: pointer;
-
-	@media screen and (min-width: 600px) {
-		display: none;
-	}
-
-	svg {
-		width: 18px;
-		height: 15px;
-		fill: var(--brand-blue);
-	}
-}
-
-label[for="nav-trigger"] {
-	grid-area: hamburger;
-	display: block;
-	cursor: pointer;
+.hamburger {
+    grid-area: header-area--hamburger;
+    display: block;
+	opacity: 0;
+	position: absolute;
+	pointer-events: none;
 
 	@media screen and (min-width: 600px) {
 		display: none;
 	}
 }
 
-// Navigation container
-.site-nav {
-	grid-area: nav;
+// Hamburger icon label
+label[for="hamburger"] {
+	grid-area: header-area--hamburger;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	cursor: pointer;
 
-	@media screen and (min-width: 600px) {
-		justify-self: end;
-	}
-}
-
-// Navigation links
-.trigger {
-	display: none;
-
-	@media screen and (min-width: 600px) {
+	.menu-icon {
 		display: flex;
-		gap: var(--spacing-unit);
+		align-items: center;
+		justify-content: center;
+
+		svg {
+			display: block;
+			overflow: visible;
+			
+			.line {
+				stroke-width: calc(var(--stroke-width) * 100 / 30 / 2);
+				stroke-linecap: round;
+				stroke: var(--brand-blue);
+				transition: all 500ms;
+			}
+
+			.line--top {
+				transform-origin: 26px 40px;
+			}
+
+			.line--middle {
+				stroke-dasharray: 100 100;
+			}
+
+			.line--bottom {
+				transform-origin: 26px 60px;
+			}
+		}
 	}
 
-	.nav-trigger:checked ~ & {
-		display: grid;
-		gap: var(--spacing-unit);
+	@media screen and (min-width: 800px) {
+		display: none;
 	}
 }
 
-.page-link {
-	display: block;
-	color: var(--brand-blue);
-	text-decoration: none;
 
-	&:hover {
-		text-decoration: underline;
+// When hamburger is checked, animate to X
+.hamburger:checked ~ label[for="hamburger"] .menu-icon svg {
+	.line--top {
+		transform: rotate(45deg);
 	}
+	
+	.line--middle {
+		stroke-dasharray: 1 100;
+		stroke-dashoffset: -50;
+	}
+	
+	.line--bottom {
+		transform: rotate(-45deg);
+	}
+}
+
+
+// When hamburger is checked, show the menu
+.hamburger:checked ~ .header-area--nav .trigger {
+	display: flex;
+}
+
+// Navigation area
+.header-area--nav {
+    grid-area: header-area--nav;
+
+    // The actual menu
+    .trigger {
+        display: none;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: var(--spacing-unit);
+        padding-top: var(--spacing-unit);
+
+        @media screen and (min-width: 800px) {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            padding-top: 0;
+        }
+    }
+
+    .page-link {
+        text-decoration: none;
+        color: var(--text-color);
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }

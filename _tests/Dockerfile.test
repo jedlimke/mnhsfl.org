@@ -1,0 +1,17 @@
+# Dockerfile for running tests in an isolated environment
+# Usage: docker build -f _tests/Dockerfile.test -t mnhsfl-test . && docker run --rm mnhsfl-test
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install pytest first (cached layer)
+RUN pip install --no-cache-dir pytest>=9.0.0
+
+# Copy files that change frequently
+COPY _scripts/ ./_scripts/
+COPY _tests/ ./_tests/
+COPY _fencing-results/ ./_fencing-results/
+
+# Run tests
+CMD ["pytest", "_tests/test_convert_fencing_results.py", "-v", "--tb=short"]

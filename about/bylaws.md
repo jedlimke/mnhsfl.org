@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page
 title: Bylaws
 permalink: /about/bylaws/
 ---

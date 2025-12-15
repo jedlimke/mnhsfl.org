@@ -55,7 +55,7 @@ docker-compose logs -f
 - LiveReload is enabled - your browser will refresh automatically
 - Python scripts must be run manually if you add new results:
   ```bash
-  python _scripts/generate_results.py
+  python _scripts/convert_fencing_results.py
   ```
 
 ### Cleaning Up

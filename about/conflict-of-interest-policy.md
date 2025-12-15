@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Conflict of Interest Policy
-nav_exclude: true
+permalink: /about/conflict-of-interest-policy/
 ---
 # Conflict of Interest (COI) Policy
 

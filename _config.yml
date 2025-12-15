@@ -7,9 +7,6 @@ author: MNHSFL
 logo: /assets/mnhsfl.svg
 footer_logo: /assets/mnhsfl-block.svg
 
-# No theme - custom layouts and styles
-# theme: minima
-
 # Sass configuration
 sass:
   style: compressed
@@ -45,7 +42,6 @@ header_pages:
   - competitors/index.md
   - news/index.md
   - results/index.md
-  - policies/index.md
 
 # =============================================================================
 # Default frontmatter values

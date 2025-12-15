@@ -10,12 +10,15 @@ permalink: /results/
 
 {% for post in result_posts %}
   <article class="post-summary">
-    <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
-    <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %-d, %Y" }}</time>
+	<header class="post-header">
+		<h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+		<p class="post-meta">
+			<time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %-d, %Y" }}</time>
+		</p>
+	</header>
     {% if post.excerpt %}
-      <p>{{ post.excerpt }}</p>
+      <p>{{ post.excerpt | truncate: 100 }}</p>
     {% endif %}
-    <a href="{{ post.url | relative_url }}">View results →</a>
   </article>
 {% endfor %}
 

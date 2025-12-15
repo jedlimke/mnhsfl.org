@@ -1,24 +1,11 @@
-{%- comment -%}
-Social media links for footer
-{%- endcomment -%}
 <ul class="social-media-list">
-	{%- if site.dribbble_username -%}
-		<li>
-			<a href="https://dribbble.com/{{ site.dribbble_username| cgi_escape | escape }}">
-				<svg class="svg-icon">
-					<use xlink:href="{{ '/assets/minima-social-icons.svg#dribbble' | relative_url }}"></use>
-				</svg>
-				<span class="username">{{ site.dribbble_username| escape }}</span>
-			</a>
-		</li>
-	{%- endif -%}
 	{%- if site.facebook_username -%}
 		<li>
 			<a href="https://www.facebook.com/{{ site.facebook_username| cgi_escape | escape }}">
 				<svg class="svg-icon">
 					<use xlink:href="{{ '/assets/minima-social-icons.svg#facebook' | relative_url }}"></use>
 				</svg>
-				<span class="username">{{ site.facebook_username| escape }}</span>
+				<span class="username">{{ site.facebook_username | escape }}</span>
 			</a>
 		</li>
 	{%- endif -%}
@@ -28,7 +15,7 @@ Social media links for footer
 				<svg class="svg-icon">
 					<use xlink:href="{{ '/assets/minima-social-icons.svg#flickr' | relative_url }}"></use>
 				</svg>
-				<span class="username">{{ site.flickr_username| escape }}</span>
+				<span class="username">{{ site.flickr_username | escape }}</span>
 			</a>
 		</li>
 	{%- endif -%}
@@ -38,7 +25,7 @@ Social media links for footer
 				<svg class="svg-icon">
 					<use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use>
 				</svg>
-				<span class="username">{{ site.github_username| escape }}</span>
+				<span class="username">{{ site.github_username | escape }}</span>
 			</a>
 		</li>
 	{%- endif -%}
@@ -48,7 +35,7 @@ Social media links for footer
 				<svg class="svg-icon">
 					<use xlink:href="{{ '/assets/minima-social-icons.svg#instagram' | relative_url }}"></use>
 				</svg>
-				<span class="username">{{ site.instagram_username| escape }}</span>
+				<span class="username">{{ site.instagram_username | escape }}</span>
 			</a>
 		</li>
 	{%- endif -%}
@@ -58,27 +45,7 @@ Social media links for footer
 				<svg class="svg-icon">
 					<use xlink:href="{{ '/assets/minima-social-icons.svg#flickr' | relative_url }}"></use>
 				</svg>
-				<span class="username">{{ site.flickr_username| escape }}</span>
-			</a>
-		</li>
-	{%- endif -%}
-	{%- if site.github_username -%}
-		<li>
-			<a href="https://github.com/{{ site.github_username| cgi_escape | escape }}">
-				<svg class="svg-icon">
-					<use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use>
-				</svg>
-				<span class="username">{{ site.github_username| escape }}</span>
-			</a>
-		</li>
-	{%- endif -%}
-	{%- if site.instagram_username -%}
-		<li>
-			<a href="https://instagram.com/{{ site.instagram_username| cgi_escape | escape }}">
-				<svg class="svg-icon">
-					<use xlink:href="{{ '/assets/minima-social-icons.svg#instagram' | relative_url }}"></use>
-				</svg>
-				<span class="username">{{ site.instagram_username| escape }}</span>
+				<span class="username">{{ site.flickr_username | escape }}</span>
 			</a>
 		</li>
 	{%- endif -%}
@@ -88,27 +55,7 @@ Social media links for footer
 				<svg class="svg-icon">
 					<use xlink:href="{{ '/assets/minima-social-icons.svg#linkedin' | relative_url }}"></use>
 				</svg>
-				<span class="username">{{ site.linkedin_username| escape }}</span>
-			</a>
-		</li>
-	{%- endif -%}
-	{%- if site.pinterest_username -%}
-		<li>
-			<a href="https://www.pinterest.com/{{ site.pinterest_username| cgi_escape | escape }}">
-				<svg class="svg-icon">
-					<use xlink:href="{{ '/assets/minima-social-icons.svg#pinterest' | relative_url }}"></use>
-				</svg>
-				<span class="username">{{ site.pinterest_username| escape }}</span>
-			</a>
-		</li>
-	{%- endif -%}
-	{%- if site.twitter_username -%}
-		<li>
-			<a href="https://www.twitter.com/{{ site.twitter_username| cgi_escape | escape }}">
-				<svg class="svg-icon">
-					<use xlink:href="{{ '/assets/minima-social-icons.svg#twitter' | relative_url }}"></use>
-				</svg>
-				<span class="username">{{ site.twitter_username| escape }}</span>
+				<span class="username">{{ site.linkedin_username | escape }}</span>
 			</a>
 		</li>
 	{%- endif -%}
@@ -118,17 +65,7 @@ Social media links for footer
 				<svg class="svg-icon">
 					<use xlink:href="{{ '/assets/minima-social-icons.svg#youtube' | relative_url }}"></use>
 				</svg>
-				<span class="username">{{ site.youtube_username| escape }}</span>
-			</a>
-		</li>
-	{%- endif -%}
-	{%- if site.googleplus_username -%}
-		<li>
-			<a href="https://plus.google.com/{{ site.googleplus_username| escape }}">
-				<svg class="svg-icon">
-					<use xlink:href="{{ '/assets/minima-social-icons.svg#googleplus' | relative_url }}"></use>
-				</svg>
-				<span class="username">{{ site.googleplus_username| escape }}</span>
+				<span class="username">{{ site.youtube_username | escape }}</span>
 			</a>
 		</li>
 	{%- endif -%}
@@ -139,16 +76,6 @@ Social media links for footer
 					<use xlink:href="{{ '/assets/minima-social-icons.svg#rss' | relative_url }}"></use>
 				</svg>
 				<span>{{ site.rss | escape }}</span>
-			</a>
-		</li>
-	{%- endif -%}
-	{%- if site.email -%}
-		<li>
-			<a href="mailto:{{ site.email | escape }}">
-				<svg class="svg-icon">
-					<use xlink:href="{{ '/assets/minima-social-icons.svg#email' | relative_url }}"></use>
-				</svg>
-				<span class="username">{{ site.email | escape }}</span>
 			</a>
 		</li>
 	{%- endif -%}
@@ -164,4 +91,14 @@ Social media links for footer
 		</li>
 		{%- endif -%}
 	{%- endfor -%}
+	{%- if site.email -%}
+		<li>
+			<a href="mailto:{{ site.email | escape }}">
+				<svg class="svg-icon">
+					<use xlink:href="{{ '/assets/minima-social-icons.svg#email' | relative_url }}"></use>
+				</svg>
+				<span class="username">{{ site.email | escape }}</span>
+			</a>
+		</li>
+	{%- endif -%}
 </ul>

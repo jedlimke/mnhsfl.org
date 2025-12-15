@@ -1,52 +1,271 @@
 # Minnesota High School Fencing League (MNHSFL) – Website Repository
 
-Minnesota High School Fencing League (MNHSFL) website repo.
+This is the official website for the Minnesota High School Fencing League. It's a static site built with Jekyll and automatically deployed to GitHub Pages.
 
-## Testing Locally
+## What Happens During Deployment
 
-To preview the GitHub Pages site locally using Docker:
+When you push changes to the `master` branch:
 
-1. Build the Docker image:
+1. **Tests Run** - All fencing results generator tests execute to ensure code quality
+2. **Results Generated** - CSV files from `_fencing-results/` are converted into blog posts
+3. **Site Built** - Jekyll compiles everything into a static website
+4. **Deployed** - The site goes live at GitHub Pages automatically
+
+You can:
+- Add tournament results by uploading CSV files (with optional markdown frontmatter)
+- Create news posts by adding markdown files to `_posts/`
+- Update pages by editing content in the repository
+
+Everything is automated - just commit and push!
+
+## Prerequisites
+
+You'll need these tools installed:
+
+- **Git** - Version control ([Download](https://git-scm.com/downloads))
+- **Docker** - For local testing and preview ([Download](https://www.docker.com/products/docker-desktop/))
+- **VS Code** - Recommended editor ([Download](https://code.visualstudio.com/))
+
+That's it! No Python, Ruby, or Jekyll installation needed.
+
+## Creating News Posts
+
+Posts go in the `_posts/` directory and must follow this naming convention:
+
+```
+YYYY-MM-DD-post-title.md
+```
+
+### Basic Post Template
+
+```markdown
+---
+layout: post
+title: "Your Post Title"
+date: 2025-12-14
+excerpt: "Brief description that appears in listings"
+---
+
+Your post content goes here in Markdown format.
+```
+
+### Date/Time Format
+
+You can use just a date or include time:
+
+```yaml
+date: 2025-12-14                    # Just date
+date: 2025-12-14 14:30:00          # Date and time
+date: "2025-12-14 14:30:00 -0600"  # With timezone (quote it!)
+```
+
+### Example
+
+Create `_posts/2025-12-14-season-opener.md`:
+
+```markdown
+---
+layout: post
+title: "Season Opener This Saturday"
+date: 2025-12-14
+excerpt: "Join us for the first tournament of the season"
+---
+
+The MNHSFL season kicks off this Saturday at 9:00 AM!
+
+Location: Anderson High School
+Registration: 8:30 AM
+```
+
+## Adding Fencing Results
+
+Results live in `_fencing-results/` and consist of:
+- **CSV file** (required) - The tournament data
+- **Markdown file** (optional) - Custom frontmatter and intro text
+
+### Naming Convention
+
+Both files must have the same base name:
+
+```
+_fencing-results/
+  tournament-name-2025.csv
+  tournament-name-2025.md    (optional)
+```
+
+### CSV Only (Simplest)
+
+Just add a CSV file with your results:
+
+**`_fencing-results/winter-classic-2025.csv`:**
+```csv
+Fencer,Wins,Losses,Points
+Smith Jane,5,1,850
+Doe John,4,2,720
+```
+
+The system will auto-generate a post with default frontmatter.
+
+### CSV + Markdown (Custom Frontmatter)
+
+Add a matching `.md` file to customize the post:
+
+**`_fencing-results/winter-classic-2025.md`:**
+```markdown
+---
+title: "Winter Classic 2025"
+date: 2025-12-20
+excerpt: "Championship results from the Winter Classic"
+author: "Tournament Director"
+---
+```
+
+### CSV + Markdown (With Intro Text)
+
+Include content after the frontmatter to add an introduction:
+
+**`_fencing-results/winter-classic-2025.md`:**
+```markdown
+---
+title: "Winter Classic 2025"
+date: "2025-12-20 14:30:00"
+excerpt: "Championship results from the Winter Classic"
+---
+
+The Winter Classic featured 24 fencers competing in épée.
+Congratulations to all participants!
+```
+
+The intro appears before the results table in the generated post.
+
+## Git Workflow & Version Control
+
+### Basic Workflow
+
+1. **Make your changes** (add posts, update results, etc.)
+2. **Stage changes**: `git add .`
+3. **Commit**: `git commit -m "Add winter tournament results"`
+4. **Push**: `git push origin master`
+
+### Working with Branches
+
+For larger changes, use branches:
+
+```bash
+# Create a new branch
+git checkout -b my-feature-branch
+
+# Make your changes, then commit
+git add .
+git commit -m "Description of changes"
+
+# Push your branch
+git push origin my-feature-branch
+```
+
+Then create a **Pull Request** on GitHub to merge your changes.
+
+### Pull Request Etiquette
+
+- Write clear descriptions of what changed
+- Keep commits focused on one thing
+- Test locally before creating the PR
+- Review the changes before requesting merge
+
+**Learn more**: [GitHub's Pull Request Guide](https://github.blog/developer-skills/github/beginners-guide-to-github-creating-a-pull-request/)
+
+### Why Use Branches?
+
+- Test major changes without affecting the live site
+- Get feedback before deploying
+- Keep `master` stable and production-ready
+
+## Viewing the Site Locally
+
+To preview the GitHub Pages site locally and _keep it automatically regenerating_ using Docker:
+
+1. **Build the Docker image:**
    ```sh
    docker-compose build
    ```
-2. Start the Jekyll server:
+
+2. **Start the Jekyll server:**
    ```sh
    docker-compose up
    ```
-3. Visit [http://localhost:4000](http://localhost:4000) in your browser.
 
-This is a static site built with Jekyll and deployed to GitHub Pages.
+3. **Visit in your browser:**
+   ```
+   http://localhost:4000
+   ```
 
-For style changes, edit `_sass/base.scss` (variables and global styles) or the specific component SCSS files. The `assets/main.scss` file imports all stylesheets.
+Press `Ctrl+C` to stop the server.
 
-# *NOTES FOR JED:*
+## Engineering Notes
 
-TO BE HONEST, we don't need to require a specific CSV format for the results... we simply need to turn that CSV into a table as-is and attach front matter. That makes it less fragile to however the MNHSFL admin wants to provide the data. Maybe they'll want to include more info someday... or less... being content-agnostic will give them more flexibility.
+### CI/CD Pipeline
 
-Ideally we would attach some JS/sort crap to the table headers, though, and maybe some filtering library. jquery in 2025, anyone?
+![CI/CD Pipeline Sequence Diagram](assets/cicd-sequence.png)
 
-ALSO, maybe instead of filenames, we require the uploader to put files into folders instead--that'd allow us to handle more than one CSV or more than one MD... perhaps stitched together in some sort of alphabetical-order... it's a thought. We might be able to handle metadata in that file, too... I don't want things too complicated but I'm imagining a situation where they want more than one thing on a particular landing... but then again, they could use a blog post and stitch things together with that, instead... hmm. COMPLEXITY vs. USEFULNESS...
+**Pipeline guarantees:**
+- Tests must pass before build runs
+- Build must succeed before deploy runs  
+- Broken code never reaches production
 
-# TODOS:
+**Triggers:**
+- Automatic on push to `master`
+- Manual via GitHub Actions tab
 
-1. ~~Update theme to be snazzier~~ (In progress - custom hero, footer, header done)
-2. Rewrite script to be easier to read/break it down following five-lines-of-code principles (I'm thinking folders now in case we have photos and such that need to be incorporated, too)
-3. Test script on actual fencer data
-4. Add blog post capabilities
-5. Figure out images on posts
-6. ~~Figure out site logo~~ (Done - using mnhsfl.svg and mnhsfl_block.svg)
+**Workflow file:** `.github/workflows/cicd.yml`
 
-## Future Homepage Enhancements
+### Fencing Results Converter
 
-**Goal:** Make the homepage more dynamic and data-driven rather than static content.
+The script is automatically run during build via Github Actions, though it must be **manually run** during local testing.
 
-**Planned Features:**
-- **Schedule Integration:** Pull upcoming events from a CSV or iCal feed to display next tournaments/meets automatically
-- **News/Articles Feed:** Use Jekyll's built-in blog functionality to show recent posts on homepage
-- **Results Widget:** Dynamically show latest tournament results
-- **Possibly more:** Consider what features would be useful
+1. Scans `_fencing-results/` for all `.csv` files
+2. For each CSV file (e.g., `turkey-tussle-2025.csv`):
+   - Reads the CSV data
+   - Looks for optional matching `.md` file (e.g., `turkey-tussle-2025.md`)
+   - Extracts metadata from frontmatter if present (title, date, image)
+   - Uses sensible defaults if no frontmatter found
+   - Creates blog post in `_posts/results/` with:
+     - Jekyll front matter (layout: post, title, date, categories: results)
+     - Optional intro content from the `.md` file
+     - Markdown table generated from CSV data
+3. Generates `results/index.md` listing all tournaments with links
 
-**Reference Site:** Check out [MSHSL.org](https://www.mshsl.org/) for inspiration on sports league website features and UX patterns.
+Ultimately, the script just turns CSVs into markdown-formatted `_posts` which is exactly what we need in order to leverage a ton of stuff we **get for free™** when using Jekyll, Liquid, and GitHub Pages.
 
-**Note:** Don't implement yet - continue gathering requirements and understanding needs first.
+See [Convert Fencing Results README](_scripts/README.md) for more info.
+
+#### Testing the Converter
+
+Run the full test suite in an isolated Docker environment.
+
+**One command (Mac/Linux/Windows):**
+```sh
+docker build -f _tests/Dockerfile.test -t mnhsfl-test . && docker run --rm mnhsfl-test
+```
+
+This runs all 12 integration tests to ensure the generator works correctly.
+
+#### Generating Results Locally (While Developing)
+
+Convert CSV files to posts locally without Python installed.
+
+**One command (Mac/Linux):**
+```sh
+docker build -f _tests/Dockerfile.generate -t mnhsfl-generate . && docker run --rm -v "${PWD}/_posts:/app/_posts" mnhsfl-generate
+```
+
+**For Windows PowerShell:**
+```powershell
+docker build -f _tests/Dockerfile.generate -t mnhsfl-generate . ; docker run --rm -v "${PWD}/_posts:/app/_posts" mnhsfl-generate
+```
+
+**For Windows Command Prompt:**
+```cmd
+docker build -f _tests/Dockerfile.generate -t mnhsfl-generate . && docker run --rm -v "%cd%/_posts:/app/_posts" mnhsfl-generate
+```
+
+The `-v` flag mounts your local `_posts/` directory so generated files appear on your machine!

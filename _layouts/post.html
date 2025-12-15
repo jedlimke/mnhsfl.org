@@ -1,7 +1,7 @@
 ---
-layout: default
+layout: base
 ---
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<article class="post{% if page.image %} post--with-hero{% endif %}" itemscope itemtype="http://schema.org/BlogPosting">
 
 	{%- comment -%} Hero image if present {%- endcomment -%}
 	{%- if page.image -%}
