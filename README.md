@@ -182,7 +182,7 @@ Then create a **Pull Request** on GitHub to merge your changes.
 
 ## Viewing the Site Locally
 
-To preview the GitHub Pages site locally using Docker:
+To preview the GitHub Pages site locally and _keep it automatically regenerating_ using Docker:
 
 1. **Build the Docker image:**
    ```sh
@@ -218,7 +218,27 @@ Press `Ctrl+C` to stop the server.
 
 **Workflow file:** `.github/workflows/cicd.yml`
 
-### Testing the Results Generator
+### Fencing Results Converter
+
+The script is automatically run during build via Github Actions, though it must be **manually run** during local testing.
+
+1. Scans `_fencing-results/` for all `.csv` files
+2. For each CSV file (e.g., `turkey-tussle-2025.csv`):
+   - Reads the CSV data
+   - Looks for optional matching `.md` file (e.g., `turkey-tussle-2025.md`)
+   - Extracts metadata from frontmatter if present (title, date, image)
+   - Uses sensible defaults if no frontmatter found
+   - Creates blog post in `_posts/results/` with:
+     - Jekyll front matter (layout: post, title, date, categories: results)
+     - Optional intro content from the `.md` file
+     - Markdown table generated from CSV data
+3. Generates `results/index.md` listing all tournaments with links
+
+Ultimately, the script just turns CSVs into markdown-formatted `_posts` which is exactly what we need in order to leverage a ton of stuff we **get for free™** when using Jekyll, Liquid, and GitHub Pages.
+
+See [Convert Fencing Results README](_scripts/README.md) for more info.
+
+#### Testing the Converter
 
 Run the full test suite in an isolated Docker environment.
 
@@ -229,7 +249,7 @@ docker build -f _tests/Dockerfile.test -t mnhsfl-test . && docker run --rm mnhsf
 
 This runs all 12 integration tests to ensure the generator works correctly.
 
-### Generating Results Locally (While Developing)
+#### Generating Results Locally (While Developing)
 
 Convert CSV files to posts locally without Python installed.
 

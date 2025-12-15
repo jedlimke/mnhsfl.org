@@ -3,184 +3,10 @@
 ## Overview
 This system automates the conversion of tournament fencing results from CSV files into blog posts on the MNHSFL website.
 
-## Quick Test (Docker - Recommended)
-
-**No Python installation needed!** Run from project root:
-
-```bash
-docker build -f _tests/Dockerfile.test -t mnhsfl-test . && docker run --rm mnhsfl-test
-```
-
-This ensures the generator works correctly in a clean environment.
-
-## Setup (Local Development)
-
-For local development without Docker:
-
-```bash
-pip install pytest
-```
-
-## Quick Start (Local)
-
-```bash
-# Generate result posts from CSV files
-python _scripts/convert_fencing_results.py
-
-# Run tests
-pytest _tests/test_convert_fencing_results.py -v
-```
-pytest _tests/test_convert_fencing_results.py -v
-```
-
 Results will be:
 - Generated as blog posts in `_posts/results/` (gitignored)
 - Listed on dedicated index page at `results/index.md`
 - Displayed on homepage and /news/ feed automatically
-
-## Testing
-
-### Run Tests
-
-```bash
-# Run all integration tests
-pytest _tests/test_convert_fencing_results.py -v
-
-# Run specific test class
-pytest _tests/test_convert_fencing_results.py::TestResultsGeneration -v
-
-# Run specific test
-pytest _tests/test_convert_fencing_results.py::TestResultsGeneration::test_csv_with_frontmatter_and_intro -v
-
-# Run tests matching a pattern
-pytest _tests/test_convert_fencing_results.py -k "frontmatter" -v
-```
-
-### Test Organization
-
-Tests live in `_tests/` at the project root:
-```
-_tests/
-├── test_convert_fencing_results.py    # Integration tests
-└── fixtures/                    # CSV and MD files together (mirrors real usage)
-    ├── basic-tournament.csv
-    ├── spring-open.csv
-    ├── spring-open.md           # Paired with CSV
-    ├── winter-classic.csv
-    ├── winter-classic.md        # Paired with CSV
-    └── ...
-```
-
-All tests follow the **AAA (Arrange-Act-Assert) pattern** with clear comments.
-
-Tests use **pytest** with:
-- Fixtures for automatic setup/teardown
-- Parameterized tests for multiple scenarios
-- Clean assertion syntax
-
-### Test Coverage
-
-The test suite (`_tests/test_convert_fencing_results.py`) covers:
-- ✅ CSV only (no .md file) - uses default frontmatter
-- ✅ CSV with frontmatter (no intro content)
-- ✅ CSV with frontmatter AND intro content
-- ✅ Inconsistent column counts (padding/truncation)
-- ✅ Empty CSV files
-- ✅ UTF-8 BOM handling
-- ✅ Multiple CSV files (parameterized: 1, 3, 5 files)
-- ✅ Special characters in frontmatter (colons, quotes)
-- ✅ Edge cases (no source dir, no CSV files)
-
-Total: 12 test cases (10 base + 2 parameterized variants)
-
-### CI/CD
-
-Tests run automatically on GitHub Actions as part of the deployment workflow:
-- **Test job** runs first with pytest validation
-- **Build job** only runs if tests pass (generates results + builds Jekyll)
-- **Deploy job** only runs if build succeeds
-
-This ensures broken code never gets deployed to production.
-
-Workflow triggers:
-- Pushing to `master` branch
-- Manual workflow dispatch
-
-See `.github/workflows/cicd.yml` (integrated test + build + deploy)
-
-## Architecture
-
-### The Problem
-MNHSFL tournament results arrive in CSV format. We need to:
-1. Accept these CSVs from non-technical admins
-2. Transform them into properly formatted web pages
-3. Keep the process simple and fail-safe
-4. Keep development clean (no test data in version control)
-
-### The Solution
-A three-stage build pipeline:
-1. **Source files** → 2. **Python transformation** → 3. **Jekyll rendering** → 4. **Static HTML site**
-
-## File Structure
-
-```  
-_scripts/                  # Build automation
-  convert_fencing_results.py      # Python script that does the transformation
-  README.md                # This file
-
-_fencing-results/          # Source data (committed to git)
-  tournament-name.csv      # Raw results data (REQUIRED)
-  tournament-name.md       # Metadata and intro content (OPTIONAL)
-  
-_posts/results/            # Generated blog posts (gitignored, auto-generated)
-  YYYY-MM-DD-tournament-name.md  # Posts created by script
-  
-results/                   # Index page (committed to git)
-  index.md                 # Index page listing all results (always generated)
-```
-
-## How It Works
-
-### Output Structure
-**Generated posts:** `_posts/results/` subdirectory (gitignored)  
-**Layout:** `post` (blog post with `categories: results`)  
-**Naming:** Jekyll convention (e.g., `2025-11-28-turkey-tussle-2025.md`)  
-**Date handling:** Uses date from .md frontmatter if present, otherwise today's date  
-**Benefits:** 
-- Results appear automatically in blog feed and homepage
-- Jekyll picks up subdirectory posts automatically
-- Gitignored to keep development clean (generated from source)
-- No mode switching needed - same workflow for dev and production
-
-### What the Script Does:
-1. Scans `_fencing-results/` for all `.csv` files
-2. For each CSV file (e.g., `turkey-tussle-2025.csv`):
-   - Reads the CSV data
-   - Looks for optional matching `.md` file (e.g., `turkey-tussle-2025.md`)
-   - Extracts metadata from frontmatter if present (title, date, image)
-   - Uses sensible defaults if no frontmatter found
-   - Creates blog post in `_posts/results/` with:
-     - Jekyll front matter (layout: post, title, date, categories: results)
-     - Optional intro content from the `.md` file
-     - Markdown table generated from CSV data
-3. Generates `results/index.md` listing all tournaments with links
-
-### Jekyll Build
-**When:** Runs after Python script (or continuously during `docker-compose up`)  
-**What it does:**
-1. Processes all posts from `_posts/` (including `_posts/results/` subdirectory)
-2. Results posts appear on homepage grid and /news/ feed alongside announcements
-3. `results/index.md` provides a dedicated results landing page
-4. Can filter by `categories: results` to separate results from announcements
-
-**Why this separation:**
-- Script only handles data transformation
-- Jekyll handles all presentation/theming
-- Site design changes don't require script updates
-- Leverages Jekyll's built-in templating and collections system
-
-### GitHub Pages Deploy
-Standard Jekyll deployment - serves the static HTML.
 
 ## Usage (For MNHSFL Admins)
 
@@ -343,31 +169,47 @@ python _scripts/convert_fencing_results.py
 - Results filtering by weapon/division
 - Year-based archives
 
-## Why This Approach?
+## Architecture
 
-### Alternatives We Avoided
-1. **Manual HTML editing:** Error-prone, time-consuming
-2. **WYSIWYG editor:** Defeats the purpose of version control
-3. **Database + dynamic site:** Overkill for static results data
-4. **Client-side processing:** SEO issues, requires JavaScript
-5. **Dev vs production modes:** Unnecessary complexity
+### The Problem
+MNHSFL tournament results arrive in CSV format. We need to:
+1. Accept these CSVs from non-technical admins
+2. Transform them into properly formatted web pages
+3. Keep the process simple and fail-safe
 
-### Benefits of Our Approach
-- ✅ Version controlled source data (CSVs + optional MDs)
-- ✅ Automated transformation (no manual HTML)
-- ✅ Static output (fast, secure, simple hosting)
-- ✅ Clean git history (only source files committed)
-- ✅ Same workflow for dev and production
-- ✅ Jekyll subdirectory support (automatic post collection)
-- ✅ Optional metadata files (works without .md files)
-- ✅ Simple and maintainable (no mode switching)
+### The Solution
+A three-stage build pipeline:
+1. **Source files** → 2. **Python transformation** → 3. **Jekyll rendering** → 4. **Static HTML site**
 
-## Dependencies
-- Python 3.x (pre-installed in GitHub Actions)
-- Standard library only (no pip packages required)
-- Jekyll (already part of GitHub Pages)
+## File Structure
 
----
+```  
+_scripts/                     # Build automation
+  convert_fencing_results.py  # Python script that does the transformation
+  README.md                   # This file
 
-**Last Updated:** January 2025  
-**Created By:** @jedlimke
+_fencing-results/             # Source data (committed to git)
+  tournament-1.csv            # Raw results data (REQUIRED)
+  tournament-1.md             # Metadata and intro content (OPTIONAL)
+  
+_posts/results/               # Generated blog posts (.gitignored because it'll get regenerated on deploy)
+  YYYY-MM-DD-tournament-1.md  # Posts created by script
+  YYYY-MM-DD-tournament-2.md
+  etc.
+  
+results/                      # Index page
+  index.md                    # Index page listing all results (auto-generated)
+```
+
+### What the Script Does:
+1. Scans `_fencing-results/` for all `.csv` files
+2. For each CSV file (e.g., `turkey-tussle-2025.csv`):
+   - Reads the CSV data
+   - Looks for optional matching `.md` file (e.g., `turkey-tussle-2025.md`)
+   - Extracts metadata from frontmatter if present (title, date, image)
+   - Uses sensible defaults if no frontmatter found
+   - Creates blog post in `_posts/results/` with:
+     - Jekyll front matter (layout: post, title, date, categories: results)
+     - Optional intro content from the `.md` file
+     - Markdown table generated from CSV data
+3. Generates `results/index.md` listing all tournaments with links
