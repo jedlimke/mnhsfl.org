@@ -2,41 +2,17 @@
 
 Minnesota High School Fencing League (MNHSFL) website repo.
 
-## Development Setup
+This is a static site built with Jekyll and deployed to GitHub Pages. During the deployment, the site <insert the magic that happens here at a high level--what they care about is the fact that fencing results get added as posts, that they themselves can create posts by putting them in _posts, etc.>
 
-### Quick Test (Docker Only - Recommended)
+<list prerequsites and where to get them (they need git, they need docker, they should get vscode IMO)>
 
-**No Python installation needed!** Just run:
+<Detail how to create a new post and the naming convention thereof (and frontmatter needs for the date (datetime is allowed, show format simply but accurately)).>
 
-```sh
-_tests/run-tests.sh
-```
+<Detail what's needed for a fencing result and how it can be done with examples (with and without a md, where to put them, etc.)>
 
-This builds a clean Docker container, runs all tests, and exits. Perfect for:
-- Admins who just want to verify their CSV files work
-- Contributors who want to test changes
-- Matching exactly what CI/CD will run
+<Now Detail the basics of version control with git, ettiquette, etc. Throw in tidbits on branches, PRs, etc. and link them where they can learn more. (perhaps this: https://github.blog/developer-skills/github/beginners-guide-to-github-creating-a-pull-request/) Relate this to what they're doing.>
 
-### For Developers (Local Python)
-
-If you want to develop locally without Docker:
-
-1. **Install pytest:**
-   ```sh
-   pip install pytest
-   ```
-
-2. **Run tests:**
-   ```sh
-   pytest _tests/test_generate_results.py -v
-   ```
-
-3. **Generate results locally:**
-   ```sh
-   python _scripts/generate_results.py
-   ```
-
-## Testing Locally
+## Viewing the site locally
 
 To preview the GitHub Pages site locally using Docker:
 
@@ -50,37 +26,38 @@ To preview the GitHub Pages site locally using Docker:
    ```
 3. Visit [http://localhost:4000](http://localhost:4000) in your browser.
 
-This is a static site built with Jekyll and deployed to GitHub Pages.
+## Development Notes
 
-For style changes, edit `_sass/base.scss` (variables and global styles) or the specific component SCSS files. The `assets/main.scss` file imports all stylesheets.
+### CI/CD
 
-# *NOTES FOR JED:*
+Tests run automatically on GitHub Actions as part of the deployment workflow:
+- **Test job** runs first with pytest validation
+- **Build job** only runs if tests pass
+- **Deploy job** only runs if build succeeds
 
-TO BE HONEST, we don't need to require a specific CSV format for the results... we simply need to turn that CSV into a table as-is and attach front matter. That makes it less fragile to however the MNHSFL admin wants to provide the data. Maybe they'll want to include more info someday... or less... being content-agnostic will give them more flexibility.
+This ensures broken code never gets deployed to production.
 
-Ideally we would attach some JS/sort crap to the table headers, though, and maybe some filtering library. jquery in 2025, anyone?
+Workflow triggers:
+- On push to `master`
+- Manual workflow dispatch
 
-ALSO, maybe instead of filenames, we require the uploader to put files into folders instead--that'd allow us to handle more than one CSV or more than one MD... perhaps stitched together in some sort of alphabetical-order... it's a thought. We might be able to handle metadata in that file, too... I don't want things too complicated but I'm imagining a situation where they want more than one thing on a particular landing... but then again, they could use a blog post and stitch things together with that, instead... hmm. COMPLEXITY vs. USEFULNESS...
+See `.github/workflows/jekyll-gh-pages.yml` (integrated test + build + deploy)
+- Manual trigger available
 
-# TODOS:
+See `.github/workflows/test-results-generator.yml`
 
-1. ~~Update theme to be snazzier~~ (In progress - custom hero, footer, header done)
-2. Rewrite script to be easier to read/break it down following five-lines-of-code principles (I'm thinking folders now in case we have photos and such that need to be incorporated, too)
-3. Test script on actual fencer data
-4. Add blog post capabilities
-5. Figure out images on posts
-6. ~~Figure out site logo~~ (Done - using mnhsfl.svg and mnhsfl_block.svg)
+#### Fencing Results Converter while developing
 
-## Future Homepage Enhancements
+```sh
+_tests/<we should have a script to do this that also uses that python dockerfile or something very similar just to make it so we again don't need python to convert csvs and md's we're actually using for the real site while updating it locally>
+```
 
-**Goal:** Make the homepage more dynamic and data-driven rather than static content.
+#### Testing the Fencing Results Converter script
 
-**Planned Features:**
-- **Schedule Integration:** Pull upcoming events from a CSV or iCal feed to display next tournaments/meets automatically
-- **News/Articles Feed:** Use Jekyll's built-in blog functionality to show recent posts on homepage
-- **Results Widget:** Dynamically show latest tournament results
-- **Possibly more:** Consider what features would be useful
+```sh
+_tests/run-tests.sh
+```
 
-**Reference Site:** Check out [MSHSL.org](https://www.mshsl.org/) for inspiration on sports league website features and UX patterns.
+#### <other stuff I'm forgetting>
 
-**Note:** Don't implement yet - continue gathering requirements and understanding needs first.
+<Probably a nice mermaid syntax flowchart of what happens when the site gets pushed up to `master`>
