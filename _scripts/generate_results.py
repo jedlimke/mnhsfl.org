@@ -12,7 +12,6 @@ The script will:
 1. Scan _fencing-results/ for CSV files
 2. For each CSV, create a corresponding blog post in _posts/results/
 3. Optionally include intro content from matching .md files
-4. Generate a results index page at results/index.md
 
 Note: The _posts/results/ subdirectory is gitignored since these posts
 are generated from source files in _fencing-results/. This keeps generated
@@ -23,6 +22,243 @@ import csv
 from pathlib import Path
 from datetime import datetime
 
+
+class Logger:
+    """Handles all console output for the generator."""
+    
+    def header(self, text: str):
+        print("=" * 60)
+        print(text)
+        print("=" * 60)
+    
+    def success(self, message: str):
+        print(f"✓ {message}")
+    
+    def info(self, message: str):
+        print(f"  ℹ {message}")
+    
+    def warning(self, message: str):
+        print(f"⚠ {message}")
+    
+    def error(self, message: str):
+        print(f"✗ {message}")
+    
+    def processing(self, filename: str):
+        print(f"\nProcessing: {filename}")
+
+
+class FrontmatterParser:
+    """Parses YAML frontmatter from markdown files."""
+    
+    def parse(self, content: str) -> tuple[dict[str, str], str]:
+        if not content.startswith('---\n'):
+            return {}, content.strip()
+        return self._parse_with_frontmatter(content)
+    
+    def _parse_with_frontmatter(self, content: str) -> tuple[dict[str, str], str]:
+        parts = content.split('---\n', 2)
+        if len(parts) < 3:
+            return {}, content.strip()
+        frontmatter = self._parse_frontmatter_lines(parts[1])
+        markdown_content = parts[2].strip()
+        return frontmatter, markdown_content
+    
+    def _parse_frontmatter_lines(self, frontmatter_text: str) -> dict[str, str]:
+        frontmatter = {}
+        for line in frontmatter_text.strip().split('\n'):
+            if ':' not in line:
+                continue
+            key, value = line.split(':', 1)
+            frontmatter[key.strip()] = value.strip().strip('"').strip("'")
+        return frontmatter
+
+
+class FrontmatterBuilder:
+    """Builds Jekyll frontmatter from data."""
+    
+    def build(self, user_data: dict[str, str], defaults: dict[str, str]) -> str:
+        merged = self._merge_frontmatter(user_data, defaults)
+        return self._format_frontmatter(merged)
+    
+    def _merge_frontmatter(self, user_data: dict[str, str], defaults: dict[str, str]) -> dict[str, str]:
+        result = defaults.copy()
+        self._merge_custom_fields(user_data, result)
+        self._merge_overridable_fields(user_data, result)
+        return result
+    
+    def _merge_custom_fields(self, user_data: dict[str, str], result: dict[str, str]):
+        for key, value in user_data.items():
+            if key not in ['layout', 'title', 'date']:
+                result[key] = value
+    
+    def _merge_overridable_fields(self, user_data: dict[str, str], result: dict[str, str]):
+        for key in ['title', 'date']:
+            if key in user_data:
+                result[key] = user_data[key]
+    
+    def _format_frontmatter(self, data: dict[str, str]) -> str:
+        lines = ["---"]
+        for key, value in data.items():
+            lines.append(self._format_frontmatter_line(key, value))
+        lines.extend(["---", ""])
+        return "\n".join(lines)
+    
+    def _format_frontmatter_line(self, key: str, value: str) -> str:
+        if ' ' in str(value) or ':' in str(value):
+            return f"{key}: \"{value}\""
+        return f"{key}: {value}"
+
+
+class DateExtractor:
+    """Extracts and validates dates from frontmatter."""
+    
+    def extract(self, frontmatter: dict[str, str]) -> tuple[str, str]:
+        if 'date' not in frontmatter:
+            return self._use_today()
+        return self._parse_date(frontmatter['date'])
+    
+    def _use_today(self) -> tuple[str, str]:
+        today = datetime.now().strftime('%Y-%m-%d')
+        return today, today
+    
+    def _parse_date(self, date_value: str) -> tuple[str, str]:
+        if ' ' in date_value or 'T' in date_value:
+            return self._parse_datetime(date_value)
+        self._validate_date_format(date_value)
+        return date_value, date_value
+    
+    def _parse_datetime(self, date_value: str) -> tuple[str, str]:
+        separator = ' ' if ' ' in date_value else 'T'
+        file_date = date_value.split(separator)[0]
+        return date_value, file_date
+    
+    def _validate_date_format(self, date_str: str):
+        try:
+            datetime.strptime(date_str, '%Y-%m-%d')
+        except ValueError as e:
+            raise ValueError(f"Invalid date format. Use YYYY-MM-DD or YYYY-MM-DD HH:MM:SS. Error: {e}")
+
+
+class CsvReader:
+    """Reads and validates CSV files."""
+    
+    MAX_SIZE_MB = 10
+    
+    def read(self, csv_path: Path) -> list[list[str]]:
+        self._validate_file_size(csv_path)
+        return self._read_csv_rows(csv_path)
+    
+    def _validate_file_size(self, csv_path: Path):
+        file_size_mb = csv_path.stat().st_size / (1024 * 1024)
+        if file_size_mb > self.MAX_SIZE_MB:
+            raise ValueError(f"CSV file too large: {file_size_mb:.1f}MB (max: {self.MAX_SIZE_MB}MB)")
+    
+    def _read_csv_rows(self, csv_path: Path) -> list[list[str]]:
+        try:
+            with open(csv_path, 'r', encoding='utf-8') as f:
+                return list(csv.reader(f))
+        except (csv.Error, UnicodeDecodeError) as e:
+            raise ValueError(f"Error reading CSV: {e}")
+
+
+class TableValidator:
+    """Validates CSV table structure."""
+    
+    def validate(self, rows: list[list[str]], headers: list[str]) -> list[int]:
+        if not rows:
+            return []
+        return [i + 1 for i, row in enumerate(rows) if len(row) != len(headers)]
+
+
+class TableFormatter:
+    """Formats CSV data as Markdown tables."""
+    
+    def format(self, rows: list[list[str]]) -> str:
+        if not rows:
+            return "*No data available*\n"
+        headers = self._clean_headers(rows[0])
+        data_rows = rows[1:]
+        return self._build_table(headers, data_rows)
+    
+    def _clean_headers(self, headers: list[str]) -> list[str]:
+        cleaned = headers.copy()
+        if cleaned and cleaned[0].startswith('\ufeff'):
+            cleaned[0] = cleaned[0].lstrip('\ufeff')
+        return cleaned
+    
+    def _build_table(self, headers: list[str], data_rows: list[list[str]]) -> str:
+        lines = []
+        lines.append(self._format_header_row(headers))
+        lines.append(self._format_separator_row(headers))
+        lines.extend(self._format_data_rows(headers, data_rows))
+        return "\n".join(lines) + "\n"
+    
+    def _format_header_row(self, headers: list[str]) -> str:
+        return "| " + " | ".join(headers) + " |"
+    
+    def _format_separator_row(self, headers: list[str]) -> str:
+        return "| " + " | ".join(["---"] * len(headers)) + " |"
+    
+    def _format_data_rows(self, headers: list[str], data_rows: list[list[str]]) -> list[str]:
+        formatted = []
+        for row in data_rows:
+            padded = self._pad_row(row, len(headers))
+            formatted.append("| " + " | ".join(padded) + " |")
+        return formatted
+    
+    def _pad_row(self, row: list[str], target_length: int) -> list[str]:
+        return (row + [""] * target_length)[:target_length]
+
+
+class IntroContentReader:
+    """Reads intro content from markdown files."""
+    
+    def read(self, csv_path: Path) -> tuple[dict[str, str], str]:
+        md_path = csv_path.with_suffix('.md')
+        if not md_path.exists():
+            return {}, ""
+        return self._read_md_file(md_path)
+    
+    def _read_md_file(self, md_path: Path) -> tuple[dict[str, str], str]:
+        with open(md_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        parser = FrontmatterParser()
+        return parser.parse(content)
+
+
+class TitleGenerator:
+    """Generates titles from filenames."""
+    
+    def generate(self, filename: str) -> str:
+        return filename.replace('-', ' ').title()
+
+
+class PostWriter:
+    """Writes blog posts to disk."""
+    
+    def write(self, path: Path, content: str):
+        with open(path, 'w', encoding='utf-8') as f:
+            f.write(content)
+
+
+class PostContentBuilder:
+    """Builds complete post content from parts."""
+    
+    def build(self, frontmatter: str, intro: str, table: str) -> str:
+        content = frontmatter
+        if intro:
+            content += intro + "\n\n"
+        content += table
+        return content
+
+
+class OutputFilenameGenerator:
+    """Generates output filenames for posts."""
+    
+    def generate(self, file_date: str, stem: str) -> str:
+        return f"{file_date}-{stem}.md"
+
+
 class ResultsGenerator:
     """Handles conversion of CSV tournament results to Jekyll blog posts."""
     
@@ -30,265 +266,113 @@ class ResultsGenerator:
         self.project_root = Path(__file__).parent.parent
         self.source_dir = self.project_root / "_fencing-results"
         self.posts_dir = self.project_root / "_posts" / "results"
-        
-    def ensure_output_dirs(self):
-        """Create output directories if they don't exist."""
+        self.logger = Logger()
+        self.csv_reader = CsvReader()
+        self.table_formatter = TableFormatter()
+        self.table_validator = TableValidator()
+        self.frontmatter_builder = FrontmatterBuilder()
+        self.date_extractor = DateExtractor()
+        self.intro_reader = IntroContentReader()
+        self.title_generator = TitleGenerator()
+        self.post_writer = PostWriter()
+        self.content_builder = PostContentBuilder()
+        self.filename_generator = OutputFilenameGenerator()
+    
+    def run(self):
+        self.logger.header("MNHSFL Fencing Results Generator")
+        self._ensure_output_dirs()
+        csv_files = self._find_csv_files()
+        if not csv_files:
+            self.logger.warning("No CSV files found. Nothing to generate.")
+            return
+        self._process_all_tournaments(csv_files)
+        self._print_summary(len(csv_files))
+    
+    def _ensure_output_dirs(self):
         self.posts_dir.mkdir(parents=True, exist_ok=True)
-        print(f"✓ Output directory ready:")
-        print(f"  - Posts: {self.posts_dir}")
-        
-    def find_csv_files(self):
-        """Find all CSV files in the source directory."""
+        self.logger.success(f"Output directory ready: {self.posts_dir}")
+    
+    def _find_csv_files(self) -> list[Path]:
         if not self.source_dir.exists():
-            print(f"⚠ Warning: Source directory not found: {self.source_dir}")
             return []
-        
         csv_files = list(self.source_dir.glob("*.csv"))
-        print(f"✓ Found {len(csv_files)} CSV file(s)")
+        self.logger.success(f"Found {len(csv_files)} CSV file(s)")
         return csv_files
     
-    def read_intro_content(self, csv_path):
-        """Read optional markdown intro content for a tournament.
-        
-        Args:
-            csv_path: Path to the CSV file
-            
-        Returns:
-            Tuple of (frontmatter_dict, content_string)
-            - frontmatter_dict: parsed YAML frontmatter (empty dict if none)
-            - content_string: the markdown content after frontmatter
-        """
-        md_path = csv_path.with_suffix('.md')
-        
-        if not md_path.exists():
-            print(f"  ℹ No intro content found (looked for {md_path.name})")
-            return {}, ""
-        
-        with open(md_path, 'r', encoding='utf-8') as f:
-            content = f.read()
-        
-        # Check for YAML frontmatter
-        if content.startswith('---\n'):
-            # Split on frontmatter delimiter
-            parts = content.split('---\n', 2)
-            if len(parts) >= 3:
-                # Parse frontmatter (simple key: value parsing)
-                frontmatter = {}
-                frontmatter_lines = parts[1].strip().split('\n')
-                for line in frontmatter_lines:
-                    if ':' in line:
-                        key, value = line.split(':', 1)
-                        key = key.strip()
-                        value = value.strip().strip('"').strip("'")
-                        frontmatter[key] = value
-                
-                markdown_content = parts[2].strip()
-                print(f"  ✓ Found intro content with frontmatter: {md_path.name}")
-                return frontmatter, markdown_content
-        
-        # No frontmatter found, return raw content
-        print(f"  ✓ Found intro content: {md_path.name}")
-        return {}, content.strip()
-    
-    def csv_to_markdown_table(self, csv_path):
-        """Convert CSV data to a Markdown table.
-        
-        Args:
-            csv_path: Path to the CSV file
-            
-        Returns:
-            String containing the Markdown table
-        """
-        try:
-            with open(csv_path, 'r', encoding='utf-8') as f:
-                reader = csv.reader(f)
-                rows = list(reader)
-        except csv.Error as e:
-            print(f"⚠ CSV format error in {csv_path.name}: {e}")
-            return "*CSV format error*\n"
-        except UnicodeDecodeError as e:
-            print(f"⚠ Encoding error in {csv_path.name}: {e}")
-            return "*Encoding error*\n"
-        except Exception as e:
-            print(f"⚠ Error reading {csv_path.name}: {e}")
-            return "*Error reading data*\n"
-
-        if not rows:
-            return "*No data available*\n"
-        
-        # Handle BOM (Byte Order Mark) in header row if present (should be handled by utf8-sig, but double check)
-        headers = rows[0]
-        if headers and headers[0].startswith('\ufeff'):
-            headers[0] = headers[0].lstrip('\ufeff')
-
-        # Ensure all rows have the same number of columns as the header
-        inconsistent_rows = [i+1 for i, row in enumerate(rows[1:]) if len(row) != len(headers)]
-        if inconsistent_rows:
-            print(f"⚠ Warning: Inconsistent row lengths in {csv_path.name} at rows: {inconsistent_rows}")
-
-        # Build markdown table
-        table_lines = []
-        
-        # Header row
-        table_lines.append("| " + " | ".join(headers) + " |")
-        
-        # Separator row
-        table_lines.append("| " + " | ".join(["---"] * len(headers)) + " |")
-        
-        # Data rows
-        for row in rows[1:]:
-            if len(row) > len(headers):
-                print(f"  ⚠ Warning: Row has more columns than header in {csv_path.name}: {row}. Extra data will be truncated.")
-
-            # Pad row if needed to match header length
-            padded_row = row + [""] * (len(headers) - len(row))
-            table_lines.append("| " + " | ".join(padded_row[:len(headers)]) + " |")
-        
-        print(f"  ✓ Generated table with {len(rows)-1} data row(s)")
-        return "\n".join(table_lines) + "\n"
-
-    # TODO: Find a different way to generate titles for more control
-    def generate_title(self, filename):
-        """Convert filename to a human-readable title.
-        
-        Args:
-            filename: e.g., 'turkey-tussle-2025'
-            
-        Returns:
-            String like 'Turkey Tussle 2025'
-        """
-        # Remove extension, replace hyphens with spaces, title case
-        return filename.replace('-', ' ').title()
-    
-    def process_tournament(self, csv_path):
-        """Process a single tournament CSV and generate its blog post.
-        
-        Args:
-            csv_path: Path to the tournament CSV file
-        """
-        filename_stem = csv_path.stem  # e.g., 'turkey-tussle-2025'
-        print(f"\nProcessing: {csv_path.name}")
-
-        # Bounce if we exceed file size limit
-        max_size_mb = 10
-        file_size_mb = csv_path.stat().st_size / (1024 * 1024)
-        if file_size_mb > max_size_mb:
-            raise ValueError(f"CSV file too large: {file_size_mb:.1f}MB (max: {max_size_mb}MB)")
-        
-        # Read optional intro content and its frontmatter
-        intro_frontmatter, intro_content = self.read_intro_content(csv_path)
-        
-        # Get or generate date
-        if 'date' in intro_frontmatter:
-            date_value = intro_frontmatter['date']
-            # Try parsing as datetime first (YYYY-MM-DD HH:MM:SS or ISO format)
-            try:
-                # Try full datetime with time
-                if ' ' in date_value or 'T' in date_value:
-                    # Keep the full datetime string as-is for Jekyll
-                    date_str = date_value
-                    # Extract just the date part for filename
-                    if ' ' in date_value:
-                        file_date_str = date_value.split(' ')[0]
-                    elif 'T' in date_value:
-                        file_date_str = date_value.split('T')[0]
-                    else:
-                        file_date_str = date_value
-                else:
-                    # Just a date, validate format
-                    datetime.strptime(date_value, '%Y-%m-%d')
-                    date_str = date_value
-                    file_date_str = date_value
-            except ValueError as e:
-                raise ValueError(f"Invalid date format in {csv_path.stem}.md. Use YYYY-MM-DD or YYYY-MM-DD HH:MM:SS format. Error: {e}")
-        else:
-            # No .md file or no date - use today
-            date_str = datetime.now().strftime('%Y-%m-%d')
-            file_date_str = date_str
-            print(f"  ℹ No date found, using today: {date_str}")
-        
-        # Convert CSV to table
-        table_content = self.csv_to_markdown_table(csv_path)
-        
-        # Generate default title from filename
-        default_title = self.generate_title(filename_stem)
-        
-        # Build Jekyll front matter (merge user frontmatter with defaults)
-        frontmatter = {
-            'layout': 'post',
-            'title': intro_frontmatter.get('title', default_title),
-            'date': date_str,
-        }
-        
-        # Add any other frontmatter from intro file (image, excerpt, author, etc.)
-        for key, value in intro_frontmatter.items():
-            if key not in ['layout', 'title', 'date']:
-                frontmatter[key] = value
-        
-        # Build frontmatter lines
-        front_matter_lines = ["---"]
-        for key, value in frontmatter.items():
-            # Quote strings that might have special chars
-            if ' ' in str(value) or ':' in str(value):
-                front_matter_lines.append(f"{key}: \"{value}\"")
-            else:
-                front_matter_lines.append(f"{key}: {value}")
-        front_matter_lines.append("---")
-        front_matter_lines.append("")
-        
-        # Combine all parts
-        full_content = "\n".join(front_matter_lines)
-        
-        if intro_content:
-            full_content += intro_content + "\n\n"
-        
-        full_content += table_content
-        
-        # Jekyll _posts naming convention: YYYY-MM-DD-slug.md (always just date, not time)
-        output_filename = f"{file_date_str}-{filename_stem}.md"
-        output_path = self.posts_dir / output_filename
-        
-        with open(output_path, 'w', encoding='utf-8') as f:
-            f.write(full_content)
-        
-        print(f"  ✓ Generated: {output_path.name}")
-    
-    def run(self):
-        """Main execution flow."""
-        print("=" * 60)
-        print("MNHSFL Fencing Results Generator")
-        print("=" * 60)
-        
-        # Setup
-    def run(self):
-        """Main execution flow."""
-        print("=" * 60)
-        print("MNHSFL Fencing Results Generator")
-        print("=" * 60)
-        
-        # Setup
-        self.ensure_output_dirs()
-        
-        # Find and process all CSV files
-        csv_files = self.find_csv_files()
-        
-        if not csv_files:
-            print("\n⚠ No CSV files found. Nothing to generate.")
-            return
-        
-        # Process each tournament
+    def _process_all_tournaments(self, csv_files: list[Path]):
         for csv_path in csv_files:
             try:
-                self.process_tournament(csv_path)
+                self._process_tournament(csv_path)
             except Exception as e:
-                print(f"  ✗ Error processing {csv_path.name}: {e}")
-                raise  # Fail the build on error
-        
-        print("\n" + "=" * 60)
-        print(f"✓ Successfully generated {len(csv_files)} result post(s)")
-        print("  Posts: _posts/results/ (gitignored)")
-        print("  Results appear on homepage and /news/ feed")
-        print("=" * 60)
+                self.logger.error(f"Error processing {csv_path.name}: {e}")
+                raise
+    
+    def _process_tournament(self, csv_path: Path):
+        self.logger.processing(csv_path.name)
+        rows = self.csv_reader.read(csv_path)
+        intro_fm, intro_content = self.intro_reader.read(csv_path)
+        date_str, file_date = self.date_extractor.extract(intro_fm)
+        self._log_intro_status(intro_fm, intro_content, csv_path)
+        self._log_date_info(intro_fm, date_str)
+        post_content = self._build_post_content(csv_path, rows, intro_fm, intro_content, date_str)
+        output_path = self._write_post(csv_path, post_content, file_date)
+        self.logger.success(f"Generated: {output_path.name}")
+    
+    def _log_intro_status(self, intro_fm: dict, intro_content: str, csv_path: Path):
+        if not intro_content and not intro_fm:
+            self.logger.info(f"No intro content found (looked for {csv_path.stem}.md)")
+            return
+        if intro_fm:
+            self.logger.success(f"Found intro content with frontmatter: {csv_path.stem}.md")
+            return
+        self.logger.success(f"Found intro content: {csv_path.stem}.md")
+    
+    def _build_post_content(self, csv_path: Path, rows: list[list[str]], 
+                           intro_fm: dict[str, str], intro_content: str, date_str: str) -> str:
+        table = self._generate_table(rows, csv_path)
+        frontmatter = self._build_frontmatter(csv_path, intro_fm, date_str)
+        return self.content_builder.build(frontmatter, intro_content, table)
+    
+    def _log_date_info(self, intro_fm: dict, date_str: str):
+        if 'date' not in intro_fm:
+            self.logger.info(f"No date found, using today: {date_str}")
+    
+    def _generate_table(self, rows: list[list[str]], csv_path: Path) -> str:
+        if not rows:
+            return "*No data available*\n"
+        headers = rows[0]
+        data_rows = rows[1:]
+        self._validate_table_structure(data_rows, headers, csv_path)
+        table = self.table_formatter.format(rows)
+        self.logger.success(f"Generated table with {len(data_rows)} data row(s)")
+        return table
+    
+    def _validate_table_structure(self, data_rows: list[list[str]], 
+                                  headers: list[str], csv_path: Path):
+        inconsistent = self.table_validator.validate(data_rows, headers)
+        if inconsistent:
+            self.logger.warning(f"Inconsistent row lengths in {csv_path.name} at rows: {inconsistent}")
+    
+    def _build_frontmatter(self, csv_path: Path, intro_fm: dict[str, str], 
+                          date_str: str) -> str:
+        default_title = self.title_generator.generate(csv_path.stem)
+        defaults = {
+            'layout': 'post',
+            'title': intro_fm.get('title', default_title),
+            'date': date_str,
+        }
+        return self.frontmatter_builder.build(intro_fm, defaults)
+    
+    def _write_post(self, csv_path: Path, content: str, file_date: str) -> Path:
+        filename = self.filename_generator.generate(file_date, csv_path.stem)
+        output_path = self.posts_dir / filename
+        self.post_writer.write(output_path, content)
+        return output_path
+    
+    def _print_summary(self, count: int):
+        self.logger.header(f"✓ Successfully generated {count} result post(s)")
+        self.logger.info("Posts: _posts/results/ (gitignored)")
+        self.logger.info("Results appear on homepage and /news/ feed")
 
 
 if __name__ == "__main__":
