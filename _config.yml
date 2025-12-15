@@ -42,7 +42,6 @@ header_pages:
   - competitors/index.md
   - news/index.md
   - results/index.md
-  - policies/index.md
 
 # =============================================================================
 # Default frontmatter values

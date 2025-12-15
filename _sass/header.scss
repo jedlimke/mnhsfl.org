@@ -1,12 +1,11 @@
 /*
  * Site header - CSS Grid layout
- * Mobile: logo left, hamburger right, collapsible menu expands and pushes content downward
- * Tablet/Desktop (600px+): logo left, nav items right
+ * Mobile/Tablet: logo left, hamburger right, collapsible menu expands and pushes content downward
+ * Desktop (800px+): logo left, nav items right
  */
 
 .layout-area--header {
 	--stroke-width: 6px;
-
 
     background: var(--bg-white);
     border-top: var(--stroke-width) solid var(--brand-blue);
@@ -18,7 +17,7 @@
         "header-area--nav    header-area--nav";
 	align-items: center;
 
-    @media screen and (min-width: 600px) {
+    @media screen and (min-width: 800px) {
         grid-template-columns: auto 1fr;
         grid-template-areas: "header-area--title  header-area--nav";
     }
@@ -31,7 +30,7 @@
 
     img {
         display: block;
-        height: calc(1 * var(--spacing-unit));
+        height: calc(1.5 * var(--spacing-unit));
         width: auto;
     }
 }
@@ -87,7 +86,7 @@ label[for="hamburger"] {
 		}
 	}
 
-	@media screen and (min-width: 600px) {
+	@media screen and (min-width: 800px) {
 		display: none;
 	}
 }
@@ -127,7 +126,7 @@ label[for="hamburger"] {
         gap: var(--spacing-unit);
         padding-top: var(--spacing-unit);
 
-        @media screen and (min-width: 600px) {
+        @media screen and (min-width: 800px) {
             display: flex;
             flex-direction: row;
             justify-content: flex-end;

@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Information for Competitors
+title: Competitors
 permalink: /competitors/
 ---
 

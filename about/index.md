@@ -16,9 +16,8 @@ Lorem ipsum dolor sit amet. Accusamus sunt esse blanditiis sed beatae quo unde s
 
 - [Board of Directors](board/)
 - [Bylaws](bylaws/)
-- [Operations Guidelines](operations/)
 
-## Related Pages
+## Organizational Policies
 
-- [Policies](/policies/)
-- [Information for Competitors](/competitors/)
+- [Code of Conduct for Coaches & Competitors](code-of-conduct/)
+- [Conflict of Interest (COI) Policy](conflict-of-interest-policy/)

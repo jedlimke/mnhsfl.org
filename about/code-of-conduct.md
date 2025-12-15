@@ -1,6 +1,7 @@
 ---
-layout: default
+layout: page
 title: Code of Conduct
+permalink: /about/code-of-conduct/
 ---
 
 # Code of Conduct for Coaches & Competitors
