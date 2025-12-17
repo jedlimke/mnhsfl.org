@@ -70,6 +70,7 @@ GEM
 
 PLATFORMS
   aarch64-linux-musl
+  x86_64-linux
 
 DEPENDENCIES
   base64
