@@ -9,17 +9,17 @@
 	padding: var(--spacing-unit) max(var(--spacing-unit), calc((100vw - var(--content-max-width)) / 2));
 	display: grid;
 	grid-template-areas:
-		"brand"
-		"links"
-		"social"
-		"copyright";
+		"footer-area--brand"
+		"footer-area--links"
+		"footer-area--social"
+		"footer-area--copyright";
 	gap: var(--spacing-unit);
 
 	@media screen and (min-width: 800px) {
 		grid-template-columns: 2fr 1fr;
 		grid-template-areas:
-			"brand links"
-			"copyright social";
+			"footer-area--brand footer-area--links"
+			"footer-area--copyright footer-area--social";
 	}
 
 	a:link,
@@ -30,7 +30,7 @@
 
 // Footer brand area
 .footer-brand {
-	grid-area: brand;
+	grid-area: footer-area--brand;
 
 	.footer-logo img {
 		height: 120px;
@@ -40,7 +40,7 @@
 
 // Footer navigation
 .footer-nav {
-	grid-area: links;
+	grid-area: footer-area--links;
 
 	@media screen and (min-width: 800px) {
 		justify-self: end;
@@ -64,13 +64,13 @@
 
 // Copyright
 .footer-license {
-	grid-area: copyright;
+	grid-area: footer-area--copyright;
 	font-size: 0.5rem;
 }
 
 // Social icons
 .footer-social-inline {
-	grid-area: social;
+	grid-area: footer-area--social;
 
 	@media screen and (min-width: 800px) {
 		justify-self: end;

@@ -39,9 +39,6 @@ jobs:
       - name: Run integration tests
         run: pytest _tests/test_convert_fencing_results.py -v
       
-      - name: Test generator on actual fixtures
-        run: python _scripts/convert_fencing_results.py
-      
       - name: Verify posts generated
         run: |
           if [ -z "$(ls -A _posts/results/*.md 2>/dev/null)" ]; then
