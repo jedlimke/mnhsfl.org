@@ -70,6 +70,9 @@ jobs:
         uses: actions/upload-pages-artifact@v3
 
   deploy:
+    # Only deploy on pushes to master, not on pull requests
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+
     needs: build
     runs-on: ubuntu-latest
     environment:
