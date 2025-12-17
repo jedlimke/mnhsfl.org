@@ -133,7 +133,6 @@ table {
 	width: calc(100vw - 2 * var(--spacing-unit));
 	border-collapse: collapse;
 	background: var(--bg-white);
-	transition: font-size 0.3s ease-in-out;
 
 	// Break out of content wrapper to full viewport width (minus spacing on both sides)
 	margin-left: calc(50% - 50vw + var(--spacing-unit));
@@ -158,9 +157,49 @@ table {
 		padding-right: var(--spacing-unit);
 	}
 
-    @media screen and (max-width: 1200px) {
-		font-size: 0.5rem;
-    }
+	// Mobile: Card-style layout
+	@media screen and (max-width: 800px) {
+		// Hide table headers
+		thead {
+			display: none;
+		}
+
+		// Make each row a card
+		tbody tr {
+			display: block;
+			margin-bottom: calc(var(--spacing-unit) / 2);
+			border: var(--border-width) solid var(--border-color);
+			
+			// Zebra striping for cards
+			&:nth-child(even) {
+				background: var(--bg-light);
+			}
+		}
+
+		// Stack cells vertically within each row
+		tbody td {
+			display: block;
+			text-align: left;
+			padding: calc(var(--spacing-unit) / 3) var(--spacing-unit);
+			border-bottom: none;
+			
+			// Add data labels from table headers
+			&:before {
+				content: attr(data-label);
+				display: block;
+				font-weight: 700;
+				font-size: 0.65rem;
+				color: var(--text-muted);
+				text-transform: uppercase;
+				margin-bottom: 0.25rem;
+			}
+
+			// Remove border from last cell
+			&:last-child {
+				border-bottom: none;
+			}
+		}
+	}
 }
 
 .svg-icon {
