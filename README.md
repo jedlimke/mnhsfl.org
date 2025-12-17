@@ -1,6 +1,8 @@
 # Minnesota High School Fencing League (MNHSFL) – Website Repository
 
-![Content Update Workflow](assets/mnhsfl-block.svg)
+[![CI/CD](https://github.com/jedlimke/mnhsfl-website/actions/workflows/cicd.yml/badge.svg)](https://github.com/jedlimke/mnhsfl-website/actions/workflows/cicd.yml)
+
+![MNHSFL Banner](assets/mnhsfl-block.svg)
 
 This is the official website for the Minnesota High School Fencing League. It's a static site built with Jekyll and automatically deployed to GitHub Pages.
 

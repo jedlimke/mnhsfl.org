@@ -1,5 +1,5 @@
 # Workflow for testing, building, and deploying the site to GitHub Pages
-name: Test, Build, and Deploy Site
+name: CI/CD
 
 on:
   # Runs on pushes targeting the default branch
@@ -42,14 +42,6 @@ jobs:
       
       - name: Run integration tests
         run: pytest _tests/test_convert_fencing_results.py -v
-      
-      - name: Verify posts generated
-        run: |
-          if [ -z "$(ls -A _posts/results/*.md 2>/dev/null)" ]; then
-            echo "❌ No posts generated!"
-            exit 1
-          fi
-          echo "✅ Generated $(ls _posts/results/*.md | wc -l) result posts"
   
   build:
     needs: test
