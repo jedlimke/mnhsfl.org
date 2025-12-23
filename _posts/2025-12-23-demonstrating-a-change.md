@@ -1,7 +1,7 @@
 ---
 title: "Demonstrating a change"
 date: 2025-12-23
-image: https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.squarespace-cdn.com%2Fcontent%2Fv1%2F559ef46ee4b0567a6dcfdae0%2F0798c0ac-bd8e-4b61-bc71-f5ceb55db58e%2FMadison%2BDuckett%2BBrynnley%2BMcKee%2BDay%2B2%2BJWS.jpg&f=1&nofb=1&ipt=2e155e807aaca20aec096d014e0c1269a577f7b1f9b27099f2b79e0571354c77
+image: https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwayofthesword.org%2Fwp-content%2Fuploads%2F2022%2F08%2F302424524_10229779930349072_6856038814919373044_n.jpeg&f=1&nofb=1&ipt=573d6da0ac548a9a5c0867a861d2e9c1cb3cb6f2ca73e5e62dc961fa602164fd
 excerpt: "ASDF"
 ---
 
