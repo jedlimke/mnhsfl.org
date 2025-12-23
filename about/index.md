@@ -21,3 +21,8 @@ Lorem ipsum dolor sit amet. Accusamus sunt esse blanditiis sed beatae quo unde s
 
 - [Code of Conduct for Coaches & Competitors](code-of-conduct/)
 - [Conflict of Interest (COI) Policy](conflict-of-interest-policy/)
+
+## Documents
+
+- [fart](information-for-referees-and-bout-committee-2025-2026/)
+
