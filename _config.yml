@@ -54,11 +54,13 @@ defaults:
       path: "_posts/results"
       type: "posts"
     values:
+      layout: post
       categories: "results"
   - scope:
       path: "_posts"
       type: "posts"
     values:
+      layout: post
       categories: "news"
 
 # Collections (for future use)
