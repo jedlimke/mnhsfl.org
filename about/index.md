@@ -24,5 +24,5 @@ Lorem ipsum dolor sit amet. Accusamus sunt esse blanditiis sed beatae quo unde s
 
 ## Documents
 
-- [fart](information-for-referees-and-bout-committee-2025-2026/)
+- [Information for Referees and Bout Committee 2025-2026](information-for-referees-and-bout-committee-2025-2026/)
 
