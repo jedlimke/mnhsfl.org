@@ -110,7 +110,7 @@ Your post content goes here in Markdown format.
 You can use just a date or include time:
 
 ```yaml
-date: 2025-12-14                    # Just date
+date: 2025-12-14                   # Just date
 date: 2025-12-14 14:30:00          # Date and time
 date: "2025-12-14 14:30:00 -0600"  # With timezone (quote it!)
 ```

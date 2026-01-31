@@ -158,7 +158,7 @@ table {
 	}
 
 	// Mobile: Card-style layout
-	@media screen and (max-width: 800px) {
+	@media screen and (max-width: 1000px) {
 		// Hide table headers
 		thead {
 			display: none;
@@ -166,8 +166,7 @@ table {
 
 		// Make each row a card
 		tbody tr {
-			display: block;
-			margin-bottom: calc(var(--spacing-unit) / 2);
+			display: grid;
 			border: var(--border-width) solid var(--border-color);
 			
 			// Zebra striping for cards
@@ -197,6 +196,11 @@ table {
 			// Remove border from last cell
 			&:last-child {
 				border-bottom: none;
+			}
+
+			&[data-label="Rank"] {
+				font-size: 2em;
+				font-weight: bold;
 			}
 		}
 	}
