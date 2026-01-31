@@ -3,6 +3,11 @@ description: The Minnesota High School Fencing League (MNHSFL) is run by the Min
 
 author: MNHSFL
 
+# Site URL and baseurl configuration
+# For custom domain like mnhsfl.org, baseurl should be empty
+url: "https://mnhsfl.org"
+baseurl: ""
+
 # Site logos
 logo: /assets/mnhsfl.svg
 footer_logo: /assets/mnhsfl-block.svg
