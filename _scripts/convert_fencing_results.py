@@ -469,10 +469,15 @@ class ResultsGenerator:
     def _build_frontmatter(self, csv_path: Path, intro_fm: dict[str, str], 
                           date_str: str) -> str:
         default_title = self.title_generator.generate(csv_path.stem)
+        # Only set excerpt if not provided in intro frontmatter
+        if 'excerpt' not in intro_fm:
+            intro_fm['excerpt'] = ' '
+        
         defaults = {
             'layout': 'post',
             'title': intro_fm.get('title', default_title),
             'date': date_str,
+            'categories': 'results',
         }
         
         return self.frontmatter_builder.build(intro_fm, defaults)
