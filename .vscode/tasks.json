@@ -1,0 +1,30 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Jekyll Server",
+      "type": "shell",
+      "command": "python3 _scripts/convert_fencing_results.py && bundle exec jekyll serve --host 0.0.0.0 --port 4000 --livereload --force_polling",
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Generate Results",
+      "type": "shell",
+      "command": "python3 _scripts/convert_fencing_results.py",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}

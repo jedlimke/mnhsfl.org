@@ -1,0 +1,33 @@
+{
+  "name": "MNHSFL Jekyll Site",
+  "image": "mcr.microsoft.com/devcontainers/ruby:3.3",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.11"
+    }
+  },
+
+  // Run bundle install once when the container is first created
+  "postCreateCommand": "bundle install",
+
+  // Forward Jekyll and LiveReload ports
+  "forwardPorts": [4000, 35729],
+  "portsAttributes": {
+    "4000": {
+      "label": "Jekyll Site",
+      "onAutoForward": "notify"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "yzhang.markdown-all-in-one",
+        "sissel.shopify-liquid"
+      ],
+      "settings": {
+        "python.analysis.extraPaths": ["_scripts"]
+      }
+    }
+  }
+}
