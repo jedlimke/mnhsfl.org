@@ -45,6 +45,7 @@ def generator(test_env):
     gen.source_dir = test_env['source_dir']
     gen.posts_dir = test_env['posts_dir']
     gen.project_root = test_env['test_dir']
+    gen.assets_dir = test_env['test_dir'] / "assets" / "results"
     return gen
 
 
@@ -170,8 +171,8 @@ class TestFolderBasedGeneration:
         output_files = list(test_env['posts_dir'].glob("*.md"))
         assert len(output_files) == 1
 
-    def test_image_references_in_markdown_pass_through(self, test_env, generator):
-        """Relative image references in .md files are preserved verbatim in the output."""
+    def test_image_references_in_markdown_rewritten_and_assets_copied(self, test_env, generator):
+        """Relative image refs are rewritten to /assets/results/{folder}/ and files are copied there."""
         folder = test_env['source_dir'] / "photo-tournament"
         folder.mkdir()
         (folder / "_frontmatter.md").write_text(
@@ -190,10 +191,39 @@ class TestFolderBasedGeneration:
         assert len(output_files) == 1
         content = output_files[0].read_text()
 
-        # Image markdown syntax must be present unchanged so Jekyll can serve them
-        assert "![Trophy ceremony](trophy.jpg)" in content
-        assert "![Group photo](group-photo.png)" in content
+        # Refs must be rewritten to absolute paths Jekyll can serve
+        assert "![Trophy ceremony](/assets/results/photo-tournament/trophy.jpg)" in content
+        assert "![Group photo](/assets/results/photo-tournament/group-photo.png)" in content
         assert "Great action at the tournament!" in content
+
+        # Raw relative refs must NOT remain
+        assert "](trophy.jpg)" not in content
+        assert "](group-photo.png)" not in content
+
+        # Asset files must be copied to the assets directory
+        assets_dir = test_env['test_dir'] / "assets" / "results" / "photo-tournament"
+        assert (assets_dir / "trophy.jpg").exists()
+        assert (assets_dir / "group-photo.png").exists()
+
+    def test_absolute_and_external_image_refs_not_rewritten(self, test_env, generator):
+        """Absolute paths and external URLs in image refs are left unchanged."""
+        folder = test_env['source_dir'] / "link-test"
+        folder.mkdir()
+        (folder / "_frontmatter.md").write_text(
+            "---\ntitle: Link Test\ndate: 2026-05-01\n---\n"
+        )
+        (folder / "content.md").write_text(
+            "![External](https://example.com/img.jpg)\n"
+            "![Absolute](/assets/shared/logo.png)\n"
+            "![Relative](local.jpg)\n"
+        )
+        (folder / "local.jpg").write_bytes(b"\xff\xd8\xff")
+        generator.run()
+
+        content = output_files = list(test_env['posts_dir'].glob("*.md"))[0].read_text()
+        assert "![External](https://example.com/img.jpg)" in content
+        assert "![Absolute](/assets/shared/logo.png)" in content
+        assert "![Relative](/assets/results/link-test/local.jpg)" in content
 
     def test_output_filename_uses_folder_name_and_date(self, test_env, generator):
         """Output filename is {date}-{folder-name}.md using date from _frontmatter.md."""

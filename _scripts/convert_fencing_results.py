@@ -30,6 +30,8 @@ are generated from source files in _fencing-results/.
 """
 
 import csv
+import re
+import shutil
 from pathlib import Path
 from datetime import datetime
 from dataclasses import dataclass, field
@@ -306,6 +308,7 @@ class ResultsGenerator:
         self.project_root = Path(__file__).parent.parent
         self.source_dir = self.project_root / "_fencing-results"
         self.posts_dir = self.project_root / "_posts" / "results"
+        self.assets_dir = self.project_root / "assets" / "results"
         self.logger = Logger()
         self.csv_reader = CsvReader()
         self.table_formatter = TableFormatter()
@@ -364,6 +367,7 @@ class ResultsGenerator:
 
         data = self._read_folder_data(folder)
         self._log_date_info(data.frontmatter, data.date_str)
+        self._copy_folder_assets(folder)
 
         output_path = self._build_and_write_post(folder, data)
         self.logger.success(f"Generated: {output_path.name}")
@@ -393,7 +397,7 @@ class ResultsGenerator:
 
     def _build_and_write_post(self, folder: Path, data: TournamentData) -> Path:
         frontmatter_str = self._build_frontmatter(folder, data.frontmatter, data.date_str)
-        body = self._build_body(data)
+        body = self._build_body(data, folder.name)
         content = frontmatter_str + body
         return self._write_post(folder, content, data.file_date)
 
@@ -410,7 +414,7 @@ class ResultsGenerator:
         }
         return self.frontmatter_builder.build(fm_copy, defaults)
 
-    def _build_body(self, data: TournamentData) -> str:
+    def _build_body(self, data: TournamentData, folder_name: str) -> str:
         parts = []
 
         if data.fm_body:
@@ -428,7 +432,37 @@ class ResultsGenerator:
         if not parts:
             return ""
 
-        return "\n\n".join(p.strip() for p in parts) + "\n"
+        body = "\n\n".join(p.strip() for p in parts) + "\n"
+        return self._rewrite_relative_image_refs(body, folder_name)
+
+    def _rewrite_relative_image_refs(self, content: str, folder_name: str) -> str:
+        """Rewrite relative image refs to their served assets path."""
+        def rewrite(m: re.Match) -> str:
+            alt, src = m.group(1), m.group(2)
+            if src.startswith(('http://', 'https://', '/')):
+                return m.group(0)
+            return f'![{alt}](/assets/results/{folder_name}/{src})'
+        return re.sub(r'!\[([^\]]*)\]\(([^)]+)\)', rewrite, content)
+
+    def _copy_folder_assets(self, folder: Path):
+        """Copy non-CSV/MD files (images, etc.) to assets/results/{folder}/ for Jekyll to serve."""
+        asset_files = [
+            f for f in folder.iterdir()
+            if f.is_file()
+            and f.name != '_frontmatter.md'
+            and f.suffix not in ('.csv', '.md')
+        ]
+        if not asset_files:
+            return
+
+        dest_dir = self.assets_dir / folder.name
+        if dest_dir.exists():
+            shutil.rmtree(dest_dir)
+        dest_dir.mkdir(parents=True)
+
+        for asset in asset_files:
+            shutil.copy2(asset, dest_dir / asset.name)
+            self.logger.info(f"Copied asset: {asset.name} → assets/results/{folder.name}/")
 
     def _csv_to_table(self, csv_path: Path) -> str:
         rows = self.csv_reader.read(csv_path)
