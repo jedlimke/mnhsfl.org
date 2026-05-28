@@ -16,7 +16,8 @@ permalink: /results/
 			<time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %-d, %Y" }}</time>
 		</p>
 	</header>
-    {% if post.excerpt %}
+    {% assign excerpt_text = post.excerpt | strip %}
+    {% if excerpt_text != "" %}
       <p>{{ post.excerpt | truncate: 100 }}</p>
     {% endif %}
   </article>

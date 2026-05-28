@@ -16,3 +16,4 @@ gem "bigdecimal"
 
 # For responsive tables plugin
 gem "nokogiri"
+

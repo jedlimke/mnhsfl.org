@@ -1,26 +1,41 @@
 # Fencing Results Converter
 
-Converts CSV tournament results into Jekyll blog posts automatically.
+Converts tournament results into Jekyll blog posts automatically.
 
 ## How It Works
 
-**Input:**
-- CSV file with results (required)
-- MD file with frontmatter (optional)
+Each tournament lives in its own subfolder inside `_fencing-results/`. The converter
+stitches together all `.csv` and `.md` files in the folder (alphabetically) into a
+single post. CSVs become markdown tables; MD files become body text.
 
-**Output:**
-- Blog post with frontmatter + table
-- Appears on homepage, /news/, and /results/
+**Input:** A result folder containing `_frontmatter.md` plus optional CSV/MD files  
+**Output:** A blog post in `_posts/results/` — appears on homepage, `/news/`, and `/results/`
 
 ## Quick Start
 
 ### For Admins: Adding Results
 
-1. **Add CSV**: `_fencing-results/tournament-name-2025.csv`
-2. **Add MD** (optional): `_fencing-results/tournament-name-2025.md` with frontmatter
-3. **Commit and push** - GitHub Actions does the rest
+1. **Create a folder**: `_fencing-results/tournament-name-2026/`
+2. **Add `_frontmatter.md`** (required) with at minimum `title` and `date`:
+   ```yaml
+   ---
+   title: "Spring Championship 2026"
+   date: 2026-03-15
+   excerpt: "Championship results"
+   ---
+   Optional intro paragraph here.
+   ```
+3. **Add content files** (optional):
+   - `.csv` files → rendered as result tables
+   - `.md` files → included as body text
+   - Other files (images, etc.) → ignored
+4. **Commit and push** — GitHub Actions does the rest
 
-**That's it!** The site will build the necessary post when it's deployed automatically.
+**That's it!** Files are stitched alphabetically, so prefix filenames to control order:
+`01-intro.md`, `02-results.csv`.
+
+> ⚠️ **Every folder must have `_frontmatter.md` with `title` and `date` — missing or
+> malformed frontmatter blocks deployment.**
 
 ### For Developers: Testing Locally
 
@@ -29,7 +44,7 @@ Converts CSV tournament results into Jekyll blog posts automatically.
 docker-compose up
 ```
 
-**Then, whenever you add/update CSV or MD files, regenerate posts:**
+**Then, whenever you add/update result folders, regenerate posts:**
 
 ```bash
 # Option 1: Docker (recommended)
@@ -39,7 +54,7 @@ docker build -f _tests/Dockerfile.generate -t mnhsfl-generate . && docker run --
 python _scripts/convert_fencing_results.py
 ```
 
-The site auto-refreshes - just re-run the conversion script to see your changes!
+The site auto-refreshes — just re-run the conversion script to see your changes!
 
 ## File Structure
 
@@ -47,39 +62,40 @@ The site auto-refreshes - just re-run the conversion script to see your changes!
 
 ```
 _fencing-results/
-  tournament-name.csv       # Required: Your data
-  tournament-name.md        # Optional: Custom frontmatter & intro
+  README.md                        # Documentation (this pattern)
+  tournament-name-2026/
+    _frontmatter.md                # Required: title + date (+ optional body)
+    01-intro.md                    # Optional: body text (alphabetical order)
+    02-results.csv                 # Optional: rendered as table
+    photo.jpg                      # Optional: ignored by converter
 ```
 
-### Generated Files (Cannot be committed - they're .gitignored)
+### Generated Files (Cannot be committed — they're .gitignored)
 
 ```
 _posts/results/
-  YYYY-MM-DD-tournament-name.md    # Auto-generated blog posts
+  YYYY-MM-DD-tournament-name-2026.md    # Auto-generated blog posts
 ```
 
-## Frontmatter Options
+## _frontmatter.md Reference
 
-**With custom frontmatter** (`tournament.md`):
 ```yaml
 ---
-title: "Spring Championship 2025"
-date: 2025-03-15
-excerpt: "Championship results"
+title: "Spring Championship 2026"       # Required
+date: 2026-03-15                        # Required (YYYY-MM-DD or with time)
+excerpt: "Championship results"         # Optional – used in post previews
+author: "Tournament Director"           # Optional – any extra fields pass through
 ---
-Optional intro text here...
+Optional intro paragraph that will appear at the top of the post body,
+before any other content files.
 ```
 
-**Without frontmatter** (CSV only):
-- Title: Generated from filename
-- Date: Today's date
-- No intro content
+**Required fields:** `title`, `date` — missing either blocks deployment.
 
 ## CSV Format
 
 **Any valid CSV works!** First row = headers, rest = data.
 
-Example:
 ```csv
 Fencer,Wins,Losses,Points
 Smith Jane,5,1,850
@@ -87,14 +103,11 @@ Doe John,4,2,720
 ```
 
 Becomes:
+
 | Fencer | Wins | Losses | Points |
 |--------|------|--------|--------|
 | Smith Jane | 5 | 1 | 850 |
 | Doe John | 4 | 2 | 720 |
-
-## Subdirectories
-
-CSVs and Markdown files need to be in the base `_fencing-results` directory. Files in subdirectories thereof will NOT be processed. 
 
 ## Development
 
@@ -105,11 +118,6 @@ CSVs and Markdown files need to be in the base `_fencing-results` directory. Fil
 docker build -f _tests/Dockerfile.test -t mnhsfl-test . && \
 docker run --rm mnhsfl-test
 
-# Run tests with full error output (see validation messages)
-docker build -f _tests/Dockerfile.test -t mnhsfl-test . -q && \
-docker run --rm -v "${PWD}/_tests/fixtures:/app/_fencing-results:ro" -v "${PWD}/_scripts:/app/_scripts:ro" mnhsfl-test \
-python _scripts/convert_fencing_results.py
-
 # Run tests (Python)
 pytest _tests/test_convert_fencing_results.py -v
 ```
@@ -119,22 +127,23 @@ pytest _tests/test_convert_fencing_results.py -v
 **Location:** `_scripts/convert_fencing_results.py`
 
 **What it does:**
-1. Scans `_fencing-results/` for CSV files (recursively)
-2. For each CSV:
-   - Reads data
-   - Checks for matching `.md` file
-   - Extracts frontmatter (or uses defaults)
-   - Generates Markdown table
-   - Writes blog post to `_posts/results/` (preserving subdirectory structure)
+1. Scans `_fencing-results/` for subdirectories
+2. For each folder:
+   - Validates `_frontmatter.md` (must have `title` and `date`)
+   - Reads body from `_frontmatter.md` (if any)
+   - Collects `.csv` and `.md` files alphabetically
+   - Converts CSVs to tables, includes MD files as body text
+   - Writes blog post to `_posts/results/{date}-{folder-name}.md`
+   - Fails hard if any folder has invalid/missing `_frontmatter.md`
 
-**Classes:** Following "Five Lines of Code" principles - 11 small, focused classes with ≤5 line methods.
+**Classes:** 11 small, focused classes following single-responsibility principles.
 
 ## Deployment
 
 ### GitHub Actions Workflow
 
 Push to `master` triggers:
-1. **Test Job**: Runs pytest on all 16 tests
+1. **Test Job**: Runs pytest on all tests
 2. **Build Job**: Runs converter, builds Jekyll site
 3. **Deploy Job**: Publishes to GitHub Pages
 
@@ -148,14 +157,14 @@ See `.github/workflows/cicd.yml`
 ## Troubleshooting
 
 **Issue:** Posts not showing up
-- Check CSV is valid (proper headers, comma-separated)
-- Check filename matches: `name.csv` and `name.md`
-- Check frontmatter has valid YAML
-- Check Jekyll is running (`docker-compose up`)
+- Ensure results live in a **subfolder**, not at root of `_fencing-results/`
+- Verify `_frontmatter.md` exists in the folder
+- Check `_frontmatter.md` has both `title` and `date`
+- Verify Jekyll is running (`docker-compose up`)
 
-**Issue:** Date is wrong
-- Add `date: YYYY-MM-DD` to `.md` frontmatter
-- Without frontmatter, uses today's date
+**Issue:** Deployment blocked with validation error
+- Read the error message — it tells you exactly which folder and field is wrong
+- Fix `_frontmatter.md` and push again
 
 **Issue:** Table looks wrong
 - Ensure CSV has consistent column counts
