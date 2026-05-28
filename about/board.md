@@ -4,10 +4,20 @@ title: Board of Directors
 permalink: /about/board/
 ---
 
-# Board of Directors
+# Current Board Members 2026 Season
 
-Lorem ipsum dolor sit amet. Accusamus sunt esse blanditiis sed beatae quo unde suscipit. Ipsam aliquam consequuntur aspernatur quia. Eligendi ullam ipsam labore placeat ullam corrupti corrupti ut. Voluptatem saepe non perferendis qui magni sint odio explicabo.
+- President: Traci Sethre
+- Vice President: Jacob Mickelson
+- Secretary: Corlis Hicks
+- Treasurer: Tim Peichelt 
+- Competition Director: Colleen Stone
 
-## Current Board Members
+## Operations
 
-Lorem ipsum dolor sit amet. Accusamus sunt esse blanditiis sed beatae quo unde suscipit. Ipsam aliquam consequuntur aspernatur quia. Eligendi ullam ipsam labore placeat ullam corrupti corrupti ut. Voluptatem saepe non perferendis qui magni sint odio explicabo.
+The MNHSFL board meets at least annually to plan for and administrate the Minnesota High School Fencing League.
+
+## Contact
+
+You can contact the board via [email](mailto:traci.sethre+MNHSFL@gmail.com).
+
+
