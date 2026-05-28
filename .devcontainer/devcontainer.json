@@ -1,6 +1,8 @@
 {
   "name": "MNHSFL Jekyll Site",
-  "image": "mcr.microsoft.com/devcontainers/ruby:3.3",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
   "features": {
     "ghcr.io/devcontainers/features/python:1": {
       "version": "3.11"
@@ -11,8 +13,10 @@
   // Force pure-Ruby platform to avoid native extension build failures (e.g. prism on aarch64).
   "postCreateCommand": "bundle config set --local force_ruby_platform true && bundle install",
 
-  // Start the Jekyll server every time the container starts.
-  "postStartCommand": "python3 _scripts/convert_fencing_results.py && bundle exec jekyll serve --host 0.0.0.0 --port 4000 --livereload --force_polling",
+  // Start the _fencing-results watcher (background) and Jekyll server every time the container starts.
+  // The watcher re-runs the CSV converter whenever anything in _fencing-results/ changes,
+  // so Jekyll/livereload picks up the updated posts automatically.
+  "postStartCommand": "(bash .devcontainer/watch-fencing-results.sh &) && python3 _scripts/convert_fencing_results.py && bundle exec jekyll serve --host 0.0.0.0 --port 4000 --livereload --force_polling",
 
   // Forward Jekyll and LiveReload ports
   "forwardPorts": [4000, 35729],

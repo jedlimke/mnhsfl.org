@@ -27,62 +27,30 @@ Everything is automated - just commit and push!
 You'll need these tools installed:
 
 - **Git** - Version control ([Download](https://git-scm.com/downloads))
-- **Docker** - For local testing and preview ([Download](https://www.docker.com/products/docker-desktop/))
+- **Docker** - Runs the dev container ([Download](https://www.docker.com/products/docker-desktop/))
 - **VS Code** - Recommended editor ([Download](https://code.visualstudio.com/))
+  - Install the **Dev Containers** extension ([ms-vscode-remote.remote-containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers))
 
-That's it! No Python, Ruby, or Jekyll installation needed.
+That's it! No Python, Ruby, or Jekyll installation needed on your machine — everything runs inside the container.
 
 ## Viewing the Site Locally
 
-To preview the site locally and _keep it automatically regenerating_ using Docker:
+This repo uses a **VS Code Dev Container**. When you open the project VS Code will offer to reopen it inside the container. Accept that, and everything is handled for you automatically:
 
-1. **Build the Docker image:**
-   ```sh
-   docker-compose build
-   ```
+- Ruby, Python, Jekyll, and all dependencies are pre-installed in the container image
+- The Jekyll server starts on port 4000 with livereload enabled
+- A background watcher monitors `_fencing-results/` — whenever you add or edit a CSV or markdown file there, the results converter runs automatically and Jekyll reloads your browser
 
-2. **Start the Jekyll server:**
-   ```sh
-   docker-compose up
-   ```
+**Steps:**
 
-3. **Visit in your browser:**
-   ```
-   http://localhost:4000
-   ```
+1. Open the folder in VS Code
+2. Click **Reopen in Container** when prompted (or run `Dev Containers: Reopen in Container` from the command palette)
+3. Wait for the container to build and start (first time takes a minute or two)
+4. VS Code will open a browser preview, or visit **http://localhost:4000** yourself
 
-Press `Ctrl+C` to stop the server.
+To stop the server, close the VS Code terminal running Jekyll (`Ctrl+C`). To restart it, run the **Start Jekyll Server** task from the VS Code task runner.
 
-## Git Workflow & Version Control
-
-![Content Update Workflow](assets/basic-workflow.png)
-
-### Basic Workflow
-
-1. **Pull latest code**: `git pull origin master`
-2. **Create a branch**: `git checkout -b my-branch-name`
-3. **Make your changes** (add posts, update results, etc.)
-4. **Stage changes**: `git add .`
-5. **Commit**: `git commit -m "Description of changes"`
-6. **Push your branch**: `git push origin my-branch-name`
-7. **Create a Pull Request** on GitHub
-8. **Wait for tests to pass**, then merge
-9. Deployment will then happen **automagically**
-
-### Pull Request Best Practices
-
-- Write clear descriptions of what changed
-- Keep commits focused on one thing
-- Test locally before creating the PR
-- Review the changes before requesting merge
-
-**Why use branches and pull requests?**
-- Test major changes without affecting the live site
-- Automated tests catch errors before deployment
-- Keep `master` stable and production-ready
-- Get feedback before deploying
-
-**Learn more**: [GitHub's Pull Request Guide](https://github.blog/developer-skills/github/beginners-guide-to-github-creating-a-pull-request/)
+> **Note:** The first time you open the container it builds the image from `.devcontainer/Dockerfile`. Subsequent opens reuse the cached image and start up much faster.
 
 ## Creating News Posts
 
@@ -262,7 +230,7 @@ Then create a **Pull Request** on GitHub to merge your changes.
 
 ### Fencing Results Converter
 
-The script is automatically run during build via Github Actions, though it must be **manually run** during local testing.
+The script is automatically run during build via GitHub Actions. In the dev container it also runs automatically whenever `_fencing-results/` changes (see the watcher in `.devcontainer/watch-fencing-results.sh`).
 
 1. Scans `_fencing-results/` for all `.csv` files
 2. For each CSV file (e.g., `turkey-tussle-2025.csv`):
@@ -282,24 +250,13 @@ See [Convert Fencing Results README](_scripts/README.md) for more info.
 
 #### Generating Results Locally (While Developing)
 
-Convert CSV files to posts locally without Python installed.
+Inside the dev container this is fully automatic. The background watcher (`_fencing-results/` watcher, started by the devcontainer) detects any change to `_fencing-results/` and re-runs the converter immediately. Jekyll then picks up the updated posts and livereload refreshes your browser — no manual steps needed.
 
-**One command (Mac/Linux):**
+If you need to trigger it manually (e.g. after a `git pull` that added new CSV files), run the **Generate Results** task from the VS Code task runner, or in the terminal:
+
 ```sh
-docker build -f _tests/Dockerfile.generate -t mnhsfl-generate . && docker run --rm -v "${PWD}/_posts:/app/_posts" mnhsfl-generate
+python3 _scripts/convert_fencing_results.py
 ```
-
-**For Windows PowerShell:**
-```powershell
-docker build -f _tests/Dockerfile.generate -t mnhsfl-generate . ; docker run --rm -v "${PWD}/_posts:/app/_posts" mnhsfl-generate
-```
-
-**For Windows Command Prompt:**
-```cmd
-docker build -f _tests/Dockerfile.generate -t mnhsfl-generate . && docker run --rm -v "%cd%/_posts:/app/_posts" mnhsfl-generate
-```
-
-The `-v` flag mounts your local `_posts/` directory so generated files appear on your machine!
 
 #### Testing the Converter
 

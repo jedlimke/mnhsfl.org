@@ -4,10 +4,7 @@
     {
       "label": "Start Jekyll Server",
       "type": "shell",
-      "command": "python3 _scripts/convert_fencing_results.py && bundle exec jekyll serve --host 0.0.0.0 --port 4000 --livereload --force_polling",
-      "runOptions": {
-        "runOn": "folderOpen"
-      },
+      "command": "(bash .devcontainer/watch-fencing-results.sh &) && python3 _scripts/convert_fencing_results.py && bundle exec jekyll serve --host 0.0.0.0 --port 4000 --livereload --force_polling",
       "presentation": {
         "reveal": "always",
         "panel": "dedicated",
