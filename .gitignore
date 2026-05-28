@@ -28,3 +28,6 @@ _posts/results/
 # Misc.
 *.log
 .sass-cache/
+
+# Results assets - these are automatically copied over when fencing results are generated but shouldn't be saved in two places
+assets/results
