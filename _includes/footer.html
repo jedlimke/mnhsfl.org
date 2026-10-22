@@ -14,7 +14,7 @@
 		<p class="footer-description">{{ site.description | escape }}</p>
 	</div>
 
-	{%- comment -%} Navigation links {%- endcomment -%}
+	<!-- {%- comment -%} Navigation links {%- endcomment -%}
 	<div class="footer-nav">
 		{%- assign default_paths = site.pages | map: "path" -%}
 		{%- assign page_paths = site.header_pages | default: default_paths -%}
@@ -26,7 +26,7 @@
 			{%- endif -%}
 			{%- endfor -%}
 		</ul>
-	</div>
+	</div> -->
 
 	{%- comment -%} Copyright {%- endcomment -%}
 	<p class="footer-license">&copy; {{ site.time | date: "%Y" }} {{ site.author | escape }} under the terms of the <a href="{{ '/LICENSE' | relative_url }}">MIT License</a>.</p>
